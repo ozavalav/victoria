@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosEstructuras" table="datos_estructuras">
+    <id name="idEstructura" type="integer" column="id_estructura">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="nombre" type="string" column="nombre" length="256" nullable="false"/>
+    <field name="tipoEstructura" type="string" column="tipo_estructura" nullable="false"/>
+  </entity>
+</doctrine-mapping>

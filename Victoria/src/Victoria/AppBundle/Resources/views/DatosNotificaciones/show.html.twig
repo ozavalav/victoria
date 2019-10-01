@@ -1,0 +1,55 @@
+{% extends '::basemenu.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Información de la notificación
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-bell-o"></i> Notificaciones</a></li>
+        <li class="active">Ver información de la notificación</li>
+      </ol>
+    </section>
+{% endblock %}
+
+{% block content -%}
+    
+    <table class="table table-striped table-bordered table-responsive">
+        <tbody>
+            <tr>
+                <th>Id Notificación</th>
+                <td>{{ entity.idNotificacion }}</td>
+            </tr>
+            <tr>
+                <th>Mensaje</th>
+                <td>{{ entity.mensaje }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ entity.estado }}</td>
+            </tr>
+            <tr>
+                <th>Fecha Enviado</th>
+                <td>{{ entity.fechaEnviado|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Fecha Recibido</th>
+                <td>{{ entity.fechaRecibido|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+            
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+        <a class="btn btn-md btn-success" href="{{ path('datosnotificaciones') }}">
+            <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>        
+    
+{% endblock %}

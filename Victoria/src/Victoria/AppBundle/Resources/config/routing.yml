@@ -1,0 +1,78 @@
+victoria_app_datosnotificaciones:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datosnotificaciones.yml"
+    prefix:   /datosnotificaciones
+
+victoria_app_datospersonas:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datospersonas.yml"
+    prefix:   /datospersonas
+
+victoria_app_datoscampanaspoliticas:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datoscampanaspoliticas.yml"
+    prefix:   /datoscampanaspoliticas
+
+victoria_app_datoscomisiones:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datoscomisiones.yml"
+    prefix:   /datoscomisiones
+    
+victoria_app_datoscentrosvotacion:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datoscentrosvotacion.yml"
+    prefix:   /datoscentrosvotacion
+
+victoria_app_datosdistritos:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datosdistritos.yml"
+    prefix:   /datosdistritos
+
+victoria_app_adtiposcomision:
+    resource: "@VictoriaAppBundle/Resources/config/routing/adtiposcomision.yml"
+    prefix:   /adtiposcomision
+
+victoria_app_datospersonas:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datospersonas.yml"
+    prefix:   /datospersonas    
+
+victoria_app_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: VictoriaAppBundle:Default:index }
+
+focal_app_menu:
+    path: /menu
+    defaults: { _controller: VictoriaAppBundle:Menu:index }
+
+focal_app_domenu:
+    path: /domenu
+    defaults: { _controller: VictoriaAppBundle:Menu:menu }
+    
+victoria_app_aduser:
+    resource: "@VictoriaAppBundle/Resources/config/routing/aduser.yml"
+    prefix:   /aduser
+
+victoria_app_adroles:
+    resource: "@VictoriaAppBundle/Resources/config/routing/adroles.yml"
+    prefix:   /adroles    
+
+focal_adacceso:
+    resource: "@VictoriaAppBundle/Resources/config/routing/adacceso.yml"
+    prefix:   /adacceso
+    
+focal_adaccesogrant:
+    resource: "@VictoriaAppBundle/Resources/config/routing/adaccesogrant.yml"
+    prefix:   /adaccesogrant
+
+logout:
+    path: /logout
+    
+login:
+    path: /login
+    defaults: { _controller: "VictoriaAppBundle:Login:login" }
+
+login_check:
+    path: /login_check 
+    
+login_guardarPeriodo:
+    pattern: /guardarPeriodo/{p_periodo}/
+    defaults: { _controller: "VictoriaAppBundle:Login:guardarPeriodo" }
+    requirements: { _method: post|get}   
+
+datoscomisiones:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:DatosComisiones:index" }   

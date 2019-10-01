@@ -1,0 +1,30 @@
+adroles:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:AdRoles:index" }
+
+adroles_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:AdRoles:show" }
+
+adroles_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:AdRoles:new" }
+
+adroles_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:AdRoles:create" }
+    methods:  POST
+
+adroles_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:AdRoles:edit" }
+
+adroles_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:AdRoles:update" }
+    methods:  [POST, PUT]
+
+adroles_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:AdRoles:delete" }
+    methods:  [POST, DELETE]

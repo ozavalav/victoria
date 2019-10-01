@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosCentrosVotacion" table="datos_centros_votacion">
+    <indexes>
+      <index name="IDX_AEC4A7FDB8445919" columns="id_campana"/>
+      <index name="IDX_AEC4A7FDEEFCF568" columns="id_distrito"/>
+    </indexes>
+    <id name="idCv" type="integer" column="id_cv">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="nombre" type="string" column="nombre" length="256" nullable="false"/>
+    <field name="tipoCv" type="integer" column="tipo_cv" nullable="false"/>
+    <field name="direccion" type="string" column="direccion" length="512" nullable="false"/>
+    <field name="nombreEdificio" type="string" column="nombre_edificio" length="256" nullable="true"/>
+    <field name="cargarElectoral" type="integer" column="cargar_electoral" nullable="true"/>
+    <field name="numeroMesas" type="integer" column="numero_mesas" nullable="true"/>
+    <many-to-one field="idDistrito" target-entity="DatosDistritos">
+      <join-columns>
+        <join-column name="id_distrito" referenced-column-name="id_distrito"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idCampana" target-entity="DatosCampanasPoliticas">
+      <join-columns>
+        <join-column name="id_campana" referenced-column-name="id_campana"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

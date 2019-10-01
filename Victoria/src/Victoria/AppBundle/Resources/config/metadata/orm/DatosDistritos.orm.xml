@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosDistritos" table="datos_distritos">
+    <indexes>
+      <index name="IDX_3FA23379B8445919" columns="id_campana"/>
+    </indexes>
+    <id name="idDistrito" type="integer" column="id_distrito">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="nombre" type="string" column="nombre" length="256" nullable="false"/>
+    <many-to-one field="idCampana" target-entity="DatosCampanasPoliticas">
+      <join-columns>
+        <join-column name="id_campana" referenced-column-name="id_campana"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

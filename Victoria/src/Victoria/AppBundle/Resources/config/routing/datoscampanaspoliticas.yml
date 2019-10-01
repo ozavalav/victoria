@@ -1,0 +1,30 @@
+datoscampanaspoliticas:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:index" }
+
+datoscampanaspoliticas_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:show" }
+
+datoscampanaspoliticas_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:new" }
+
+datoscampanaspoliticas_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:create" }
+    requirements: { _method: post }
+
+datoscampanaspoliticas_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:edit" }
+
+datoscampanaspoliticas_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:update" }
+    requirements: { _method: post|put }
+
+datoscampanaspoliticas_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:delete" }
+    requirements: { _method: post|delete }

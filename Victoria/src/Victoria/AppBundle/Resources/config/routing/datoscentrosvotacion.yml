@@ -1,0 +1,34 @@
+datoscentrosvotacion:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:index" }
+
+datoscentrosvotacion_list:
+    path:     /{id}/list
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:index" }
+    
+datoscentrosvotacion_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:show" }
+
+datoscentrosvotacion_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:new" }
+
+datoscentrosvotacion_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:create" }
+    requirements: { _method: post }
+
+datoscentrosvotacion_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:edit" }
+
+datoscentrosvotacion_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:update" }
+    requirements: { _method: post|put }
+
+datoscentrosvotacion_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:delete" }
+    requirements: { _method: post|delete }

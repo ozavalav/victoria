@@ -1,0 +1,84 @@
+<?php
+
+namespace Victoria\AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * DatosNotificaciones
+ *
+ * @ORM\Table(name="datos_notificaciones", indexes={@ORM\Index(name="IDX_5E0E2F9AFCF8192D", columns={"id_usuario"}), @ORM\Index(name="IDX_5E0E2F9AB8445919", columns={"id_campana"}), @ORM\Index(name="IDX_5E0E2F9AEEFCF568", columns={"id_distrito"})})
+ * @ORM\Entity
+ */
+class DatosNotificaciones
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_notificacion", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="datos_notificaciones_id_notificacion_seq", allocationSize=1, initialValue=1)
+     */
+    private $idNotificacion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mensaje", type="string", length=1024, nullable=false)
+     */
+    private $mensaje;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="estado", type="integer", nullable=false)
+     */
+    private $estado = '1';
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_enviado", type="datetime", nullable=true)
+     */
+    private $fechaEnviado;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_recibido", type="datetime", nullable=true)
+     */
+    private $fechaRecibido;
+
+    /**
+     * @var \AdUser
+     *
+     * @ORM\ManyToOne(targetEntity="AdUser")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_usuario", referencedColumnName="id")
+     * })
+     */
+    private $idUsuario;
+
+    /**
+     * @var \DatosCampanasPoliticas
+     *
+     * @ORM\ManyToOne(targetEntity="DatosCampanasPoliticas")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_campana", referencedColumnName="id_campana")
+     * })
+     */
+    private $idCampana;
+
+    /**
+     * @var \DatosDistritos
+     *
+     * @ORM\ManyToOne(targetEntity="DatosDistritos")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_distrito", referencedColumnName="id_distrito")
+     * })
+     */
+    private $idDistrito;
+
+
+}

@@ -1,0 +1,117 @@
+{% extends '::basemenu.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/jquery.dataTables_themeroller.css')}}" />
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/focal.css')}}" />
+    
+{% endblock %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+
+
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Listados de personas
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-user"></i> Personas</a></li>
+        <li class="active">Agregar, modificar y eliminar información</li>
+      </ol>
+    </section>
+{% endblock %}
+
+{% block content -%}
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+        <a class="btn btn-md btn-success" href="{{ path('datospersonas_new') }}">
+            <i class="ace-icon fa fa-plus-square align-top bigger-120"></i> Nuevo 
+        </a>
+    </li>
+    </ul>
+    
+
+       <table id="dynamic-table" class="display compact">
+        <thead>
+            <tr style="background-color: #E8BF6A"> 
+                <th>Idpersona</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Numeroidentidad</th>
+                <th>Telefono1</th>
+                <th>Telefono2</th>
+                <th>Email</th>
+                <th>Estructura</th>
+                <th>Campaña</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('datospersonas_show', { 'id': entity.idPersona }) }}">{{ entity.idPersona }}</a></td>                <td>{{ entity.nombres }}</td>
+                <td>{{ entity.apellidos }}</td>
+                <td>{{ entity.numeroIdentidad }}</td>
+                <td>{{ entity.telefono1 }}</td>
+                <td>{{ entity.telefono2 }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.idEstructura }}</td>
+                <td>{{ entity.idCampana }}</td>
+                <td>{{ entity.estado }}</td>
+                <td>
+              
+                       <div class="action-buttons">
+                        <a class="blue" href="{{ path('datospersonas_show', { 'id': entity.idPersona }) }}"title="Ver">
+                                <i class="oz-icon-v fa fa-search-plus bigger-130"></i> 
+                        </a>
+                
+                        <a class="green" href="{{ path('datospersonas_edit', { 'id': entity.idPersona }) }}" title="Editar">
+                                <i class="oz-icon-e fa fa-pencil bigger-130"></i>  
+                        </a>
+                        </div>
+               
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.bootstrap.min.js')}}"></script> 
+    
+    <script type="text/javascript">
+        $(function () {
+        
+        $('#dynamic-table').DataTable({
+          'paging'      : true,
+          'lengthChange': true,
+          'searching'   : true,
+          'ordering'    : true,
+          'info'        : true,
+          'autoWidth'   : true,
+          language:{
+                    search: "Buscar",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    emptyTable: "No hay datos...",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    infoFiltered: "(Filtrando de un total de _MAX_ registros)",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Ultimo"
+                    }
+                }
+        });
+  });
+    </script>     
+{% endblock %}    

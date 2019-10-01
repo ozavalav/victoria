@@ -1,0 +1,107 @@
+{% extends '::basemenu.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/jquery.dataTables_themeroller.css')}}" />
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/focal.css')}}" />
+    
+{% endblock %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Listados de centros de votaciones
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-map-marker"></i> Centros de votaciones</a></li>
+        <li class="active">Agregar, modificar y eliminar información</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+        <a class="btn btn-md btn-success" href="{{ path('datoscentrosvotacion_new') }}">
+            <i class="ace-icon fa fa-plus-square align-top bigger-120"></i> Nuevo 
+        </a>
+    </li>
+    </ul>
+    <table id="dynamic-table" class="display compact">
+        <thead>
+            <tr style="background-color: #E8BF6A">
+                <th>Id Centro Votacion</th>
+                <th>Nombre</th>
+                <th>Tipo centro votacion</th>
+                <th>Direccion</th>
+                <th>Nombre edificio</th>
+                <th>Cargar electoral</th>
+                <th>Numero mesas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('datoscentrosvotacion_show', { 'id': entity.idCv }) }}">{{ entity.idCv }}</a></td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.tipoCv }}</td>
+                <td>{{ entity.direccion }}</td>
+                <td>{{ entity.nombreEdificio }}</td>
+                <td>{{ entity.cargarElectoral }}</td>
+                <td>{{ entity.numeroMesas }}</td>
+                <td>
+                <ul>
+                     <div class="action-buttons">
+                        <a class="blue" href="{{ path('datoscentrosvotacion_show', { 'id': entity.idCv }) }}" title="Ver">
+                                <i class="oz-icon-v fa fa-search-plus bigger-130"></i>
+                        </a>
+
+                        <a class="green"  href="{{ path('datoscentrosvotacion_edit', { 'id': entity.idCv }) }}"title="Editar">
+                                <i class="oz-icon-e fa fa-pencil bigger-130"></i>
+                        </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+   </table>
+ 
+
+    {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.bootstrap.min.js')}}"></script> 
+    
+    <script type="text/javascript">
+        $(function () {
+        
+        $('#dynamic-table').DataTable({
+          'paging'      : true,
+          'lengthChange': true,
+          'searching'   : true,
+          'ordering'    : true,
+          'info'        : true,
+          'autoWidth'   : true,
+          language:{
+                    search: "Buscar",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    emptyTable: "No hay datos...",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    infoFiltered: "(Filtrando de un total de _MAX_ registros)",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Ultimo"
+                    }
+                }
+        });
+  });
+  
+    </script>     
+{% endblock %}    

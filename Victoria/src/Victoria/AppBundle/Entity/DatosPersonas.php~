@@ -1,0 +1,96 @@
+<?php
+
+namespace Victoria\AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * DatosPersonas
+ *
+ * @ORM\Table(name="datos_personas")
+ * @ORM\Entity
+ */
+class DatosPersonas
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_persona", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="datos_personas_id_persona_seq", allocationSize=1, initialValue=1)
+     */
+    private $idPersona;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombres", type="string", length=256, nullable=false)
+     */
+    private $nombres;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="apellidos", type="string", length=256, nullable=false)
+     */
+    private $apellidos;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numero_identidad", type="string", length=13, nullable=false)
+     */
+    private $numeroIdentidad;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telefono_1", type="string", length=14, nullable=false)
+     */
+    private $telefono1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telefono_2", type="string", length=14, nullable=true)
+     */
+    private $telefono2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telefono_3", type="string", length=14, nullable=true)
+     */
+    private $telefono3;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=256, nullable=false)
+     */
+    private $email;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_estructura", type="integer", nullable=false)
+     */
+    private $idEstructura;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_campana", type="integer", nullable=false)
+     */
+    private $idCampana;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="estado", type="integer", nullable=false)
+     */
+    private $estado;
+
+
+}

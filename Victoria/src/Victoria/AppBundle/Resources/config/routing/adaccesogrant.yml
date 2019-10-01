@@ -1,0 +1,30 @@
+adaccesogrant:
+    path:     /
+    defaults: { _controller: "AdminBundle:AdAccesoGrant:index" }
+
+adaccesogrant_show:
+    path:     /{id}/show
+    defaults: { _controller: "AdminBundle:AdAccesoGrant:show" }
+
+adaccesogrant_new:
+    path:     /new
+    defaults: { _controller: "AdminBundle:AdAccesoGrant:new" }
+
+adaccesogrant_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:AdAccesoGrant:create" }
+    requirements: { _method: post }
+
+adaccesogrant_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AdminBundle:AdAccesoGrant:edit" }
+
+adaccesogrant_update:
+    path:     /{id}/update
+    defaults: { _controller: "AdminBundle:AdAccesoGrant:update" }
+    requirements: { _method: post|put }
+
+adaccesogrant_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AdminBundle:AdAccesoGrant:delete" }
+    requirements: { _method: post|delete }

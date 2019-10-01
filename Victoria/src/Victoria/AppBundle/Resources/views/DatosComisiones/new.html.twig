@@ -1,0 +1,66 @@
+{% extends '::basemenu.html.twig' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Nueva Comisión
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-flag"></i> Comisiones</a></li>
+        <li class="active">Asignar personas a las comisiones</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+
+    {{ form_start(form) }}
+    {{ form_row(form.descripcion) }}
+    {{ form_row(form.idEstructura) }}
+    {{ form_row(form.idCampana) }}
+    {{ form_row(form.idTipoComision) }}
+    {{ form_row(form.idDistrito) }}
+    {{ form_row(form.idCv) }}
+    {{ form_row(form.idPersona) }}
+    
+    <!-- Se tendra que utilizar esta parte cuando se controle el distrito y CV segun campaña 
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Distrito</label>  
+        <div class="col-sm-10">
+            <select id="id_distrito" name="id_distrito" class="form-control">
+                <option value="1">Uno</option>
+                <option value="2">Dos</option>
+                <option value="3">Tres</option>
+            </select>
+        </div>    
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Centro Votación</label>  
+        <div class="col-sm-10">
+            <select id="id_cv" name="id_cv" class="form-control">
+                <option value="1">Uno</option>
+                <option value="2">Dos</option>
+                <option value="3">Tres</option>
+            </select>
+        </div>    
+    </div -->  
+    {{ form_end(form)}}
+
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+        <a class="btn btn-md btn-success" href="{{ path('datoscomisiones') }}">
+            <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        
+        
+    </script>    
+{% endblock %}

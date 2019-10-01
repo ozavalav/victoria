@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AdPeriodo" table="ad_periodo">
+    <id name="periodo" type="smallint" column="periodo">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="estado" type="smallint" column="estado" nullable="true"/>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AdMunicipios" table="ad_municipios">
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="codDepartamento" type="string" column="cod_departamento" length="5" nullable="true"/>
+    <field name="codMunicipio" type="string" column="cod_municipio" length="5" nullable="true"/>
+    <field name="nombre" type="string" column="nombre" length="64" nullable="true"/>
+  </entity>
+</doctrine-mapping>

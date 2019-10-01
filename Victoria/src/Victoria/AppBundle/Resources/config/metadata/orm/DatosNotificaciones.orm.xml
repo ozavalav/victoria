@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosNotificaciones" table="datos_notificaciones">
+    <indexes>
+      <index name="IDX_5E0E2F9AFCF8192D" columns="id_usuario"/>
+      <index name="IDX_5E0E2F9AB8445919" columns="id_campana"/>
+      <index name="IDX_5E0E2F9AEEFCF568" columns="id_distrito"/>
+    </indexes>
+    <id name="idNotificacion" type="integer" column="id_notificacion">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="mensaje" type="string" column="mensaje" length="1024" nullable="false"/>
+    <field name="estado" type="integer" column="estado" nullable="false"/>
+    <field name="fechaEnviado" type="datetime" column="fecha_enviado" nullable="true"/>
+    <field name="fechaRecibido" type="datetime" column="fecha_recibido" nullable="true"/>
+    <many-to-one field="idDistrito" target-entity="DatosDistritos">
+      <join-columns>
+        <join-column name="id_distrito" referenced-column-name="id_distrito"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idCampana" target-entity="DatosCampanasPoliticas">
+      <join-columns>
+        <join-column name="id_campana" referenced-column-name="id_campana"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUsuario" target-entity="AdUser">
+      <join-columns>
+        <join-column name="id_usuario" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

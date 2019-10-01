@@ -1,0 +1,46 @@
+{% extends '::basemenu.html.twig' %}
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Comisiones
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-flag"></i> Comisiones</a></li>
+        <li class="active">Mostrar la información de las comisión</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    <h1>DatosComisiones</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Idcomision</th>
+                <td>{{ entity.idComision }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('datoscomisiones_list') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('datoscomisiones_edit', { 'id': entity.idComision }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

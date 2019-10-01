@@ -1,0 +1,30 @@
+adtiposcomision:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:AdTiposComision:index" }
+
+adtiposcomision_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:AdTiposComision:show" }
+
+adtiposcomision_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:AdTiposComision:new" }
+
+adtiposcomision_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:AdTiposComision:create" }
+    requirements: { _method: post }
+
+adtiposcomision_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:AdTiposComision:edit" }
+
+adtiposcomision_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:AdTiposComision:update" }
+    requirements: { _method: post|put }
+
+adtiposcomision_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:AdTiposComision:delete" }
+    requirements: { _method: post|delete }

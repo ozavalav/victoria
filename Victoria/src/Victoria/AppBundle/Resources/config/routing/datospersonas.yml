@@ -1,0 +1,30 @@
+datospersonas:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:DatosPersonas:index" }
+
+datospersonas_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:DatosPersonas:show" }
+
+datospersonas_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:DatosPersonas:new" }
+
+datospersonas_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:DatosPersonas:create" }
+    requirements: { _method: post }
+
+datospersonas_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:DatosPersonas:edit" }
+
+datospersonas_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:DatosPersonas:update" }
+    requirements: { _method: post|put }
+
+datospersonas_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:DatosPersonas:delete" }
+    requirements: { _method: post|delete }

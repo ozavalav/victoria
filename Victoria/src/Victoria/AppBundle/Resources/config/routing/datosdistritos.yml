@@ -1,0 +1,34 @@
+datosdistritos:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:index" }
+    
+datosdistritos_list:
+    path:     /{id}/list
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:index" }
+
+datosdistritos_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:show" }
+
+datosdistritos_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:new" }
+
+datosdistritos_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:create" }
+    requirements: { _method: post }
+
+datosdistritos_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:edit" }
+
+datosdistritos_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:update" }
+    requirements: { _method: post|put }
+
+datosdistritos_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:delete" }
+    requirements: { _method: post|delete }

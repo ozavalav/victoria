@@ -1,0 +1,35 @@
+adacceso:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:AdAcceso:index" }
+
+adacceso_show:
+    path:     /{id}/show/{msgok}
+    defaults: { _controller: "AdminBundle:AdAcceso:show", msgok:no }
+
+adacceso_new:
+    path:     /new
+    defaults: { _controller: "AdminBundle:AdAcceso:new" }
+
+adacceso_create:
+    path:     /create
+    defaults: { _controller: "AdminBundle:AdAcceso:create" }
+    requirements: { _method: post }
+
+adacceso_edit:
+    path:     /{id}/edit/{msgok}
+    defaults: { _controller: "AdminBundle:AdAcceso:edit", msgok:no }
+
+adacceso_update:
+    path:     /{id}/update
+    defaults: { _controller: "AdminBundle:AdAcceso:update" }
+    requirements: { _method: post|put }
+
+adacceso_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AdminBundle:AdAcceso:delete" }
+    requirements: { _method: post|delete }
+
+adaccesogrant_asociar:
+    path:     /asociar/{idacceso}
+    defaults: { _controller: "VictoriaAppBundle:AdAccesoGrant:index" }      
+      

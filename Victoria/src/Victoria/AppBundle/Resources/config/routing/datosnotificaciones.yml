@@ -1,0 +1,30 @@
+datosnotificaciones:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:DatosNotificaciones:index" }
+
+datosnotificaciones_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:DatosNotificaciones:show" }
+
+datosnotificaciones_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:DatosNotificaciones:new" }
+
+datosnotificaciones_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:DatosNotificaciones:create" }
+    requirements: { _method: post }
+
+datosnotificaciones_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:DatosNotificaciones:edit" }
+
+datosnotificaciones_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:DatosNotificaciones:update" }
+    requirements: { _method: post|put }
+
+datosnotificaciones_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:DatosNotificaciones:delete" }
+    requirements: { _method: post|delete|get }

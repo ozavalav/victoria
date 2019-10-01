@@ -1,0 +1,30 @@
+datoscomisiones_list:
+    path:     /list
+    defaults: { _controller: "VictoriaAppBundle:DatosComisiones:index" }
+    
+datoscomisiones_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:DatosComisiones:show" }
+
+datoscomisiones_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:DatosComisiones:new" }
+
+datoscomisiones_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:DatosComisiones:create" }
+    requirements: { _method: post }
+
+datoscomisiones_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:DatosComisiones:edit" }
+
+datoscomisiones_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:DatosComisiones:update" }
+    requirements: { _method: post|put }
+
+datoscomisiones_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:DatosComisiones:delete" }
+    requirements: { _method: post|delete }

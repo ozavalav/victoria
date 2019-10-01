@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosCampanasPoliticas" table="datos_campanas_politicas">
+    <indexes>
+      <index name="IDX_F2A062228813C45D" columns="id_partido_politico"/>
+    </indexes>
+    <id name="idCampana" type="integer" column="id_campana">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="nombre" type="string" column="nombre" length="256" nullable="false"/>
+    <field name="candidato" type="string" column="candidato" length="256" nullable="false"/>
+    <many-to-one field="idPartidoPolitico" target-entity="AdPartidosPoliticos">
+      <join-columns>
+        <join-column name="id_partido_politico" referenced-column-name="id_partido_politico"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,45 @@
+aduser:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:AdUser:index" }
+
+aduser_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:AdUser:show" }
+
+aduser_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:AdUser:new" }
+
+aduser_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:AdUser:create" }
+    methods:  POST
+
+aduser_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:AdUser:edit" }
+
+aduser_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:AdUser:update" }
+    methods:  [POST, PUT]
+
+aduser_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:AdUser:delete" }
+    methods:  [POST, DELETE]
+
+aduser_cambioestado:
+    pattern: /cambioestado/{param}/
+    defaults: { _controller: "VictoriaAppBundle:AdUser:cambioestado" }
+    requirements: { _method: post|get}
+    
+aduser_buscarMunicipio:
+    pattern: /buscarMunicipio/{param}/
+    defaults: { _controller: "VictoriaAppBundle:AdUser:buscarMunicipio" }
+    requirements: { _method: post|get}      
+
+aduser_buscarDistrito:
+    pattern: /buscarDistrito/{param}/
+    defaults: { _controller: "VictoriaAppBundle:AdUser:buscarDistrito" }
+    requirements: { _method: post|get}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosComisiones" table="datos_comisiones">
+    <indexes>
+      <index name="idx_datos_comisiones" columns="id_estructura,id_tipo_comision,id_campana,id_persona"/>
+      <index name="IDX_9D08C49FB8445919" columns="id_campana"/>
+      <index name="IDX_9D08C49FFFABC0C8" columns="id_estructura"/>
+      <index name="IDX_9D08C49F8F781FEB" columns="id_persona"/>
+      <index name="IDX_9D08C49F78FE02C3" columns="id_tipo_comision"/>
+    </indexes>
+    <id name="idComision" type="integer" column="id_comision">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="descripcion" type="string" column="descripcion" length="256" nullable="true"/>
+    <field name="idDistrito" type="integer" column="id_distrito" nullable="false"/>
+    <field name="idCv" type="integer" column="id_cv" nullable="false"/>
+    <many-to-one field="idTipoComision" target-entity="AdTiposComision">
+      <join-columns>
+        <join-column name="id_tipo_comision" referenced-column-name="id_tipo_comision"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idPersona" target-entity="DatosPersonas">
+      <join-columns>
+        <join-column name="id_persona" referenced-column-name="id_persona"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idEstructura" target-entity="DatosEstructuras">
+      <join-columns>
+        <join-column name="id_estructura" referenced-column-name="id_estructura"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idCampana" target-entity="DatosCampanasPoliticas">
+      <join-columns>
+        <join-column name="id_campana" referenced-column-name="id_campana"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,88 @@
+<?php
+
+namespace Victoria\AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * DatosCentrosVotacion
+ *
+ * @ORM\Table(name="datos_centros_votacion", indexes={@ORM\Index(name="IDX_AEC4A7FDB8445919", columns={"id_campana"}), @ORM\Index(name="IDX_AEC4A7FDEEFCF568", columns={"id_distrito"})})
+ * @ORM\Entity
+ */
+class DatosCentrosVotacion
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_cv", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="datos_centros_votacion_id_cv_seq", allocationSize=1, initialValue=1)
+     */
+    private $idCv;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=256, nullable=false)
+     */
+    private $nombre;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tipo_cv", type="integer", nullable=false)
+     */
+    private $tipoCv;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="direccion", type="string", length=512, nullable=false)
+     */
+    private $direccion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre_edificio", type="string", length=256, nullable=true)
+     */
+    private $nombreEdificio;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="cargar_electoral", type="integer", nullable=true)
+     */
+    private $cargarElectoral;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="numero_mesas", type="integer", nullable=true)
+     */
+    private $numeroMesas;
+
+    /**
+     * @var \DatosCampanasPoliticas
+     *
+     * @ORM\ManyToOne(targetEntity="DatosCampanasPoliticas")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_campana", referencedColumnName="id_campana")
+     * })
+     */
+    private $idCampana;
+
+    /**
+     * @var \DatosDistritos
+     *
+     * @ORM\ManyToOne(targetEntity="DatosDistritos")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_distrito", referencedColumnName="id_distrito")
+     * })
+     */
+    private $idDistrito;
+
+
+}

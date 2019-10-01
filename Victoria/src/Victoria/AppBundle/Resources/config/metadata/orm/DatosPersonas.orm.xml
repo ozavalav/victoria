@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosPersonas" table="datos_personas">
+    <id name="idPersona" type="integer" column="id_persona">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="nombres" type="string" column="nombres" length="256" nullable="false"/>
+    <field name="apellidos" type="string" column="apellidos" length="256" nullable="false"/>
+    <field name="numeroIdentidad" type="string" column="numero_identidad" length="13" nullable="false"/>
+    <field name="telefono1" type="string" column="telefono_1" length="14" nullable="false"/>
+    <field name="telefono2" type="string" column="telefono_2" length="14" nullable="true"/>
+    <field name="telefono3" type="string" column="telefono_3" length="14" nullable="true"/>
+    <field name="email" type="string" column="email" length="256" nullable="false"/>
+    <field name="idEstructura" type="integer" column="id_estructura" nullable="false"/>
+    <field name="idCampana" type="integer" column="id_campana" nullable="false"/>
+    <field name="estado" type="integer" column="estado" nullable="false"/>
+  </entity>
+</doctrine-mapping>

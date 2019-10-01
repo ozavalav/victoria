@@ -1,0 +1,126 @@
+{% extends '::basemenu.html.twig' %}
+
+{% block header -%}
+    <div class="page-header">
+        Indicadores
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            Principales Indicadores
+        </small>
+    </div><!-- /.page-header -->
+{% endblock %}   
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %} 
+{% block notificaciones %} 
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-bell-o"></i>
+        <span class="label label-warning">{{ datosnoti|length }}</span>
+    </a>
+    <ul class="dropdown-menu">
+        <li class="header">Tiene {{ datosnoti|length }} notificaciones </li>
+        <li>
+          <!-- inner menu: contains the actual data -->
+          <ul class="menu">
+            {% for noti in datosnoti if noti.orden < 7 %}  
+            <li>
+              <a href="{{ path('datosnotificaciones') }}">
+                <i class="fa fa-users text-aqua"></i> {{ noti.mensaje }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="footer"><a href="{{ path('datosnotificaciones')}}">Ver todos</a></li>
+    </ul>
+{% endblock %}
+{#% block content %}
+   <!--table class="table-responsive">
+       <tr>
+           <td>Número de encuestas procesadas:</td>
+           <td style="text-align: right">{#{ dtgen.totalenc }}</td>
+       <tr>
+       <tr>
+           <td>Número de encuestas pendientes:</td>
+           <td style="text-align: right">{{ dtgen.encpen }}</td>
+       <tr>
+       <tr>
+           <td>Número de encuestas ingresadas por su usuario:</td>
+           <td style="text-align: right">{{ dtgen.encxusr }}</td>
+       <tr>    
+       <tr>
+           <td>Fecha última actualización:</td>
+           <td style="text-align: right">{{ dtgen.ultfecha|date("m/d/Y H:i:s") }}</td>
+       <tr>
+           
+   </table -->    
+{% endblock % #}
+
+{% block javascripts %}
+    
+    {{ parent() }}
+    <!-- jQuery Knob -->
+    <script src="{{ asset('bundles/bower_components/jquery-knob/js/jquery.knob.js') }}"></script>
+<script>
+  $(function () {
+    /* jQueryKnob */
+
+    $(".knob").knob({
+      /*change : function (value) {
+       //console.log("change : " + value);
+       },
+       release : function (value) {
+       console.log("release : " + value);
+       },
+       cancel : function () {
+       console.log("cancel : " + this.value);
+       },*/
+      draw: function () {
+
+        // "tron" case
+        if (this.$.data('skin') == 'tron') {
+
+          var a = this.angle(this.cv)  // Angle
+              , sa = this.startAngle          // Previous start angle
+              , sat = this.startAngle         // Start angle
+              , ea                            // Previous end angle
+              , eat = sat + a                 // End angle
+              , r = true;
+
+          this.g.lineWidth = this.lineWidth;
+
+          this.o.cursor
+          && (sat = eat - 0.3)
+          && (eat = eat + 0.3);
+
+          if (this.o.displayPrevious) {
+            ea = this.startAngle + this.angle(this.value);
+            this.o.cursor
+            && (sa = ea - 0.3)
+            && (ea = ea + 0.3);
+            this.g.beginPath();
+            this.g.strokeStyle = this.previousColor;
+            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false);
+            this.g.stroke();
+          }
+
+          this.g.beginPath();
+          this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
+          this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false);
+          this.g.stroke();
+
+          this.g.lineWidth = 2;
+          this.g.beginPath();
+          this.g.strokeStyle = this.o.fgColor;
+          this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
+          this.g.stroke();
+
+          return false;
+        }
+      }
+    });
+    /* END JQUERY KNOB */
+  });
+  
+</script>
+{% endblock %}    

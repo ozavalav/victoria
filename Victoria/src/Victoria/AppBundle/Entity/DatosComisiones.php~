@@ -1,0 +1,87 @@
+<?php
+
+namespace Victoria\AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * DatosComisiones
+ *
+ * @ORM\Table(name="datos_comisiones", indexes={@ORM\Index(name="idx_datos_comisiones", columns={"id_estructura", "id_tipo_comision", "id_campana", "id_persona"}), @ORM\Index(name="IDX_9D08C49FB8445919", columns={"id_campana"}), @ORM\Index(name="IDX_9D08C49FFFABC0C8", columns={"id_estructura"}), @ORM\Index(name="IDX_9D08C49F8F781FEB", columns={"id_persona"}), @ORM\Index(name="IDX_9D08C49F78FE02C3", columns={"id_tipo_comision"})})
+ * @ORM\Entity
+ */
+class DatosComisiones
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_comision", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="datos_comisiones_id_comision_seq", allocationSize=1, initialValue=1)
+     */
+    private $idComision;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=256, nullable=true)
+     */
+    private $descripcion;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_distrito", type="integer", nullable=false)
+     */
+    private $idDistrito = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_cv", type="integer", nullable=false)
+     */
+    private $idCv = '0';
+
+    /**
+     * @var \DatosCampanasPoliticas
+     *
+     * @ORM\ManyToOne(targetEntity="DatosCampanasPoliticas")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_campana", referencedColumnName="id_campana")
+     * })
+     */
+    private $idCampana;
+
+    /**
+     * @var \DatosEstructuras
+     *
+     * @ORM\ManyToOne(targetEntity="DatosEstructuras")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_estructura", referencedColumnName="id_estructura")
+     * })
+     */
+    private $idEstructura;
+
+    /**
+     * @var \DatosPersonas
+     *
+     * @ORM\ManyToOne(targetEntity="DatosPersonas")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_persona", referencedColumnName="id_persona")
+     * })
+     */
+    private $idPersona;
+
+    /**
+     * @var \AdTiposComision
+     *
+     * @ORM\ManyToOne(targetEntity="AdTiposComision")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_tipo_comision", referencedColumnName="id_tipo_comision")
+     * })
+     */
+    private $idTipoComision;
+
+
+}
