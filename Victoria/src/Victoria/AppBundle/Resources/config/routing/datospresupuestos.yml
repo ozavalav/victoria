@@ -1,0 +1,30 @@
+datospresupuestos:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:DatosPresupuestos:index" }
+
+datospresupuestos_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:DatosPresupuestos:show" }
+
+datospresupuestos_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:DatosPresupuestos:new" }
+
+datospresupuestos_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:DatosPresupuestos:create" }
+    requirements: { _method: post }
+
+datospresupuestos_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:DatosPresupuestos:edit" }
+
+datospresupuestos_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:DatosPresupuestos:update" }
+    requirements: { _method: post|put }
+
+datospresupuestos_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:DatosPresupuestos:delete" }
+    requirements: { _method: post|delete }

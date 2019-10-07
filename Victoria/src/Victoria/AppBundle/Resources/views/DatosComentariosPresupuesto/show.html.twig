@@ -1,0 +1,98 @@
+{% extends '::basemenu.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/focal.css')}}" />
+{% endblock %}
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Comentarios al presupuesto
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-bullhorn"></i> Comentarios</a></li>
+        <li class="active">Ver comentarios hechos al presupuesto</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    <div class="table-responsive">
+    <table style="background-color: white;" class="table table-striped table-bordered">
+        <tbody>
+            <tr>
+                <th>Id presupuesto:</th>
+                <td>{{ entity.idPresupuesto }}</td>
+                <th>Campaña:</th>
+                <td>{{ entity.idCampana }}</td>
+                <th>Distrito:</th>
+                <td>{{ entity.idDistrito }}</td>
+            </tr>
+            <tr>
+                <th>Tipo:</th>
+                <td>{{ entity.tipoEgreso }}</td>
+                <th>Actividad:</th>
+                <td>{{ entity.idActividadEgreso }}</td>
+                <th>Fuente:</th>
+                <td>{{ entity.fuenteEgreso }}</td>
+            </tr>
+            <tr>
+                <th>Descripción:</th>
+                <td>{{ entity.descripcion }}</td>
+                <th>Total:</th>
+                <td>{{ entity.totalPresupuestoEstimado|number_format(2,'.',',') }}</td>
+                <th>Estado:</th>
+                <td>{{ entity.estado }}</td>
+            </tr>
+            <tr><th style="text-align: center" colspan="6">C O M E N T A R I O S</th></tr>
+            <tr>
+                <th colspan="6">
+                {% for com in comentarios %}    
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="box box-solid">
+                      <div class="box-header with-border">
+                        <i class="fa fa-bullhorn"></i>
+                        <h3 class="box-title">Comentario id: {{ com.idComentario }}</h3>
+                      </div>
+                      <!-- /.box-header -->
+                      <div class="box-body">
+                        <blockquote style="font-size: medium;">
+                            {{ com.mensaje|raw }}
+                        </blockquote>
+                      </div>
+                        <div class="box-footer with-border">
+                            <div style="float: right;" >
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a class="green" href="{{ path('datoscomentariospresupuesto_edit', { 'id': com.idComentario  }) }}" title="Editar">
+                                    <i class="oz-icon-e fa fa-pencil bigger-130"></i>
+                                </a>
+                                <a class="green" href="{{ path('datoscomentariospresupuesto_delete', { 'id': com.idComentario  }) }}" title="Eliminar">
+                                    <i class="oz-icon-b fa fa-trash bigger-130"></i>
+                                </a>        
+                            {% endif %} 
+                            </div>
+                        </div>  
+                      <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                  </div>
+                  <!-- ./col -->
+                </div>
+                <!-- /.row -->
+                {% endfor %}
+                </th>
+            </tt>
+        </tbody>
+    </table>
+    </div>        
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li style="float: right; margin: 5px 5px 5px 10px;">
+        <a style="display: block;" class="btn btn-md btn-success" href="{{ path('datoscomentariospresupuesto') }}">
+            <i class="ace-icon fa fa-fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>  
+{% endblock %}

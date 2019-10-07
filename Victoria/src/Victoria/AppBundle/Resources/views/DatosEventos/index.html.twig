@@ -1,0 +1,128 @@
+{% extends '::basemenu.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/jquery.dataTables_themeroller.css')}}" />
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/focal.css')}}" />
+        <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/fullcalendar.css')}}" />
+
+    
+{% endblock %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Calendario de eventos
+      </h1>
+
+    </section>
+{% endblock %}
+
+{% block content -%}
+
+
+                     <div id="calendar">
+             
+             
+         </div>
+
+
+    {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.bootstrap.min.js')}}"></script> 
+    
+    <script type="text/javascript">
+        $(function () {
+        
+        $('#dynamic-table').DataTable({
+          'paging'      : true,
+          'lengthChange': true,
+          'searching'   : true,
+          'ordering'    : true,
+          'info'        : true,
+          'autoWidth'   : true,
+          language:{
+                    search: "Buscar",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    emptyTable: "No hay datos...",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    infoFiltered: "(Filtrando de un total de _MAX_ registros)",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Ultimo"
+                    }
+                }
+        });
+  });
+    </script>   
+        <script src="{{ asset('bundles/victoriaapp/js/moment.min.js')}}"></script>
+    <script src="{{ asset('bundles/victoriaapp/js/fullcalendar.js')}}"></script>
+    <script src="{{ asset('bundles/victoriaapp/js/es.js')}}"></script>
+
+            <script type="text/javascript">
+     
+$(document).ready(function() {
+
+  // page is now ready, initialize the calendar...
+
+  $('#calendar').fullCalendar({
+    events:[ 
+    {
+        id: "1",
+        title: "Primer evento",
+        start: "2019-10-05",
+        end: "2019-10-07 24:00:00",
+        color: "red"
+        //url: "google.com"
+    },
+        {
+        id: "2",
+        title: "Segundo evento",
+        start: "2019-10-07"
+        //url: "google.com"
+    },
+    {
+
+        title: "Calle feliz",
+        start: "2019-10-09",
+        color: "yellow"
+        //url: "google.com"
+    },
+        {
+
+        title: "Marcha",
+        start: "2019-10-11"
+        //url: "google.com"
+    },
+        {
+
+        title: "Charla",
+        start: "2019-10-15",
+        color: "pink"
+        //url: "google.com"
+    },
+        {
+
+        title: "Convivio",
+        start: "2019-10-30",
+        color: "purple"
+        //url: "google.com"
+    }
+    
+           ]
+  })
+
+});
+</script>
+
+{% endblock %}  

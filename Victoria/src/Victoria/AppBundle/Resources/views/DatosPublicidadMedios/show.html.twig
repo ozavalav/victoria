@@ -1,0 +1,68 @@
+{% extends '::basemenu.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Información campaña publicitaria Varias
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-user"></i> Personas</a></li>
+        <li class="active">Ver información de Campañas publicitarias varias</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    <table class="table table-striped table-bordered table-responsive">
+        <tbody>
+            <tr>
+                <th>Campaña</th>
+                <td>{{ entity.idCampana }}</td>
+            </tr>
+            <tr>
+                <th>Tipo publicidad</th>
+                <td>{{ entity.idPublicidad }}</td>
+            </tr>
+            <tr>
+                <th>Nombre medio publicitario</th>
+                <td>{{ entity.nombreMedioPublicitario }}</td>
+            </tr>
+            <tr>
+                <th>Audiencia</th>
+                <td>{{ entity.audiencia }}</td>
+            </tr>
+            <tr>
+                <th>Frecuencia</th>
+                <td>{{ entity.frecuencia }}</td>
+            </tr>
+            <tr>
+                <th>Tipo anuncio</th>
+                <td>{{ entity.tipoAnuncio }}</td>
+            </tr>
+            <tr>
+                <th>Costo</th>
+                <td>{{ entity.costo }}</td>
+            </tr>
+            <tr>
+                <th>Comprobante pago</th>
+                <td>{{ entity.comprobantePago }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li style="float: left; padding: 5px;">
+        <a style="display: block; " class="btn btn-md btn-success" href="{{ path('datospublicidadmedios_edit', { 'id': entity.idPublicidadMedios }) }}">
+            <i class="ace-icon fa fa-edit align-top bigger-120"></i> Editar 
+        </a>
+    </li>    
+    <li style="float: left; padding: 5px;">
+        <a style="display: block;" class="btn btn-md btn-success" href="{{ path('datospublicidadmedios') }}">
+            <i class="ace-icon fa fa-fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>
+        
+{% endblock %}

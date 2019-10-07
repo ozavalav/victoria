@@ -1,0 +1,188 @@
+{% extends '::basemenu.html.twig' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/jquery.dataTables_themeroller.css')}}" />
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/focal.css')}}" />
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="{{asset('bundles/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
+    
+{% endblock %}
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Comentarios al presupuesto
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-bullhorn"></i> Comentarios</a></li>
+        <li class="active">Agregar, modificar y eliminar comentarios</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    {% if is_granted('ROLE_ADMIN') %}
+    <ul style="list-style: none; margin-left: 0; text-align: right ">        
+    <li style="float: right; margin: 0px 0px 5px 10px;">
+        <a id="btnComentar" style="display: block;" class="btn btn-md btn-success" href="#">
+            <i class="ace-icon fa fa-bullhorn align-top bigger-120"></i> Comentar 
+        </a>
+    </li>
+    </ul>
+    {% endif %}
+    <table id="dynamic-table" class="display compact">
+        <thead>
+            <tr style="background-color: #E8BF6A">
+                <th class="center"></th>
+                <th>Id</th>
+                <th>Tipo</th>
+                <th>Fuente</th>
+                <th>Descripción</th>
+                <th>Preparado</th>
+                <th>Aprobado</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="radio" value="{{ entity.idpresupuesto }}" name="sel-enc" class="ace" />
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td><a href="{{ path('datospresupuestos_show', { 'id': entity.idpresupuesto }) }}">{{ entity.idpresupuesto }}</a></td>
+                <td>{{ entity.tipoegreso }}</td>
+                <td>{{ entity.fuenteegreso }}</td>
+                <td>{{ entity.descripcion }}</td>
+                <td>{{ entity.preparadopor }}</td>
+                <td>{{ entity.aprobadopor }}</td>
+                <td>{{ entity.total|number_format(2,'.',',') }}</td>
+                <td>{{ entity.estado }}</td>
+                <td>
+                    <div class="action-buttons">
+                        <a class="blue" href="{{ path('datoscomentariospresupuesto_show', { 'id': entity.idpresupuesto }) }}" title="Ver comentario">
+                                <i class="oz-icon-v fa fa-search-plus bigger-130"></i>
+                        </a>    
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<!-- Modal de ingreso de datos -->    
+    <div class="modal fade" id="modal-default">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Agregar nuevo comentario</h4>
+              </div>
+              
+              <div class="modal-body">
+                {{ form_start(form) }}    
+                {{ form_row(form.mensaje) }}
+                <input name="idpresupuesto" id="idpresupuesto" type="hidden" value="">
+                {{ form_end(form) }} 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                <!--button type="button" class="btn btn-primary">Save changes</button -->
+              </div>
+               
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->          
+    {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.bootstrap.min.js')}}"></script>
+    <script src="{{ asset('bundles/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}"></script>
+    
+    <script type="text/javascript">
+        
+        $(function () {
+        /* Carga el editor de texto para el campo de comentarios */    
+        $('#victoria_appbundle_datoscomentariospresupuesto_mensaje').wysihtml5();
+        
+        /* Carga el tabla dinamica */
+        $('#dynamic-table').DataTable({
+          'paging'      : true,
+          'lengthChange': true,
+          'searching'   : true,
+          'ordering'    : true,
+          'info'        : true,
+          'autoWidth'   : true,
+          language:{
+                    search: "Buscar",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    emptyTable: "No hay datos...",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    infoFiltered: "(Filtrando de un total de _MAX_ registros)",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Ultimo"
+                    }
+                }
+        });
+  });
+  $(document).on("click","#dynamic-table tr td",function(){
+    if($(this).parent().find("input:radio").is(':checked')){
+        $(this).parent().css("background-color","");
+        $(this).parent().find("input:radio").prop("checked", false);  
+    } else {
+        $(".ace").each(function(){
+            if($(this).is(':checked')) {
+                $(this).parent().parent().parent().css("background-color","");
+            }
+        });
+        $(this).parent().css("background-color","#CFE7F9");
+        $(this).parent().find("input:radio").prop("checked", true);         
+    }
+   });
+   
+   $('#btnComentar').click(function(e){
+        fila = $("#dynamic-table input[name='sel-enc']:radio");
+        if(fila.is(':checked')) {
+            valor = $("#dynamic-table input:radio[name='sel-enc']:checked").val();
+            $('#idpresupuesto').val(valor);
+            $('#modal-default').modal('show');
+        } else {
+            alert("Seleccione un presupuesto para continuar.");
+            $('#modal-default').modal('hide');
+        }
+    });
+    
+   $('#btnVer').click(function(e){
+        fila = $("#dynamic-table input[name='sel-enc']:radio");
+        if(fila.is(':checked')) {
+            valor = $("#dynamic-table input:radio[name='sel-enc']:checked").val();
+            e.preventDefault();
+            switch ($(this).attr('id')) {
+                case 'btnListado':
+                    url = '{{ path('datoslistapresupuesto_solo') }}'+valor+'/list';
+                    break;
+        }
+            window.location.href=url;               
+        } else {
+            e.preventDefault();
+            alert("Seleccione un presupuesto para continuar.");
+        }
+    });
+    </script>     
+{% endblock %}    

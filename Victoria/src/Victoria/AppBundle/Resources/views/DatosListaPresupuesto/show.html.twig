@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>DatosListaPresupuesto</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Idlista</th>
+                <td>{{ entity.idLista }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Cantidad</th>
+                <td>{{ entity.cantidad }}</td>
+            </tr>
+            <tr>
+                <th>Costounitarioestimado</th>
+                <td>{{ entity.costoUnitarioEstimado }}</td>
+            </tr>
+            <tr>
+                <th>Costounitarioreal</th>
+                <td>{{ entity.costoUnitarioReal }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('datoslistapresupuesto') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('datoslistapresupuesto_edit', { 'id': entity.idLista }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

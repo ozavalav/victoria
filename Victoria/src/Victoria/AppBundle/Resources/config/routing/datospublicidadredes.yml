@@ -1,0 +1,30 @@
+datospublicidadredes:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:DatosPublicidadRedes:index" }
+
+datospublicidadredes_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:DatosPublicidadRedes:show" }
+
+datospublicidadredes_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:DatosPublicidadRedes:new" }
+
+datospublicidadredes_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:DatosPublicidadRedes:create" }
+    requirements: { _method: post }
+
+datospublicidadredes_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:DatosPublicidadRedes:edit" }
+
+datospublicidadredes_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:DatosPublicidadRedes:update" }
+    requirements: { _method: post|put }
+
+datospublicidadredes_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:DatosPublicidadRedes:delete" }
+    requirements: { _method: post|delete }

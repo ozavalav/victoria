@@ -1,0 +1,64 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>DatosEventos</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Ideventos</th>
+                <td>{{ entity.idEventos }}</td>
+            </tr>
+            <tr>
+                <th>Titulo</th>
+                <td>{{ entity.titulo }}</td>
+            </tr>
+            <tr>
+                <th>Fechainiciopreparacion</th>
+                <td>{{ entity.fechaInicioPreparacion|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Fechainicio</th>
+                <td>{{ entity.fechaInicio|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Fechafinal</th>
+                <td>{{ entity.fechaFinal|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Horainicio</th>
+                <td>{{ entity.horaInicio }}</td>
+            </tr>
+            <tr>
+                <th>Usuariocreacion</th>
+                <td>{{ entity.usuarioCreacion }}</td>
+            </tr>
+            <tr>
+                <th>Fechacreacion</th>
+                <td>{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Usuarioultimamodificacion</th>
+                <td>{{ entity.usuarioUltimaModificacion }}</td>
+            </tr>
+            <tr>
+                <th>Fechaultimamodificacion</th>
+                <td>{{ entity.fechaUltimaModificacion|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('datoseventos') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('datoseventos_edit', { 'id': entity.idEventos }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

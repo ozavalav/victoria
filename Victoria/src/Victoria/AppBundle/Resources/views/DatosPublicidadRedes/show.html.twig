@@ -1,0 +1,100 @@
+{% extends '::basemenu.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Información campaña política
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-flag"></i> Campañas</a></li>
+        <li class="active">Ver información de campaña política</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    <table class="table table-striped table-bordered table-responsive">
+        <tbody>
+            <tr>
+                <th>Campaña</th>
+                <td>{{ entity.idcampana }}</td>
+            </tr>
+            <tr>
+                <th>Nombre medio publicitario</th>
+                <td>{{ entity.nombreMedioPublicitario }}</td>
+            </tr>
+            <tr>
+                <th>Tipo anuncio</th>
+                <td>{{ entity.tipoAnuncio }}</td>
+            </tr>
+                <th>Target</th>
+                <td>{{ entity.target }}</td>
+            </tr>
+            <tr>
+                <th>Pauta publicitaria</th>
+                <td>{{ entity.pautaPublicitaria }}</td>
+            </tr>
+            <tr>
+                <th>Personas alcanzadas</th>
+                <td>{{ entity.personasAlcanzadas }}</td>
+            </tr>
+            <tr>
+                <th>Me gusta</th>
+                <td>{{ entity.meGusta }}</td>
+            </tr>
+            <tr>
+                <th>Me encanta</th>
+                <td>{{ entity.meEncanta }}</td>
+            </tr>
+            <tr>
+                <th>Me divierte</th>
+                <td>{{ entity.meDivierte }}</td>
+            </tr>
+            <tr>
+                <th>Me enoja</th>
+                <td>{{ entity.meEnoja }}</td>
+            </tr>
+            <tr>
+                <th>Me entristece</th>
+                <td>{{ entity.meEntristece }}</td>
+            </tr>
+            <tr>
+                <th>Comentarios positivos</th>
+                <td>{{ entity.comentariosPositivos }}</td>
+            </tr>
+            <tr>
+                <th>Comentarios negativos</th>
+                <td>{{ entity.comentariosNegativos }}</td>
+            </tr>
+            <tr>
+                <th>Compartidos</th>
+                <td>{{ entity.compartidos }}</td>
+            </tr>
+            <tr>
+                <th>Resumen interaccion</th>
+                <td>{{ entity.resumenInteraccion }}</td>
+            </tr>
+            <tr>
+                <th>Comprobante pago</th>
+                <td>{{ entity.comprobantePago }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li style="float: left; padding: 5px;">
+        <a style="display: block; " class="btn btn-md btn-success"  href="{{ path('datospublicidadredes') }}">
+            <i class="ace-icon fa fa-edit align-top bigger-120"></i> Editar 
+        </a>
+    </li>    
+    <li style="float: left; padding: 5px;">
+        <a style="display: block;" class="btn btn-md btn-success" href="{{ path('datospublicidadredes_edit', { 'id': entity.idPublicidadRedes }) }}">
+            <i class="ace-icon fa fa-fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>
+        
+{% endblock %}

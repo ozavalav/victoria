@@ -1,3 +1,27 @@
+victoria_app_datospublicidadmedios:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datospublicidadmedios.yml"
+    prefix:   /datospublicidadmedios
+
+svictoria_app_datospublicidadredes:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datospublicidadredes.yml"
+    prefix:   /datospublicidadredes
+
+victoria_app_datoseventos:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datoseventos.yml"
+    prefix:   /datoseventos
+
+victoria_app_datoscomentariospresupuesto:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datoscomentariospresupuesto.yml"
+    prefix:   /datoscomentariospresupuesto
+
+victoria_app_datoslistapresupuesto:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datoslistapresupuesto.yml"
+    prefix:   /datoslistapresupuesto
+
+victoria_app_datospresupuestos:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datospresupuestos.yml"
+    prefix:   /datospresupuestos
+
 victoria_app_datosnotificaciones:
     resource: "@VictoriaAppBundle/Resources/config/routing/datosnotificaciones.yml"
     prefix:   /datosnotificaciones
@@ -13,7 +37,7 @@ victoria_app_datoscampanaspoliticas:
 victoria_app_datoscomisiones:
     resource: "@VictoriaAppBundle/Resources/config/routing/datoscomisiones.yml"
     prefix:   /datoscomisiones
-    
+
 victoria_app_datoscentrosvotacion:
     resource: "@VictoriaAppBundle/Resources/config/routing/datoscentrosvotacion.yml"
     prefix:   /datoscentrosvotacion

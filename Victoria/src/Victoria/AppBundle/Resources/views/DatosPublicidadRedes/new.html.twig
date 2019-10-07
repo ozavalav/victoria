@@ -1,0 +1,55 @@
+{% extends '::basemenu.html.twig' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Agregar publicidad redes
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-flag"></i> Publicidad redes</a></li>
+        <li class="active">Agregar nueva campaña politica</li>
+      </ol>
+    </section>
+{% endblock %}
+
+{% block content -%}
+
+    {{ form_start(form) }}
+        {{ form_row(form.idPublicidad) }}
+        {{ form_row(form.idCampana) }}
+        {{ form_row(form.nombreMedioPublicitario) }}
+        {{ form_row(form.tipoAnuncio) }}
+        {{ form_row(form.target) }}
+        {{ form_row(form.compartidos) }}
+        {{ form_row(form.pautaPublicitaria) }}
+        {{ form_row(form.comprobantePago) }}
+        {{ form_row(form.personasAlcanzadas) }}
+        {{ form_row(form.meGusta) }}
+        {{ form_row(form.meEncanta) }}
+        {{ form_row(form.meDivierte) }}
+        {{ form_row(form.meEnoja) }}
+        {{ form_row(form.meEntristece) }}
+        {{ form_row(form.comentariosPositivos) }}
+        {{ form_row(form.comentariosNegativos) }}
+        {{ form_row(form.resumenInteraccion) }}
+        {{ form_row(form.submit) }}
+        {{ form_widget(form._token) }}
+    {{ form_end(form, {'render_rest': false})}}
+
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+        <a class="btn btn-md btn-success" href="{{ path('datospublicidadredes') }}">
+            <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>
+        
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}    
+{% endblock %} 

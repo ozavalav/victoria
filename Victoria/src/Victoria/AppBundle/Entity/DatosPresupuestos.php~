@@ -1,0 +1,109 @@
+<?php
+
+namespace Victoria\AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * DatosPresupuestos
+ *
+ * @ORM\Table(name="datos_presupuestos", indexes={@ORM\Index(name="IDX_A534A80EB8445919", columns={"id_campana"}), @ORM\Index(name="IDX_A534A80EEEFCF568", columns={"id_distrito"})})
+ * @ORM\Entity
+ */
+class DatosPresupuestos
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_presupuesto", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="datos_presupuestos_id_presupuesto_seq", allocationSize=1, initialValue=1)
+     */
+    private $idPresupuesto;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tipo_egreso", type="integer", nullable=true)
+     */
+    private $tipoEgreso;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_actividad_egreso", type="integer", nullable=true)
+     */
+    private $idActividadEgreso;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fuente_egreso", type="integer", nullable=true)
+     */
+    private $fuenteEgreso;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=256, nullable=true)
+     */
+    private $descripcion;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="preparado_por", type="integer", nullable=false)
+     */
+    private $preparadoPor;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="aprobado_por", type="integer", nullable=true)
+     */
+    private $aprobadoPor;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="estado", type="integer", nullable=true)
+     */
+    private $estado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="total_presupuesto_estimado", type="decimal", precision=10, scale=0, nullable=true)
+     */
+    private $totalPresupuestoEstimado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="total_presupuesto_ejecutado", type="decimal", precision=10, scale=0, nullable=true)
+     */
+    private $totalPresupuestoEjecutado;
+
+    /**
+     * @var \DatosCampanasPoliticas
+     *
+     * @ORM\ManyToOne(targetEntity="DatosCampanasPoliticas")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_campana", referencedColumnName="id_campana")
+     * })
+     */
+    private $idCampana;
+
+    /**
+     * @var \DatosDistritos
+     *
+     * @ORM\ManyToOne(targetEntity="DatosDistritos")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_distrito", referencedColumnName="id_distrito")
+     * })
+     */
+    private $idDistrito;
+
+
+}

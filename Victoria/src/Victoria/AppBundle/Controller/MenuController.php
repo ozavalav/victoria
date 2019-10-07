@@ -33,6 +33,7 @@ class MenuController extends Controller
         $idCampana = $entityUser[0]->getIdCampana();
         $idDistrito = $entityUser[0]->getIdDistrito();
         $idUsuario = $entityUser[0]->getId();
+        $nombreUsuario = $entityUser[0]->getNombreUsuario();
         
         $acceso = $entityUser[0]->getAcceso();
         
@@ -73,6 +74,8 @@ class MenuController extends Controller
         $session->set('_nombre_campana', $nombreCampana);
         $session->set('_nombre_distrito', $nombreDistrito);
         $session->set('_cuenta_usuario', $usuario);
+        $session->set('_nombre_usuario', $nombreUsuario);
+        $session->set('_id_usuario', $idUsuario);
         $session->set('_acceso', $acceso);
         
         /* Captura la variable periodo que fue selecionado en el Login esta variable se

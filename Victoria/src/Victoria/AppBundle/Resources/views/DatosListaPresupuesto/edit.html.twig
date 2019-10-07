@@ -1,0 +1,33 @@
+{% extends '::basemenu.html.twig' %}
+{% form_theme edit_form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme delete_form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Editar presupuesto
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-money"></i> Presupuesto</a></li>
+        <li class="active">Editar un presupuesto</li>
+      </ol>
+    </section>
+{% endblock %}
+
+{% block content -%}
+
+    {{ form(edit_form) }}
+
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li style="float: right">{{ form(delete_form) }}</li>    
+    <li style="float: right">
+        <a class="btn btn-md btn-success" href="{{ path('datoslistapresupuesto_list', {'id' : idpre}) }}">
+            <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>    
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends '::basemenu.html.twig' %}
+{% form_theme edit_form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block header -%}
+    Editar campaña publicitaria
+    <small>
+        <i class="ace-icon fa fa-angle-double-right"></i>
+        Editar la información de campaña publicitaria
+    </small>
+{% endblock %} 
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %} 
+{% block content -%}
+{% for type, flash_messages in app.session.flashBag.all %}
+    {% for flash_message in flash_messages %}
+        <div class="alert {{ type }}">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+
+     {{ form_start(edit_form) }}
+        {{ form_row(edit_form.idPublicidad) }}
+        {{ form_row(edit_form.idCampana) }}
+        {{ form_row(edit_form.nombreMedioPublicitario) }}
+        {{ form_row(edit_form.tipoAnuncio) }}
+        {{ form_row(edit_form.audiencia) }}
+        {{ form_row(edit_form.frecuencia) }}
+        {{ form_row(edit_form.tipoAnuncio) }}
+        {{ form_row(edit_form.costo) }}
+        {{ form_row(edit_form.comprobantePago) }}
+        {{ form_row(edit_form.submit) }}
+        {{ form_widget(edit_form._token) }}
+     {{ form_end(edit_form, {'render_rest': false})}}
+
+
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+        <a class="btn btn-md btn-success" href="{{ path('datospublicidadmedios') }}">
+         <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>
+{% endblock %}

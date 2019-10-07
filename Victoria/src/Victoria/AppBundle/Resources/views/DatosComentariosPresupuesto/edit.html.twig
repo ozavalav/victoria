@@ -1,0 +1,46 @@
+{% extends '::basemenu.html.twig' %}
+{% form_theme edit_form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}    
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="{{asset('bundles/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">    
+{% endblock %}
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Editar comentarios
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-bullhorn"></i> Comentarios</a></li>
+        <li class="active">Editar un comenario</li>
+      </ol>
+    </section>
+{% endblock %}
+
+{% block content -%}
+
+    {{ form(edit_form) }}
+
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+        <a class="btn btn-md btn-success" href="{{ path('datoscomentariospresupuesto') }}">
+            <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>    
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}"></script>
+    
+    <script type="text/javascript">
+        $(function () {
+            /* Carga el editor de texto para el campo de comentarios */    
+            $('#victoria_appbundle_datoscomentariospresupuesto_mensaje').wysihtml5();
+        });
+    </script>     
+{% endblock %}  

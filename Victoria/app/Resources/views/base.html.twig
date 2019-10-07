@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Bienvenido a Victoria{% endblock %}</title>
         {% block stylesheets %}
         <!-- Bootstrap 3.3.7 -->
         <link rel="stylesheet" href="{{ asset('bundles/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
@@ -49,11 +49,15 @@
                 /* Set a background color that will be displayed
                    while the background image is loading */
                 background-color: #464646;
+                
+                overflow: hidden;
             }
         </style>
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        
+        {% endblock %}
         {% block javascripts %}
             <!-- jQuery 3 -->
             <script src="{{ asset('bundles/bower_components/jquery/dist/jquery.min.js') }}"></script>
