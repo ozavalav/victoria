@@ -10,6 +10,60 @@
 {% block menu %}
     {{ menu|raw }}
 {% endblock %}
+{% block notificaciones %} 
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-bell-o"></i>
+        <span class="label label-warning">{{ datosnoti|length }}</span>
+    </a>
+    <ul class="dropdown-menu">
+        <li class="header">Tiene {{ datosnoti|length }} notificaciones </li>
+        <li>
+          <!-- inner menu: contains the actual data -->
+          <ul class="menu">
+            {% for noti in datosnoti if noti.orden < 7 %}  
+            <li>
+              <a href="{{ path('datosnotificaciones') }}">
+                <i class="fa fa-users text-aqua"></i> {{ noti.mensaje }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="footer"><a href="{{ path('datosnotificaciones')}}">Ver todos</a></li>
+    </ul>
+{% endblock %}
+{% block tareas %}
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-flag-o"></i>
+              <span class="label label-danger">0</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">Tienes 0 tareas</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li><!-- Task item -->
+                    <a href="#">
+                      <h3>
+                        Avance del proyecto
+                        <small class="pull-right">70%</small>
+                      </h3>
+                      <div class="progress xs">
+                        <div class="progress-bar progress-bar-aqua" style="width: 70%" role="progressbar"
+                             aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+                          <span class="sr-only">70% Complete</span>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <!-- end task item -->
+                </ul>
+              </li>
+              <li class="footer">
+                <a href="#">Ver todas las tares</a>
+              </li>
+            </ul>
+{% endblock %}   
 {% block header %}
 <!-- Content Header (Page header) -->
     <section style="padding-bottom: 20px;"class="content-header">
@@ -24,12 +78,14 @@
 {% endblock %}
 {% block content -%}
     <ul style="list-style: none; margin-left: 0; text-align: right ">
+    {% if is_granted('ROLE_ADMIN') %}    
     <li style="float: right; margin: 0px 0px 5px 10px;">
         <a style="display: block;" class="btn btn-md btn-success" href="{{ path('datoscampanaspoliticas_new') }}">
             <i class="ace-icon fa fa-plus-square align-top bigger-120"></i> Nuevo 
         </a>
     </li>
-    <li style="float: right">
+    {% endif %}
+    <li style="float: right; margin: 0px 0px 5px 10px;">
         <a id="btnDistritos" style="display: block;" class="btn btn-md btn-success" href="#">
             <i class="ace-icon fa fa-arrow-right align-top bigger-120"></i> Distritos 
         </a>
@@ -62,10 +118,11 @@
                         <a class="blue" href="{{ path('datoscampanaspoliticas_show', { 'id': entity.idCampana }) }}" title="Ver">
                                 <i class="oz-icon-v fa fa-search-plus bigger-130"></i>
                         </a>
-
+                        {% if is_granted('ROLE_ADMIN') %}
                         <a class="green" href="{{ path('datoscampanaspoliticas_edit', { 'id': entity.idCampana }) }}" title="Editar">
                                 <i class="oz-icon-e fa fa-pencil bigger-130"></i>
                         </a>
+                        {% endif %}        
                     </div>
                 </td>
             </tr>

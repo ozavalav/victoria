@@ -9,6 +9,60 @@
 {% block menu %}
     {{ menu|raw }}
 {% endblock %}
+{% block notificaciones %} 
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-bell-o"></i>
+        <span class="label label-warning">{{ datosnoti|length }}</span>
+    </a>
+    <ul class="dropdown-menu">
+        <li class="header">Tiene {{ datosnoti|length }} notificaciones </li>
+        <li>
+          <!-- inner menu: contains the actual data -->
+          <ul class="menu">
+            {% for noti in datosnoti if noti.orden < 7 %}  
+            <li>
+              <a href="{{ path('datosnotificaciones') }}">
+                <i class="fa fa-users text-aqua"></i> {{ noti.mensaje }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="footer"><a href="{{ path('datosnotificaciones')}}">Ver todos</a></li>
+    </ul>
+{% endblock %}
+{% block tareas %}
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-flag-o"></i>
+              <span class="label label-danger">0</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">Tienes 0 tareas</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li><!-- Task item -->
+                    <a href="#">
+                      <h3>
+                        Avance del proyecto
+                        <small class="pull-right">70%</small>
+                      </h3>
+                      <div class="progress xs">
+                        <div class="progress-bar progress-bar-aqua" style="width: 70%" role="progressbar"
+                             aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+                          <span class="sr-only">70% Complete</span>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <!-- end task item -->
+                </ul>
+              </li>
+              <li class="footer">
+                <a href="#">Ver todas las tares</a>
+              </li>
+            </ul>
+{% endblock %} 
 {% block header %}
 <!-- Content Header (Page header) -->
     <section style="padding-bottom: 20px;"class="content-header">
@@ -25,9 +79,11 @@
 {% block content -%}
    <ul style="list-style: none; margin-left: 0; text-align: right ">
     <li>
+        {% if is_granted('ROLE_ADMIN') %} 
         <a class="btn btn-md btn-success" href="{{ path('datosnotificaciones_new') }}">
             <i class="ace-icon fa fa-plus-square align-top bigger-120"></i> Nueva 
         </a>
+        {% endif %}    
     </li>
     </ul>
 
@@ -58,13 +114,29 @@
                 <td>{{ entity.eliminados }}</td>
                 <td>
                     <div class="action-buttons">
-                        <a class="blue" href="{{ path('datosnotificaciones_show', { 'id': entity.numero }) }}" title="Ver">
-                                <i class="oz-icon-v fa fa-search-plus bigger-130"></i>
-                        </a>
-
-                        <a class="green" href="{{ path('datosnotificaciones_delete', { 'id': entity.numero }) }}" title="Eliminar">
-                                <i class="oz-icon-e fa fa-trash bigger-130"></i>
-                        </a>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-success"><i class='fa fa-check-square'></i></button>
+                      <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a class="green" id="btnRecibido" href="#" data-idu="{{ entity.id_notificacion|default(0) }}"  data-rel="tooltip" title="Recibir">
+                                <i class="fa fa-check-circle bigger-120"></i>Recibido
+                            </a>
+                        </li>
+                        <li><a class="blue" href="{{ path('datosnotificaciones_show', { 'id': entity.numero }) }}" title="Ver">
+                                <i class="fa fa-search-plus bigger-130"></i>Ver
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a class="green" href="{{ path('datosnotificaciones_delete', { 'id': entity.numero }) }}" title="Eliminar">
+                                <i class="fa fa-trash bigger-130"></i>Eliminar
+                            </a>
+                        </li>
+                      </ul>
+                    </div>
                     </div>
                 </td>
             </tr>
@@ -102,6 +174,32 @@
                         last: "Ultimo"
                     }
                 }
+        });
+        
+        /* AJAX para cambiar el estado de la notificación a: "recibido"*/
+        $("a[id*='btnRecibido']").click(function(e){
+            
+            e.preventDefault();
+            var idNot = $(this).data("idu");
+            var estadon = 2; //2 = recibido 
+            var url = '/Victoria/web/app_dev.php/datosnotificaciones/cambioestado/'+ idNot + "&&" + estadon;  
+        $.ajax({
+                type:'POST',
+                url:url,
+                beforeSend: function(){
+                    $("#lblError").hide();
+                },
+                dataType: 'json',
+                success:function(data){
+                    if(data.message == 'false'){
+                        alert(data.razon);
+                    }else{
+                        alert("Se cambio el estado del usuario");
+                        var filactual = $("[data-idu='" + idUser + "']").parents('td'); 
+                        table.row(filactual.parents('tr')).remove().draw();
+                    }
+                }
+            });  
         });
   });
     </script>  

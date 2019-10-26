@@ -1,5 +1,12 @@
 {% extends '::basemenu.html.twig' %}
 {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="{{ asset('bundles/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+{% endblock %}
+
 {% block menu %}
     {{ menu|raw }}
 {% endblock %}
@@ -7,17 +14,39 @@
 <!-- Content Header (Page header) -->
     <section style="padding-bottom: 20px;"class="content-header">
       <h1>
-        Agregar nuevo presupuesto
+        Agregar nueva actividad 
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-money"></i> Presupuesto</a></li>
-        <li class="active">Agregar nueva presupuesto</li>
+        <li><a href="#"><i class="fa fa-money"></i> Actividad</a></li>
+        <li class="active">Agregar nueva actividad</li>
       </ol>
     </section>
 {% endblock %}
 {% block content -%}
     
-    {{ form(form) }}
+    {{ form_start(form) }}
+    {{ form_row(form.tipoEgreso) }}
+    {{ form_row(form.fuenteEgreso) }}
+    {{ form_row(form.descripcion) }}
+    {{ form_row(form.lugarEvento) }}
+    {{ form_row(form.objetivoEvento) }}
+    {{ form_row(form.fechaEvento) }}
+    {{ form_row(form.idCampana) }}
+    {{ form_row(form.idDistrito) }}
+    
+    <!-- DETALLE DE LA NOTIFICACION -->
+    
+    <div class="form-group">
+        <label class="col-sm-2 control-label required" for="personas">Personas</label>
+        <div class="col-sm-10">
+            <select id="personas" name="personas[]" required="required" size="10" class="form-control" multiple="true">
+                <option value="">Ninguno</option>
+                <option value="0">Todos</option>
+            </select>
+        </div>
+    </div>
+    
+    {{ form_end(form) }}
 
     <ul style="list-style: none; margin-left: 0; text-align: right ">
     <li>
@@ -27,3 +56,88 @@
     </li>
     </ul>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{asset('bundles/bower_components/moment/min/moment.min.js')}}"></script>
+    <script src="{{asset('bundles/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+    
+    <!-- Datepicker script  -->
+    <script type="text/javascript">
+        $(function () {
+            //Date picker
+    $('#victoria_appbundle_datospresupuestos_fechaEvento').datepicker({
+        language: "es",
+        todayHighlight: true,
+        autoclose: true
+    });
+
+        });
+    </script>
+    <!-- Ajax para cargar los distritos de una campaña  -->
+    <script type="text/javascript">
+        
+        $(function () {
+            
+            //*** Busca los distritos segun una campaña selecionada
+            
+            $('#victoria_appbundle_datospresupuestos_idCampana').change(function(e) {
+        var valdepto = $(this).val();  
+        e.preventDefault(); 
+          var param =  valdepto;
+           url="{{path('aduser')}}"+'buscarDistrito/'+ param;
+          $.ajax({
+            type:'POST',
+            url:url,
+            beforeSend: function(){
+            $("#lblError").hide();	
+            },
+            dataType: 'json',
+            success:function(data){
+                if(data.message === 'false'){
+                    alert('false');
+                }else{
+                     var ejercicio = "<option value=''> -- seleccionar -- </option>";
+                     $.each(data, function(i) {
+                        ejercicio = ejercicio + "<option value='"+data[i].idDistrito+"'>"+data[i].idDistrito+ " - "+data[i].nombre+ "</option>";  
+                     });
+                     $('#victoria_appbundle_datospresupuestos_idDistrito').html(ejercicio);
+                     //$('#focal_appbundle_aduser_submit').prop('disabled', true);
+                }
+            }
+        });
+    }); 
+    
+    //*** Busca los usuarios segun el distrito seleccionado ***/
+    
+    $('#victoria_appbundle_datospresupuestos_idDistrito').change(function(e) {
+        var valdepto = $(this).val();  
+        e.preventDefault(); 
+          var param =  valdepto;
+           url="{{path('aduser')}}"+'buscarUsuarios/'+ param;
+          $.ajax({
+            type:'POST',
+            url:url,
+            beforeSend: function(){
+            $("#lblError").hide();	
+            },
+            dataType: 'json',
+            success:function(data){
+                if(data.message === 'false'){
+                    alert('false');
+                }else{
+                     var ejercicio = "<option value=''> -- seleccionar -- </option>";
+                     var ejercicio = "<option value='0'>todos los usuarios</option>";
+                     $.each(data, function(i) {
+                        ejercicio = ejercicio + "<option value='"+data[i].id+"'>"+data[i].id+ " - "+data[i].username+ "</option>";  
+                     });
+                     $('#personas').html(ejercicio);
+                     //$('#focal_appbundle_aduser_submit').prop('disabled', true);
+                }
+            }
+        });
+    });
+    
+        });
+    </script>
+    
+{% endblock %}    

@@ -46,7 +46,12 @@ class DatosComentariosPresupuesto
      */
     private $idPresupuesto;
 
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario", type="string", length=25, nullable=false)
+     */
+    private $usuario;   
 
     /**
      * Get idComentario
@@ -126,4 +131,28 @@ class DatosComentariosPresupuesto
     {
         return $this->idPresupuesto;
     }
+    
+    /**
+     * Set usuario
+     *
+     * @param string usuario
+     *
+     * @return DatosComentariosPresupuesto
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }    
 }

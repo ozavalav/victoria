@@ -1,0 +1,3 @@
+adtask:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:AdTask:index" }

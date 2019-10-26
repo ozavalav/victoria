@@ -5,6 +5,7 @@ namespace Victoria\AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
 class AdTiposComisionType extends AbstractType
@@ -16,7 +17,15 @@ class AdTiposComisionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('descripcion')
+            ->add('descripcion',null, array('required' => true))
+            ->add('idEstructura', EntityType::class, array(
+                'required' => true,
+                'label' => 'Estructura',
+                'empty_value' => '-- Seleccione una estructura --',
+                'empty_data'  => null,               
+                'class' => 'VictoriaAppBundle:DatosEstructuras',
+                'choice_label' => 'nombre',
+            ))    
         ;
     }
     

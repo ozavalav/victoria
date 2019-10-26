@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AdTiposPublicidad" table="ad_tipos_publicidad">
+    <id name="idPublicidad" type="integer" column="id_publicidad">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="fechaCreacion" type="datetime" column="fecha_creacion" nullable="false"/>
+    <field name="usuarioCreacion" type="string" column="usuario_creacion" length="32" nullable="false"/>
+    <field name="usuarioUltimaModificacion" type="string" column="usuario_ultima_modificacion" length="32" nullable="false"/>
+    <field name="fechaUltimaModificacion" type="datetime" column="fecha_ultima_modificacion" nullable="false"/>
+    <field name="nombre" type="string" column="nombre" nullable="true"/>
+  </entity>
+</doctrine-mapping>

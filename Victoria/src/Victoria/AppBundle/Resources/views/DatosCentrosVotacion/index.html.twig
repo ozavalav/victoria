@@ -24,12 +24,14 @@
 {% endblock %}
 {% block content -%}
     <ul style="list-style: none; margin-left: 0; text-align: right ">
+    {% if is_granted('ROLE_ADMIN') %}    
     <li>
         <a class="btn btn-md btn-success" href="{{ path('datoscentrosvotacion_new') }}">
             <i class="ace-icon fa fa-plus-square align-top bigger-120"></i> Nuevo 
         </a>
     </li>
     </ul>
+    {% endif %}        
     <table id="dynamic-table" class="display compact">
         <thead>
             <tr style="background-color: #E8BF6A">
@@ -59,10 +61,13 @@
                         <a class="blue" href="{{ path('datoscentrosvotacion_show', { 'id': entity.idCv }) }}" title="Ver">
                                 <i class="oz-icon-v fa fa-search-plus bigger-130"></i>
                         </a>
-
+                        {% if is_granted('ROLE_ADMIN') %}
                         <a class="green"  href="{{ path('datoscentrosvotacion_edit', { 'id': entity.idCv }) }}"title="Editar">
                                 <i class="oz-icon-e fa fa-pencil bigger-130"></i>
                         </a>
+                        {% endif %}        
+                     </div>
+                </ul>                
                 </td>
             </tr>
         {% endfor %}

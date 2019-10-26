@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
+
 
 class DatosDistritosType extends AbstractType
 {
@@ -16,12 +18,30 @@ class DatosDistritosType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $cmpId = $options['label'];
+        if($cmpId == 0 ) {
+            $strw = 'c.idCampana > ?1';
+        } else {
+            $strw = 'c.idCampana = ?1';
+        }
         $builder
             ->add('nombre')
-            ->add('idCampana', EntityType::class, array(
+            /*->add('idCampana', EntityType::class, array(
                 'class' => 'VictoriaAppBundle:DatosCampanasPoliticas',
-                'label' => 'Campaña'
-            ))
+                'label' => 'Campaña',
+            ))*/
+            ->add('idCampana',EntityType::class,array(
+            //'mapped' => false,    
+            'class' => 'VictoriaAppBundle:DatosCampanasPoliticas',
+            'label' => 'Campaña',    
+            'required' => true,
+            'query_builder' => function (EntityRepository $er) use ($cmpId, $strw) {
+                return $er->createQueryBuilder('c')
+                    ->where($strw)    
+                    ->orderBy('c.nombre')
+                    ->setParameter(1,$cmpId);
+                }
+            ))    
         ;
     }
     

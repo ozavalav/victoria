@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class DatosPresupuestosType extends AbstractType
 {
@@ -23,7 +24,7 @@ class DatosPresupuestosType extends AbstractType
                 'class' => 'VictoriaAppBundle:AdTipoEgresos',
                 'label' => 'Tipo Egreso'
             ))
-            ->add('idActividadEgreso')
+            //->add('idActividadEgreso')
             ->add('fuenteEgreso',ChoiceType::class, array(
                 'choice_list' => new ChoiceList(
                 array(1, 2, 3),
@@ -31,6 +32,9 @@ class DatosPresupuestosType extends AbstractType
                 ), 'expanded' => true
             ))
             ->add('descripcion',null,array('label' => 'Descripción'))
+            ->add('lugarEvento',null,array('label' => 'Lugar'))
+            ->add('objetivoEvento', TextareaType::class, array( 'attr' => array('maxlength'=> 510, 'rows' => 2, 'cols' => '10')))
+            //->add('fechaEvento')
             //->add('preparadoPor')
             //->add('aprobadoPor')
             //->add('estado')

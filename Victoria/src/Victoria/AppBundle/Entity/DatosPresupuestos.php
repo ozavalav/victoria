@@ -17,8 +17,6 @@ class DatosPresupuestos
      *
      * @ORM\Column(name="id_presupuesto", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="datos_presupuestos_id_presupuesto_seq", allocationSize=1, initialValue=1)
      */
     private $idPresupuesto;
 
@@ -112,9 +110,28 @@ class DatosPresupuestos
      * })
      */
     private $idDistrito;
-
-
-
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_evento", type="datetime", nullable=false)
+     */
+    private $fechaEvento;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lugar_evento", type="string", length=256, nullable=true)
+     */
+    private $lugarEvento;    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="objetivo_evento", type="string", length=512, nullable=true)
+     */
+    private $objetivoEvento;    
+    
     /**
      * Get idPresupuesto
      *
@@ -123,6 +140,19 @@ class DatosPresupuestos
     public function getIdPresupuesto()
     {
         return $this->idPresupuesto;
+    }
+    
+     /**
+     * Set idPresupuesto
+     *
+     * @param integer $idPresupuesto
+     * @return DatosPresupuestos
+     */
+    public function setIdPresupuesto($idPresupuesto)
+    {
+        $this->idPresupuesto = $idPresupuesto;
+
+        return $this;
     }
 
     /**
@@ -216,7 +246,54 @@ class DatosPresupuestos
     {
         return $this->descripcion;
     }
+    
+    /**
+     * Set lugarEvento
+     *
+     * @param string $lugarEvento
+     * @return DatosPresupuestos
+     */
+    public function setLugarEvento($lugarEvento)
+    {
+        $this->lugarEvento = $lugarEvento;
 
+        return $this;
+    }
+
+    /**
+     * Get lugarEvento
+     *
+     * @return string 
+     */
+    public function getLugarEvento()
+    {
+        return $this->lugarEvento;
+    }
+    
+    /**
+     * Set objetivoEvento
+     *
+     * @param string $objetivoEvento
+     * @return DatosPresupuestos
+     */
+    public function setObjetivoEvento($objetivoEvento)
+    {
+        $this->objetivoEvento = $objetivoEvento;
+
+        return $this;
+    }
+
+    /**
+     * Get objetivoEvento
+     *
+     * @return string 
+     */
+    public function getObjetivoEvento()
+    {
+        return $this->objetivoEvento;
+    }
+
+    
     /**
      * Set preparadoPor
      *
@@ -378,6 +455,30 @@ class DatosPresupuestos
     public function getIdDistrito()
     {
         return $this->idDistrito;
+    }
+    
+    /**
+     * Set fechaEvento
+     *
+     * @param \DateTime $fechaEvento
+     *
+     * @return DatosPresupuesto
+     */
+    public function setFechaEvento($fechaEvento)
+    {
+        $this->fechaEvento = $fechaEvento;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaEvento
+     *
+     * @return \DateTime
+     */
+    public function getFechaEvento()
+    {
+        return $this->fechaEvento;
     }
     
 }

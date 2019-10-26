@@ -24,7 +24,7 @@
 
     {{ form(edit_form) }}
 
-       <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
     <li>
         <a class="btn btn-md btn-success" href="{{ path('adtiposcomision') }}">
            <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
@@ -32,3 +32,11 @@
     </li>
     </ul>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function() {    
+            $('#victoria_appbundle_adtiposcomision_idEstructura').val({{ idEstructura }});
+        });
+    </script>
+{% endblock %} 

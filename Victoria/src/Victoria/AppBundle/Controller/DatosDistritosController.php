@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Victoria\AppBundle\Entity\DatosDistritos;
 use Victoria\AppBundle\Form\DatosDistritosType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 /**
  * DatosDistritos controller.
  *
@@ -21,22 +23,41 @@ class DatosDistritosController extends Controller
      */
     public function indexAction(Request $request, $id = 0)
     {
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
         $session = $request->getSession();
         $menu = $session->get('_menu');
-        $campana = $session->get('_id_campana');
+        $idCampana = $session->get('_id_campana');
+        $idDistrito = $session->get('_id_distrito');
+        $idUsuario = $session->get('_id_usuario');
+        
+        /* Obtiene las notificaciones que tiene el usuario */
+        $entnot = $seg->obtenerNotificaciones($idUsuario);
         
         $em = $this->getDoctrine()->getManager();
 
         /* Valida si selecciona todos los ditritos para visualizar */
-        if($campana == 0 && $id == 0) {
+        if($id != 0) {
+            $entities = $em->getRepository('VictoriaAppBundle:DatosDistritos')->findBy(array('idCampana' => $id));
+        } elseif($idCampana == 0 && $idDistrito == 0) {
             $entities = $em->getRepository('VictoriaAppBundle:DatosDistritos')->findAll();
+        } elseif($idCampana != 0 && $idDistrito == 0) {
+            $entities = $em->getRepository('VictoriaAppBundle:DatosDistritos')->findBy(array('idCampana' => $idCampana));
         } else {
-            $entities = $em->getRepository('VictoriaAppBundle:DatosDistritos')->findBy(array('idCampana' => $campana));
+            $entities = $em->getRepository('VictoriaAppBundle:DatosDistritos')->findBy(array('idCampana' => $idCampana, 'idDistrito' => $idDistrito )); 
         }
         
         return $this->render('VictoriaAppBundle:DatosDistritos:index.html.twig', array(
             'entities' => $entities,
             'menu' => $menu,
+            'datosnoti' => $entnot,
         ));
     }
     /**
@@ -45,8 +66,11 @@ class DatosDistritosController extends Controller
      */
     public function createAction(Request $request)
     {
+        $session = $request->getSession();
+        $idCampana = $session->get('_id_campana');
+        
         $entity = new DatosDistritos();
-        $form = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity, $idCampana);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -70,11 +94,12 @@ class DatosDistritosController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(DatosDistritos $entity)
+    private function createCreateForm(DatosDistritos $entity, $idCampana)
     {
         $form = $this->createForm(new DatosDistritosType(), $entity, array(
             'action' => $this->generateUrl('datosdistritos_create'),
             'method' => 'POST',
+            'label' => $idCampana,
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
@@ -84,15 +109,25 @@ class DatosDistritosController extends Controller
 
     /**
      * Displays a form to create a new DatosDistritos entity.
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function newAction(Request $request)
     {
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
         $session = $request->getSession();
         $menu = $session->get('_menu');
+        $idCampana = $session->get('_id_campana');
         
         $entity = new DatosDistritos();
-        $form   = $this->createCreateForm($entity);
+        $form   = $this->createCreateForm($entity, $idCampana);
 
         return $this->render('VictoriaAppBundle:DatosDistritos:new.html.twig', array(
             'entity' => $entity,
@@ -129,12 +164,22 @@ class DatosDistritosController extends Controller
 
     /**
      * Displays a form to edit an existing DatosDistritos entity.
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function editAction(Request $request, $id)
     {
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
         $session = $request->getSession();
         $menu = $session->get('_menu');
+        $idCampana = $session->get('_id_campana');
         
         $em = $this->getDoctrine()->getManager();
 
@@ -144,7 +189,7 @@ class DatosDistritosController extends Controller
             throw $this->createNotFoundException('Unable to find DatosDistritos entity.');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($entity, $idCampana);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('VictoriaAppBundle:DatosDistritos:edit.html.twig', array(
@@ -161,11 +206,12 @@ class DatosDistritosController extends Controller
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(DatosDistritos $entity)
+    private function createEditForm(DatosDistritos $entity, $idCampana)
     {
         $form = $this->createForm(new DatosDistritosType(), $entity, array(
             'action' => $this->generateUrl('datosdistritos_update', array('id' => $entity->getIdDistrito())),
             'method' => 'PUT',
+            'label' => $idCampana,
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));
@@ -178,6 +224,9 @@ class DatosDistritosController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
+        $session = $request->getSession();
+        $idCampana = $session->get('_id_campana');
+        
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('VictoriaAppBundle:DatosDistritos')->find($id);
@@ -187,7 +236,7 @@ class DatosDistritosController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($entity, $idCampana);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {

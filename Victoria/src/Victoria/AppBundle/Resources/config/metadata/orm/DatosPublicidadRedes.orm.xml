@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosPublicidadRedes" table="datos_publicidad_redes">
+    <indexes>
+      <index name="IDX_80C8FEECB8445919" columns="id_campana"/>
+      <index name="IDX_80C8FEEC1A051D29" columns="id_publicidad"/>
+    </indexes>
+    <id name="idPublicidadRedes" type="integer" column="id_publicidad_redes">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="target" type="string" column="target" nullable="false"/>
+    <field name="pautaPublicitaria" type="integer" column="pauta_publicitaria" nullable="false"/>
+    <field name="personasAlcanzadas" type="integer" column="personas_alcanzadas" nullable="true"/>
+    <field name="meGusta" type="integer" column="me_gusta" nullable="true"/>
+    <field name="meEncanta" type="integer" column="me_encanta" nullable="true"/>
+    <field name="meDivierte" type="integer" column="me_divierte" nullable="true"/>
+    <field name="meEnoja" type="integer" column="me_enoja" nullable="true"/>
+    <field name="meEntristece" type="integer" column="me_entristece" nullable="true"/>
+    <field name="comentariosPositivos" type="integer" column="comentarios_positivos" nullable="true"/>
+    <field name="comentariosNegativos" type="integer" column="comentarios_negativos" nullable="true"/>
+    <field name="compartidos" type="integer" column="compartidos" nullable="true"/>
+    <field name="resumenInteraccion" type="string" column="resumen_interaccion" length="100" nullable="true"/>
+    <field name="nombreMedioPublicitario" type="string" column="nombre_medio_publicitario" length="100" nullable="true"/>
+    <field name="tipoAnuncio" type="string" column="tipo_anuncio" length="100" nullable="true"/>
+    <field name="comprobantePago" type="string" column="comprobante_pago" length="100" nullable="true"/>
+    <field name="estado" type="integer" column="estado" nullable="true"/>
+    <field name="fechaCreacion" type="datetime" column="fecha_creacion" nullable="true"/>
+    <field name="usuarioCreacion" type="string" column="usuario_creacion" length="32" nullable="true"/>
+    <field name="usuarioUltimaModificacion" type="string" column="usuario_ultima_modificacion" length="32" nullable="true"/>
+    <field name="fechaUltimaModificacion" type="datetime" column="fecha_ultima_modificacion" nullable="true"/>
+    <many-to-one field="idPublicidad" target-entity="AdTiposPublicidad">
+      <join-columns>
+        <join-column name="id_publicidad" referenced-column-name="id_publicidad"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idCampana" target-entity="DatosCampanasPoliticas">
+      <join-columns>
+        <join-column name="id_campana" referenced-column-name="id_campana"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

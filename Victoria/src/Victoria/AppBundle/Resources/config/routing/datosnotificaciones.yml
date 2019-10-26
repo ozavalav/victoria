@@ -28,3 +28,8 @@ datosnotificaciones_delete:
     path:     /{id}/delete
     defaults: { _controller: "VictoriaAppBundle:DatosNotificaciones:delete" }
     requirements: { _method: post|delete|get }
+    
+datosnotificaciones_cambioestado:
+    pattern: /cambioestado/{param}/
+    defaults: { _controller: "VictoriaAppBundle:DatosNotificaciones:cambioestado" }
+    requirements: { _method: post|get}

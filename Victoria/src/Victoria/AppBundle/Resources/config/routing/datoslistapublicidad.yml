@@ -1,0 +1,37 @@
+datoslistapublicidad_solo:
+    path:     /
+    
+datoslistapublicidad_list:
+    path:     /{id}/list
+    defaults: { _controller: "VictoriaAppBundle:DatosListaPublicidad:index" }
+    
+datoslistapublicidad:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle::index" }
+
+datoslistapublicidad_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:DatosListaPublicidad:show" }
+
+datoslistapublicidad_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:DatosListaPublicidad:new" }
+
+datoslistapublicidad_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:DatosListaPublicidad:create" }
+    requirements: { _method: post }
+
+datoslistapublicidad_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:DatosListaPublicidad:edit" }
+
+datoslistapublicidad_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:DatosListaPublicidad:update" }
+    requirements: { _method: post|put }
+
+datoslistapublicidad_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:DatosListaPublicidad:delete" }
+    requirements: { _method: post|delete|get }

@@ -1,0 +1,45 @@
+{% extends '::basemenu.html.twig' %}
+{% form_theme edit_form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Editar publicidad
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-money"></i> Publicidades</a></li>
+        <li class="active">Editar un publicidades</li>
+      </ol>
+    </section>
+{% endblock %}
+
+{% block content -%}
+
+     {{ form_start(edit_form) }}
+    {{ form_row(edit_form.tipoPublicidad) }}
+    {{ form_row(edit_form.descripcion) }}
+    {{ form_row(edit_form.nombreMedioPublicidad) }}
+    {{ form_row(edit_form.tipoAnuncio) }}
+    {{ form_row(edit_form.comprobantePago) }}
+    {{ form_row(edit_form.idCampana) }}
+    {{ form_row(edit_form.idDistrito) }}
+    {{ form_row(edit_form.submit) }}
+        {{ form_widget(edit_form._token) }}
+    
+    <!-- DETALLE DE LA NOTIFICACION -->
+    
+    {{ form_end(edit_form, {'render_rest': false})}}
+
+
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+        <a class="btn btn-md btn-success" href="{{ path('datospublicidad') }}">
+            <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends '::basemenu.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/jquery.dataTables_themeroller.css')}}" />
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/focal.css')}}" />
+    
+{% endblock %}
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Listado de publicidades
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-money"></i> publicidades</a></li>
+        <li class="active">Agregar, modificar y eliminar publicidades</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    {% if is_granted('ROLE_ADMIN') %}
+        
+        <ul style="list-style: none; margin-left: 0; text-align: right ">        
+    <li style="float: right; margin: 0px 0px 5px 10px;">
+        <a style="display: block;" class="btn btn-md btn-success" href="{{ path('datospublicidad_new') }}">
+            <i class="ace-icon fa fa-plus-square align-top bigger-120"></i> Nuevo 
+        </a>
+    </li>
+    
+    <li style="float: right">
+        <a id="btnListado" style="display: block;" class="btn btn-md btn-success" href="#">
+            <i class="ace-icon fa fa-list align-top bigger-120"></i> Detalle 
+        </a>
+    </li>
+    </ul>
+            {% endif %}
+    <table id="dynamic-table" class="display compact">
+        <thead>
+            <tr style="background-color: #E8BF6A">
+                <th class="center"></th>
+                 <th>Id</th>
+                <th>Tipopublicidad</th>
+                <th>Descripcion</th>
+                <th>Estado</th>
+                <th>Nombremediopublicidad</th>
+                <th>Tipoanuncio</th>
+                <th>Comprobantepago</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td class="center">
+                    <label class="pos-rel">
+                        <input type="radio" value="{{ entity.idpublicidad }}" name="sel-enc" class="ace" />
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+                <td><a href="{{ path('datospublicidad_show', { 'id': entity.idpublicidad }) }}">{{ entity.idpublicidad }}</a></td>
+                <td>{{ entity.tipopublicidad }}</td>
+                <td>{{ entity.descripcion }}</td>
+                <td>{{ entity.estado }}</td>
+                <td>{{ entity.nombremediopublicidad }}</td>
+                <td>{{ entity.tipoanuncio }}</td>
+                <td>{{ entity.comprobantepago }}</td>
+                <td>
+                    <div class="action-buttons">
+                        <a class="blue" href="{{ path('datospublicidad_show', { 'id': entity.idpublicidad }) }}"title="Ver">
+                                <i class="oz-icon-v fa fa-search-plus bigger-130"></i>
+                        </a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a class="green"href="{{ path('datospublicidad_edit', { 'id': entity.idpublicidad }) }}" title="Editar">
+                                <i class="oz-icon-e fa fa-pencil bigger-130"></i>
+                        </a>
+                        {% endif %}        
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+ </table>
+    {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.bootstrap.min.js')}}"></script> 
+    
+    <script type="text/javascript">
+        $(function () {
+        
+        $('#dynamic-table').DataTable({
+          'paging'      : true,
+          'lengthChange': true,
+          'searching'   : true,
+          'ordering'    : true,
+          'info'        : true,
+          'autoWidth'   : true,
+          language:{
+                    search: "Buscar",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    emptyTable: "No hay datos...",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    infoFiltered: "(Filtrando de un total de _MAX_ registros)",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Ultimo"
+                    }
+                }
+        });
+  });
+  $(document).on("click","#dynamic-table tr td",function(){
+    if($(this).parent().find("input:radio").is(':checked')){
+        $(this).parent().css("background-color","");
+        $(this).parent().find("input:radio").prop("checked", false);  
+    } else {
+        $(".ace").each(function(){
+            if($(this).is(':checked')) {
+                $(this).parent().parent().parent().css("background-color","");
+            }
+        });
+        $(this).parent().css("background-color","#CFE7F9");
+        $(this).parent().find("input:radio").prop("checked", true);         
+    }
+   });
+   
+   $('#btnListado').click(function(e){
+        fila = $("#dynamic-table input[name='sel-enc']:radio");
+        if(fila.is(':checked')) {
+            valor = $("#dynamic-table input:radio[name='sel-enc']:checked").val();
+            e.preventDefault();
+            switch ($(this).attr('id')) {
+                case 'btnListado':
+                    url = '{{ path('datoslistapublicidad_solo') }}'+valor+'/list';
+                    break;
+        }
+            window.location.href=url;               
+        } else {
+            e.preventDefault();
+            alert("Seleccione una publicidad para continuar.");
+        }
+    });
+    </script>     
+{% endblock %}    
+    

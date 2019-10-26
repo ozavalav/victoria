@@ -41,7 +41,7 @@ class DatosComentariosPresupuestoController extends Controller
         $idDistrito = $session->get('_id_distrito');
         
         /* Se define que información va a filtar segun el nivel de campana y distrito que tiene asignado*/
-        $strWhere = $seg->fitrarConsulta($idCampana,$idDistrito);
+        $strWhere = $seg->filtrarConsulta($idCampana,$idDistrito);
         
         $query = "select p.id_presupuesto idpresupuesto, 
             p.tipo_egreso,
@@ -70,6 +70,10 @@ from datos_lista_presupuesto
 group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
             %1\$s
             ";
+        
+//********        *** revisar el la presentacion de los datos de presupuesto para comentar, 
+//********            segun los niveles de cada usuario ***
+                
         $query = sprintf($query, $strWhere);
         $stmt = $em->getConnection()->prepare($query);
         //$stmt->bindValue('campana',$idCampana);
@@ -94,6 +98,9 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
      */
     public function createAction(Request $request)
     {
+        $session = $request->getSession();
+        $usuario = $session->get('_nombre_usuario'); //Usuario quien pone la notificación
+        
         $entity = new DatosComentariosPresupuesto();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -105,7 +112,7 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
             $idpre = (int)$request->get('idpresupuesto');
             $entpre = $em->getRepository('VictoriaAppBundle:DatosPresupuestos')->find($idpre);
             $entity->setIdPresupuesto($entpre);
-            
+            $entity->setUsuario($usuario); // Usuario quien hacer el comentario
             $em->persist($entity);
             $em->flush();
 

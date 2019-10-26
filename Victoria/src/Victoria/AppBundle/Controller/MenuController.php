@@ -101,13 +101,13 @@ class MenuController extends Controller
             $dtgen = $stmt->fetchAll(); */
         
         
-        /* Lectura de las Notificaciones que recibe el usuario las prepara y las
-         * ingresa en una variable de session para ser cargados en cada pagina
-         * solo se leen una sola vez al principio cuando el usuario hace login
-         * Las Notificaciones se muestran en la parte superior de la pantalla.
+        /* Lectura de las Notificaciones que recibe el usuario las prepara 
+         * para ser cargados en cada pagina se leen una cada vez al principio 
+         * cuando el usuario ingresa a una opcion Las Notificaciones se muestran  
+         * en la parte superior de la pantalla.
          */
         $query = "select row_number() over( order by fecha_enviado desc ) orden, numero_mensaje, estado, substring(mensaje,1,30) mensaje
-from datos_notificaciones where id_usuario = :idusuario
+from datos_notificaciones where id_usuario = :idusuario and estado = 1
 order by fecha_enviado desc";
         //$query = sprintf($query, $codColg, $rngfechag);
         $stmt = $em->getConnection()->prepare($query);
@@ -115,6 +115,26 @@ order by fecha_enviado desc";
         //$stmt->bindValue('distrito',$idDistrito);
         $stmt->execute();
         $entnot = $stmt->fetchAll();
+        
+        /* Obtiene las cantidades de personas asignada por comision de todas las campañas */
+        $query = "select 
+case 
+ when c.id_estructura = 1 then 'A'
+ when c.id_estructura = 2 then 'B'
+ when c.id_estructura = 3 then 'C'   
+end estructura,
+count(*) comisiones, 
+sum(case when p.nombres is not null then 1 else 0 end) asignadas
+from 
+ad_tipos_comision c left join datos_personas p on (c.id_tipo_comision = p.id_comision)
+group by c.id_estructura
+order by c.id_estructura";
+        //$query = sprintf($query, $codColg, $rngfechag);
+        $stmt = $em->getConnection()->prepare($query);
+        //$stmt->bindValue('idusuario', $idUsuario);
+        //$stmt->bindValue('distrito',$idDistrito);
+        $stmt->execute();
+        $entest = $stmt->fetchAll();
         
         /* Crea el menu segun los acceso que tiene el usuario 
          * y los graba como una variable de sesion para ser utilizado en cada carga de pagina
@@ -126,6 +146,7 @@ order by fecha_enviado desc";
                     //'dtgen' => $dtgen[0], 
                     'menu' => $strmenu->getContent(),
                     'datosnoti' => $entnot,
+                    'entest' => $entest,
                 ));
     }
     

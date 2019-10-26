@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Victoria\AppBundle\Entity\DatosCentrosVotacion;
 use Victoria\AppBundle\Form\DatosCentrosVotacionType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 /**
  * DatosCentrosVotacion controller.
  *
@@ -21,22 +23,42 @@ class DatosCentrosVotacionController extends Controller
      */
     public function indexAction(Request $request, $id = 0)
     {
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
         $session = $request->getSession();
         $menu = $session->get('_menu');
-        $distrito = $session->get('_id_distrito');
+        $idCampana = $session->get('_id_campana');
+        $idDistrito = $session->get('_id_distrito');
+        $idUsuario = $session->get('_id_usuario');
+        
+        /* Obtiene las notificaciones que tiene el usuario */
+        $entnot = $seg->obtenerNotificaciones($idUsuario);
         
         $em = $this->getDoctrine()->getManager();
         
         /* Valida el nivel de acceso para ver todos los CV o solamente los que tiene acceso */
-        if($distrito == 0 && $id == 0) {
+        
+        if($id != 0) {
+            $entities = $em->getRepository('VictoriaAppBundle:DatosCentrosVotacion')->findBy(array('idDistrito' => $id));
+        } elseif($idCampana == 0 && $idDistrito == 0) {
             $entities = $em->getRepository('VictoriaAppBundle:DatosCentrosVotacion')->findAll();
+        } elseif($idCampana != 0 && $idDistrito == 0) {
+            $entities = $em->getRepository('VictoriaAppBundle:DatosCentrosVotacion')->findBy(array('idCampana' => $idCampana));
         } else {
-            $entities = $em->getRepository('VictoriaAppBundle:DatosCentrosVotacion')->findBy(array('idDistrito' => $distrito));
+            $entities = $em->getRepository('VictoriaAppBundle:DatosCentrosVotacion')->findBy(array('idCampana' => $idCampana, 'idDistrito' => $idDistrito )); 
         }
-
+        
         return $this->render('VictoriaAppBundle:DatosCentrosVotacion:index.html.twig', array(
             'entities' => $entities,
-            'menu' => $menu
+            'menu' => $menu,
+            'datosnoti' => $entnot,
         ));
     }
     /**
@@ -45,10 +67,19 @@ class DatosCentrosVotacionController extends Controller
      */
     public function createAction(Request $request)
     {
+        $session = $request->getSession();
+        $idCampana = $session->get('_id_campana');
+        $menu = $session->get('_menu');
+        
         $entity = new DatosCentrosVotacion();
-        $form = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity, $idCampana);
         $form->handleRequest($request);
-
+        
+        $em = $this->getDoctrine()->getManager();
+        $idDis = $request->get('victoria_appbundle_datoscentrosvotacion')['idDistrito'];
+        $entdis = $em->getRepository('VictoriaAppBundle:DatosDistritos')->findBy(array('idDistrito' => $idDis));
+        $entity->setIdDistrito($entdis[0]);
+        
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
@@ -60,6 +91,7 @@ class DatosCentrosVotacionController extends Controller
         return $this->render('VictoriaAppBundle:DatosCentrosVotacion:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'menu' => $menu,
         ));
     }
 
@@ -70,11 +102,12 @@ class DatosCentrosVotacionController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(DatosCentrosVotacion $entity)
+    private function createCreateForm(DatosCentrosVotacion $entity, $idCampana)
     {
         $form = $this->createForm(new DatosCentrosVotacionType(), $entity, array(
             'action' => $this->generateUrl('datoscentrosvotacion_create'),
             'method' => 'POST',
+            'label' => $idCampana,
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
@@ -84,15 +117,25 @@ class DatosCentrosVotacionController extends Controller
 
     /**
      * Displays a form to create a new DatosCentrosVotacion entity.
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function newAction(Request $request)
     {
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
         $session = $request->getSession();
         $menu = $session->get('_menu');
+        $idCampana = $session->get('_id_campana');
         
         $entity = new DatosCentrosVotacion();
-        $form   = $this->createCreateForm($entity);
+        $form   = $this->createCreateForm($entity, $idCampana);
 
         return $this->render('VictoriaAppBundle:DatosCentrosVotacion:new.html.twig', array(
             'entity' => $entity,
@@ -129,13 +172,22 @@ class DatosCentrosVotacionController extends Controller
 
     /**
      * Displays a form to edit an existing DatosCentrosVotacion entity.
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function editAction(Request $request, $id)
     {
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
         
         $session = $request->getSession();
         $menu = $session->get('_menu');
+        $idCampana = $session->get('_id_campana');
         
         $em = $this->getDoctrine()->getManager();
 
@@ -145,7 +197,7 @@ class DatosCentrosVotacionController extends Controller
             throw $this->createNotFoundException('Unable to find DatosCentrosVotacion entity.');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($entity, $idCampana);
 
         return $this->render('VictoriaAppBundle:DatosCentrosVotacion:edit.html.twig', array(
             'entity'      => $entity,
@@ -161,11 +213,12 @@ class DatosCentrosVotacionController extends Controller
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(DatosCentrosVotacion $entity)
+    private function createEditForm(DatosCentrosVotacion $entity, $idCampana)
     {
         $form = $this->createForm(new DatosCentrosVotacionType(), $entity, array(
-            'action' => $this->generateUrl('datoscentrosvotacion_update', array('idCv' => $entity->getIdCv())),
+            'action' => $this->generateUrl('datoscentrosvotacion_update', array('id' => $entity->getIdCv())),
             'method' => 'PUT',
+            'label' => $idCampana,
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));
@@ -178,6 +231,9 @@ class DatosCentrosVotacionController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
+        $session = $request->getSession();
+        $idCampana = $session->get('_id_campana');
+        
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('VictoriaAppBundle:DatosCentrosVotacion')->find($id);
@@ -187,13 +243,13 @@ class DatosCentrosVotacionController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($entity, $idCampana);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('datoscentrosvotacion_edit', array('idCv' => $id)));
+            return $this->redirect($this->generateUrl('datoscentrosvotacion_edit', array('id' => $id)));
         }
 
         return $this->render('VictoriaAppBundle:DatosCentrosVotacion:edit.html.twig', array(

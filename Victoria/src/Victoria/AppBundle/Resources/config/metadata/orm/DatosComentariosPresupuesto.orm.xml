@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosComentariosPresupuesto" table="datos_comentarios_presupuesto">
+    <indexes>
+      <index name="IDX_FBAC0949371A524" columns="id_presupuesto"/>
+    </indexes>
+    <id name="idComentario" type="integer" column="id_comentario">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="mensaje" type="string" column="mensaje" length="512" nullable="true"/>
+    <field name="archivo" type="string" column="archivo" length="256" nullable="true"/>
+    <field name="usuario" type="string" column="usuario" length="25" nullable="true"/>
+    <many-to-one field="idPresupuesto" target-entity="DatosPresupuestos">
+      <join-columns>
+        <join-column name="id_presupuesto" referenced-column-name="id_presupuesto"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

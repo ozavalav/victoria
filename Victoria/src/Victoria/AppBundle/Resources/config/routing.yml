@@ -1,8 +1,20 @@
+victoria_app_datoslistapublicidad:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datoslistapublicidad.yml"
+    prefix:   /datoslistapublicidad
+
+victoria_app_datospublicidad:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datospublicidad.yml"
+    prefix:   /datospublicidad
+    
+victoria_app_adtask:
+    resource: "@VictoriaAppBundle/Resources/config/routing/adtask.yml"
+    prefix:   /adtask 
+    
 victoria_app_datospublicidadmedios:
     resource: "@VictoriaAppBundle/Resources/config/routing/datospublicidadmedios.yml"
     prefix:   /datospublicidadmedios
 
-svictoria_app_datospublicidadredes:
+victoria_app_datospublicidadredes:
     resource: "@VictoriaAppBundle/Resources/config/routing/datospublicidadredes.yml"
     prefix:   /datospublicidadredes
 

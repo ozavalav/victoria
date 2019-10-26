@@ -1,0 +1,90 @@
+{% extends '::basemenu.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/jquery.dataTables_themeroller.css')}}" />
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/focal.css')}}" />
+{% endblock %}      
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %} 
+{% block content -%}
+    <div class="table-header">
+        Listado de Tareas
+    </div>              
+    <table id="dynamic-table" class="table table-striped table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th>Descripción</th>
+                <th>Usuario</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+               
+                <td>{{ entity.description_task }}</td>
+                <td>{{ entity.useradd_task }}</td>
+                <td>{%  if entity.state_task == 1 %} Activo {% endif %}
+                    {%  if entity.state_task == 2 %} En Progreso {% endif %}
+                    {%  if entity.state_task == 0 %} Inactivo {% endif %}</td>
+                <td>
+                <ul>
+                    <li class="lista-horizontal-action">
+                        <a href="" title="Editar registro">
+                        <i class="ace-icon fa fa-pencil align-top bigger-120"></i>
+                        </a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.bootstrap.min.js')}}"></script> 
+    
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function() {
+            table = $('#dynamic-table').DataTable({
+                language:{
+                    search: "Buscar",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    emptyTable: "No hay datos...",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    infoFiltered: "(Filtrando de un total de _MAX_ registros)",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Ultimo"
+                    }
+                }
+            });
+            
+            $('#btnpermisos').click(function(e){
+                e.preventDefault();
+
+                fila = $("#dynamic-table input[name='sel-enc']:radio");
+                
+                if(fila.is(':checked')) {
+                valor = $("#dynamic-table input:radio[name='sel-enc']:checked").val();            
+                
+                url = '{{ path('adaccesogrant_asociar', { 'idacceso': 'valor' }) }}';            
+                url = url.replace("valor", valor); 
+                              
+                window.location.href=url;               
+            } else {
+                e.preventDefault();
+                alert("Seleccione un rol de usuario");
+            }
+            });
+        });
+    </script>    
+{% endblock %} 

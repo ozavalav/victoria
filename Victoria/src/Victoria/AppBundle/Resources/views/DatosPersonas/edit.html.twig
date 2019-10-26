@@ -32,3 +32,68 @@
     </li>
     </ul>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function() {    
+            $('#victoria_appbundle_datospersonas_idEstructura').val({{ idEstructura }});
+            $('#victoria_appbundle_datospersonas_idComision').val({{ idComision }});
+        });
+        
+        $('#victoria_appbundle_datospersonas_idCampana').change(function(e) {
+        
+        var valcamp = $(this).val();  
+        e.preventDefault(); 
+          var param =  valcamp;
+           url="/Victoria/web/app_dev.php/aduser/buscarDistrito/" + param;
+          $.ajax({
+            type:'POST',
+            url:url,
+            beforeSend: function(){
+            $("#lblError").hide();	
+            },
+            dataType: 'json',
+            success:function(data){
+                if(data.message === 'false'){
+                    alert('false');
+                }else{
+                     var ejercicio = "<option value=''> -- seleccionar -- </option>";
+                     $.each(data, function(i) {
+                        ejercicio = ejercicio + "<option value='"+data[i].idDistrito+"'>"+data[i].idDistrito+ " - "+data[i].nombre+ "</option>";  
+                     });
+                     $('#victoria_appbundle_datospersonas_idDistrito').html(ejercicio);
+                     //$('#focal_appbundle_aduser_submit').prop('disabled', true);
+                }
+            }
+        });
+    });
+    
+    $('#victoria_appbundle_datospersonas_idEstructura').change(function(e) {
+        
+        var valcamp = $(this).val();  
+        e.preventDefault(); 
+          var param =  valcamp;
+           url="/Victoria/web/app_dev.php/aduser/buscarComision/" + param;
+          $.ajax({
+            type:'POST',
+            url:url,
+            beforeSend: function(){
+            $("#lblError").hide();	
+            },
+            dataType: 'json',
+            success:function(data){
+                if(data.message === 'false'){
+                    alert('false');
+                }else{
+                     var ejercicio = "<option value=''> -- seleccionar -- </option>";
+                     $.each(data, function(i) {
+                        ejercicio = ejercicio + "<option value='"+data[i].idTipoComision+"'>"+data[i].idTipoComision+ " - "+data[i].descripcion+ "</option>";  
+                     });
+                     $('#victoria_appbundle_datospersonas_idComision').html(ejercicio);
+                     //$('#focal_appbundle_aduser_submit').prop('disabled', true);
+                }
+            }
+        });
+    });
+    </script>
+{% endblock %} 

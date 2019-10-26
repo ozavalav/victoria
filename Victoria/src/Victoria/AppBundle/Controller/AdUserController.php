@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Victoria\AppBundle\Entity\AdUser;
 use Victoria\AppBundle\Form\AdUserType;
 use Victoria\AppBundle\Entity\Role;
+use Victoria\AppBundle\Entity\DatosPersonas;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 
 use Victoria\AppBundle\Entity\AppConst;
 
@@ -59,20 +62,25 @@ class AdUserController extends Controller
         $response = new JsonResponse();
         $response->headers->set('Content-Type', 'application/json');
         
-        $prmDistrito = $param;
+        $prmCampana = $param;
         $session = $request->getSession();
         $codMuni = $session->get('_cod_municipio');
         $codDep = $session->get('_cod_departamento');
         $codMuni = substr($codMuni, -2);
         $prmDep = str_pad($param, 2, "0", STR_PAD_LEFT);
+                
+        $strwhere = '';
+        if ($prmCampana != 0 ) {
+            $strwhere = 'WHERE d.idCampana = '. $prmCampana;
+        }
 
     //IDENTITY
+        
         $dql = 'SELECT d.idDistrito, d.nombre
-        FROM VictoriaAppBundle:DatosDistritos d 
-        WHERE d.idCampana = ?1 
-        order by d.nombre';
+        FROM VictoriaAppBundle:DatosDistritos d %s order by d.nombre';
+        $dql = sprintf($dql, $strwhere);
         $query = $em->createQuery($dql);
-        $query->setParameter(1, $prmDistrito);
+        //$query->setParameter(1, $prmCampana);
         $distritos = $query->getResult();
         $encoders = array(new XmlEncoder(), new JsonEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
@@ -81,6 +89,71 @@ class AdUserController extends Controller
         $response->setData($distritos);
         return $response;
     }
+    
+    /* Busco los distritos segun la campaña politica selecciona */
+    public function buscarComisionAction(Request $request, $param)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $response = new JsonResponse();
+        $response->headers->set('Content-Type', 'application/json');
+        
+        $prmEstructura = $param;
+                
+        $strwhere = '';
+        if ($prmEstructura != 0 ) {
+            $strwhere = 'WHERE d.idEstructura = '. $prmEstructura;
+        }
+
+    //IDENTITY
+        
+        $dql = 'SELECT d.idTipoComision, d.descripcion
+        FROM VictoriaAppBundle:AdTiposComision d %s order by d.descripcion';
+        $dql = sprintf($dql, $strwhere);
+        $query = $em->createQuery($dql);
+        //$query->setParameter(1, $prmCampana);
+        $comisiones = $query->getResult();
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new GetSetMethodNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+        $jsonContent = $serializer->serialize($comisiones, 'json');
+        $response->setData($comisiones);
+        return $response;
+    }
+    
+    /* Busco los usuarios segun el distrito seleccionado */
+    public function buscarUsuariosAction(Request $request, $param)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $response = new JsonResponse();
+        $response->headers->set('Content-Type', 'application/json');
+        
+        $prmDistrito = $param;
+        $session = $request->getSession();
+        $codMuni = $session->get('_cod_municipio');
+        $codDep = $session->get('_cod_departamento');
+        $codMuni = substr($codMuni, -2);
+        $prmDep = str_pad($param, 2, "0", STR_PAD_LEFT);
+                
+        $strwhere = '';
+        if ($prmDistrito != 0 ) {
+            $strwhere = 'WHERE d.idDistrito = '. $prmDistrito;
+        }
+
+    //IDENTITY
+        
+        $dql = 'SELECT d.id, d.username
+        FROM VictoriaAppBundle:AdUser d %s order by d.username';
+        $dql = sprintf($dql, $strwhere);
+        $query = $em->createQuery($dql);
+        //$query->setParameter(1, $prmCampana);
+        $distritos = $query->getResult();
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new GetSetMethodNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+        $jsonContent = $serializer->serialize($distritos, 'json');
+        $response->setData($distritos);
+        return $response;
+    }    
     
     public function cambioestadoAction($param){
         $parametros = explode("&&", $param);
@@ -161,8 +234,12 @@ class AdUserController extends Controller
      */
     public function createAction(Request $request)
     {
+        $session = $request->getSession();
+        $idEstructura = $session->get('_id_estructura');
+        
         $entity = new AdUser();
-        $form = $this->createCreateForm($entity);
+        
+        $form = $this->createCreateForm($entity, $idEstructura);
         $form->handleRequest($request);
         
         if ($form->isValid()) {
@@ -223,6 +300,30 @@ class AdUserController extends Controller
                 //$entity->setUserRoles(1);
             }
             
+            /* ----------------------------------------------------------------------------
+             * Al ingresa un usuario se crea una fila automaticamente a la tabla de personas 
+             * ----------------------------------------------------------------------------
+             */
+            $entper = new DatosPersonas();
+            $entper->setNombres($entity->getNombreUsuario());
+            $entper->setNumeroIdentidad($request->get('focal_appbundle_aduser')['numeroidentidad']);
+            $entper->setTelefono1($request->get('focal_appbundle_aduser')['telefono1']);
+            $entper->setTelefono2($request->get('focal_appbundle_aduser')['telefono2']);
+            $entper->setTelefono3($request->get('focal_appbundle_aduser')['telefono3']);
+            $entper->setEmail($entity->getEmail());
+            $entper->setIdEstructura($request->get('focal_appbundle_aduser')['idEstructura']);
+            $entper->setIdComision($request->get('focal_appbundle_aduser')['idComision']);
+            
+            $val = $request->get('focal_appbundle_aduser')['idCampana'];
+            $enttmp = $em->getRepository('VictoriaAppBundle:DatosCampanasPoliticas')->findBy(array('idCampana' => $val));
+            $entper->setIdCampana($enttmp[0]);
+            $val = $request->get('iddistrito');
+            $enttmp = $em->getRepository('VictoriaAppBundle:DatosDistritos')->findBy(array('idDistrito' => $val));
+            $entper->setIdDistrito($enttmp[0]);
+            
+            $entper->setEstado(1); //1 = Activo
+            
+            $em->persist($entper);
             $em->persist($entity);
             $em->flush();
 
@@ -243,14 +344,31 @@ class AdUserController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(AdUser $entity)
+    private function createCreateForm(AdUser $entity, $idEstructura = 0)
     {
         $form = $this->createForm(new AdUserType(), $entity, array(
             'action' => $this->generateUrl('aduser_create'),
             'method' => 'POST',
         ));
-
-        $form->add('submit', 'submit', array('label' => 'Guardar', 'attr' => array('class' => 'btn-success')));
+        
+        $form
+            ->add('numeroidentidad',null, array('mapped' => false, 'label'=> 'Número Identidad', 'attr' => array('required' => true, 'maxlength' => 20, 'placeholder' => 'Número identidad')))
+            ->add('telefono1',null, array('mapped' => false, 'label'=> 'Número Teléfono', 'attr' => array('required' => true, 'maxlength' => 12, 'placeholder' => 'Número de teléfono 1')))
+            ->add('telefono2',null, array('mapped' => false, 'label'=> 'Número Teléfono', 'attr' => array('maxlength' => 12, 'placeholder' => 'Número de teléfono 2')))
+            ->add('telefono3',null, array('mapped' => false, 'label'=> 'Número Teléfono', 'attr' => array('maxlength' => 12, 'placeholder' => 'Número de teléfono 3')))
+            ->add('idComision',EntityType::class,array(
+            'mapped' => false,    
+            'class' => 'VictoriaAppBundle:AdTiposComision',
+            'label' => 'Comision',    
+            'attr' => array('required' => true),
+            'query_builder' => function (EntityRepository $er) use ($idEstructura) {
+                return $er->createQueryBuilder('c')  
+                    ->where('c.idEstructura >= ?1')    
+                    ->orderBy('c.descripcion')
+                    ->setParameter(1,$idEstructura);
+                }
+            ))     
+            ->add('submit', 'submit', array('label' => 'Guardar', 'attr' => array('class' => 'btn-success')));
 
         return $form;
     }
@@ -261,12 +379,12 @@ class AdUserController extends Controller
      */
     public function newAction(Request $request)
     {
-        $entity = new AdUser();
-        $form   = $this->createCreateForm($entity);
-        
         $session = $request->getSession();
         $menu = $session->get('_menu');
+        $idEstructura = $session->get('_id_estructura');
         
+        $entity = new AdUser();
+        $form   = $this->createCreateForm($entity, $idEstructura);
 
         return $this->render('VictoriaAppBundle:AdUser:new.html.twig', array(
             'entity' => $entity,

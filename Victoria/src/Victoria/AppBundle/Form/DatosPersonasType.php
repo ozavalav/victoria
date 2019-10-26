@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 
 class DatosPersonasType extends AbstractType
 {
@@ -16,6 +17,15 @@ class DatosPersonasType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $cmpId = $options['label'];
+        
+        if($cmpId == 0 ) {
+            $strw = 'c.idCampana > ?1';
+        } else {
+            $strw = 'c.idCampana = ?1';
+        }
+        $cmpes = $options['attr']['estructura'];
+        
         $builder
             ->add('nombres')
             ->add('apellidos')
@@ -24,16 +34,62 @@ class DatosPersonasType extends AbstractType
             ->add('telefono2')
             ->add('telefono3')
             ->add('email')
-            ->add('idEstructura')
-            ->add('idCampana', EntityType::class, array(
+            //->add('idEstructura')
+            ->add('idEstructura', EntityType::class, array(
+                'required' => true,
+                'label' => 'Estructura',
+                'empty_value' => '-- Seleccione una estructura --',
+                'empty_data'  => null,               
+                'class' => 'VictoriaAppBundle:DatosEstructuras',
+                'choice_label' => 'nombre',
+            ))     
+            /*->add('idCampana', EntityType::class, array(
                 'class' => 'VictoriaAppBundle:DatosCampanasPoliticas',
                 'label' => 'Campaña'
             ))
             ->add('idDistrito', EntityType::class, array(
                 'class' => 'VictoriaAppBundle:DatosDistritos',
                 'label' => 'Distrito'
-            ))    
-            ->add('estado')
+            ))*/
+            ->add('idCampana',EntityType::class,array(
+            //'mapped' => false,    
+            'class' => 'VictoriaAppBundle:DatosCampanasPoliticas',
+            'choices_as_values' => true,    
+            'label' => 'Campaña',    
+            'required' => true,
+            'query_builder' => function (EntityRepository $er) use ($cmpId, $strw) {
+                return $er->createQueryBuilder('c')
+                    ->where($strw)    
+                    ->orderBy('c.nombre')
+                    ->setParameter(1,$cmpId);
+                }
+            ))
+            ->add('idDistrito',EntityType::class,array(
+            //'mapped' => false,    
+            'class' => 'VictoriaAppBundle:DatosDistritos',
+            'choices_as_values' => true,    
+            'label' => 'Distritos',    
+            'required' => true,
+            'query_builder' => function (EntityRepository $er) use ($cmpId, $strw) {
+                return $er->createQueryBuilder('c')
+                    ->where($strw)    
+                    ->orderBy('c.nombre')
+                    ->setParameter(1,$cmpId);
+                }
+            ))
+            ->add('idComision',EntityType::class,array(
+            //'mapped' => false,    
+            'class' => 'VictoriaAppBundle:AdTiposComision',
+            'label' => 'Comision',    
+            'attr' => array('required' => true),
+            'query_builder' => function (EntityRepository $er) use ($cmpes) {
+                return $er->createQueryBuilder('c')  
+                    ->where('c.idEstructura >= ?1')    
+                    ->orderBy('c.descripcion')
+                    ->setParameter(1,$cmpes);
+                }
+            ))     
+            //->add('estado')
         ;
     }
     

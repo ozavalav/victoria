@@ -55,11 +55,13 @@
                     <div class="box box-solid">
                       <div class="box-header with-border">
                         <i class="fa fa-bullhorn"></i>
-                        <h3 class="box-title">Comentario id: {{ com.idComentario }}</h3>
+                        <h4 class="box-title">Comentario id: {{ com.idComentario }}</h4>
+                        <i style="padding-left: 15px" class="fa fa-user-circle-o"></i>
+                        <h4 class="box-title">Realizado por: {{ com.usuario|upper }}</h4>
                       </div>
                       <!-- /.box-header -->
                       <div class="box-body">
-                        <blockquote style="font-size: medium;">
+                        <blockquote style="font-size: small;">
                             {{ com.mensaje|raw }}
                         </blockquote>
                       </div>

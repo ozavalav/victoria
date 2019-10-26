@@ -40,7 +40,7 @@ class DatosListaPresupuestoController extends Controller
 
         $entities = $em->getRepository('VictoriaAppBundle:DatosListaPresupuesto')->findBy(array('idPresupuesto' => $id ));
 
-        /* Preparo el formulario para agregar nueva item */
+        /* Preparo el formulario para agregar nuevo item */
         $entity = new DatosListaPresupuesto();
         $form   = $this->createCreateForm($entity);
         

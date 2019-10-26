@@ -19,6 +19,9 @@
     <field name="codMunicipio" type="string" column="cod_municipio" length="5" nullable="false"/>
     <field name="codDepartamento" type="string" column="cod_departamento" length="3" nullable="false"/>
     <field name="acceso" type="integer" column="acceso" nullable="false"/>
+    <field name="idEstructura" type="integer" column="id_estructura" nullable="false"/>
+    <field name="idCampana" type="integer" column="id_campana" nullable="false"/>
+    <field name="idDistrito" type="integer" column="id_distrito" nullable="false"/>
     <many-to-many field="role" target-entity="AdminRoles" inversed-by="user">
       <join-table name="user_role">
         <join-columns>

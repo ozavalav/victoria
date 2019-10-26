@@ -1,0 +1,136 @@
+{% extends '::basemenu.html.twig' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="{{ asset('bundles/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+{% endblock %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Agregar nueva publicidad
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-money"></i> Publicidades</a></li>
+        <li class="active">Agregar nueva publicidades</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+
+  {{ form_start(form) }}
+    {{ form_row(form.tipoPublicidad) }}
+    {{ form_row(form.descripcion) }}
+    {{ form_row(form.nombreMedioPublicidad) }}
+    {{ form_row(form.tipoAnuncio) }}
+    {{ form_row(form.comprobantePago) }}
+    {{ form_row(form.idCampana) }}
+    {{ form_row(form.idDistrito) }}
+    {{ form_row(form.submit) }}
+        {{ form_widget(form._token) }}
+    
+    <!-- DETALLE DE LA NOTIFICACION -->
+    
+    {{ form_end(form, {'render_rest': false})}}
+
+    
+<ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+        <a class="btn btn-md btn-success" href="{{ path('datospresupuestos') }}">
+            <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{asset('bundles/bower_components/moment/min/moment.min.js')}}"></script>
+    <script src="{{asset('bundles/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+    
+    <!-- Datepicker script  -->
+    <script type="text/javascript">
+        $(function () {
+            //Date picker
+    $('#victoria_appbundle_datospresupuestos_fechaEvento').datepicker({
+        language: "es",
+        todayHighlight: true,
+        autoclose: true
+    });
+
+        });
+    </script>
+    <!-- Ajax para cargar los distritos de una campaña  -->
+    <script type="text/javascript">
+        
+        $(function () {
+            
+            //*** Busca los distritos segun una campaña selecionada
+            
+            $('#victoria_appbundle_datospresupuestos_idCampana').change(function(e) {
+        var valdepto = $(this).val();  
+        e.preventDefault(); 
+          var param =  valdepto;
+           url="{{path('aduser')}}"+'buscarDistrito/'+ param;
+          $.ajax({
+            type:'POST',
+            url:url,
+            beforeSend: function(){
+            $("#lblError").hide();	
+            },
+            dataType: 'json',
+            success:function(data){
+                if(data.message === 'false'){
+                    alert('false');
+                }else{
+                     var ejercicio = "<option value=''> -- seleccionar -- </option>";
+                     $.each(data, function(i) {
+                        ejercicio = ejercicio + "<option value='"+data[i].idDistrito+"'>"+data[i].idDistrito+ " - "+data[i].nombre+ "</option>";  
+                     });
+                     $('#victoria_appbundle_datospresupuestos_idDistrito').html(ejercicio);
+                     //$('#focal_appbundle_aduser_submit').prop('disabled', true);
+                }
+            }
+        });
+    }); 
+    
+    //*** Busca los usuarios segun el distrito seleccionado ***/
+    
+    $('#victoria_appbundle_datospresupuestos_idDistrito').change(function(e) {
+        var valdepto = $(this).val();  
+        e.preventDefault(); 
+          var param =  valdepto;
+           url="{{path('aduser')}}"+'buscarUsuarios/'+ param;
+           alert(url);
+          $.ajax({
+            type:'POST',
+            url:url,
+            beforeSend: function(){
+            $("#lblError").hide();	
+            },
+            dataType: 'json',
+            success:function(data){
+                if(data.message === 'false'){
+                    alert('false');
+                }else{
+                     var ejercicio = "<option value=''> -- seleccionar -- </option>";
+                     var ejercicio = "<option value='0'>todos los usuarios</option>";
+                     $.each(data, function(i) {
+                        ejercicio = ejercicio + "<option value='"+data[i].id+"'>"+data[i].id+ " - "+data[i].username+ "</option>";  
+                     });
+                     $('#victoria_appbundle_datospresupuestos_idActividadEgreso').html(ejercicio);
+                     //$('#focal_appbundle_aduser_submit').prop('disabled', true);
+                }
+            }
+        });
+    });
+    
+        });
+    </script>
+    
+{% endblock %}    

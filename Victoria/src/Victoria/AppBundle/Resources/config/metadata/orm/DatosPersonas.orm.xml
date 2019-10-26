@@ -14,5 +14,6 @@
     <field name="idEstructura" type="integer" column="id_estructura" nullable="false"/>
     <field name="idCampana" type="integer" column="id_campana" nullable="false"/>
     <field name="estado" type="integer" column="estado" nullable="false"/>
+    <field name="idDistrito" type="integer" column="id_distrito" nullable="false"/>
   </entity>
 </doctrine-mapping>

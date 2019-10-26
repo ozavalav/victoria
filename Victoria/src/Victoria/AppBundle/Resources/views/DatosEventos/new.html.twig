@@ -1,6 +1,10 @@
 {% extends '::basemenu.html.twig' %}
 {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="{{ asset('bundles/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+{% endblock %}
 {% block menu %}
     {{ menu|raw }}
 {% endblock %}
@@ -8,28 +12,57 @@
 <!-- Content Header (Page header) -->
     <section style="padding-bottom: 20px;"class="content-header">
       <h1>
-        Agregar campañas politicas
+        Agregar agenda
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-flag"></i> Campañas</a></li>
-        <li class="active">Agregar nueva campaña politica</li>
+        <li><a href="#"><i class="fa fa-flag"></i> Agendas</a></li>
+        <li class="active">Agregar agenda</li>
       </ol>
     </section>
 {% endblock %}
 
 {% block content -%}
+    
+ {{ form_start(form) }}
 
-    {{ form(form) }}
+        {{ form_row(form.titulo) }}
+        {{ form_row(form.descripcion) }}
+        {{ form_row(form.fechaInicio) }}
+        {{ form_row(form.fechaFinal) }}
+        {{ form_row(form.idCampana) }}
+        {{ form_row(form.idDistrito) }} 
+        {{ form_row(form.submit) }}
+        {{ form_widget(form._token) }}
+    {{ form_end(form, {'render_rest': false})}}
 
     <ul style="list-style: none; margin-left: 0; text-align: right ">
     <li>
-        <a class="btn btn-md btn-success"  href="{{ path('datoseventos') }}">
-              <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        <a class="btn btn-md btn-success" href="{{ path('datoseventos') }}">
+            <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
         </a>
     </li>
     </ul>
         
 {% endblock %}
 {% block javascripts %}
-    {{ parent() }}    
-{% endblock %} 
+    {{ parent() }}
+    <script src="{{asset('bundles/bower_components/moment/min/moment.min.js')}}"></script>
+    <script src="{{asset('bundles/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+    
+    <script type="text/javascript">
+        $(function () {
+            //Date picker
+    $('#victoria_appbundle_datoseventos_fechaInicio').datepicker({
+        language: "es",
+        todayHighlight: true,
+        autoclose: true
+    });
+    $('#victoria_appbundle_datoseventos_fechaFinal').datepicker({
+        language: "es",
+        todayHighlight: true,
+        autoclose: true
+    });
+
+        });
+    </script>
+{% endblock %}  

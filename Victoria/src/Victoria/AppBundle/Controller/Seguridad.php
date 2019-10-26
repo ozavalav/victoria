@@ -72,7 +72,7 @@ class Seguridad extends Controller {
           }
     }
     
-    public function fitrarConsulta($idCampana, $idDistrito) {
+    public function filtrarConsulta($idCampana, $idDistrito) {
         $strWhere = ""; 
         if($idCampana === 0 and $idDistrito === 0 ) {
             $strWhere = "";
@@ -84,5 +84,26 @@ class Seguridad extends Controller {
             $strWhere = " where p.id_campana = ".$idCampana." and p.id_distrito = ".$idDistrito;
         }
         return $strWhere;
+    }
+    
+    public function obtenerNotificaciones($idUsuario){
+        /* Lectura de las Notificaciones que recibe el usuario las prepara 
+         * para ser cargados en cada pagina se leen una cada vez al principio 
+         * cuando el usuario ingresa a una opcion Las Notificaciones se muestran  
+         * en la parte superior de la pantalla.
+         */
+        $em = $this->getDoctrine()->getManager();
+        
+        $query = "select row_number() over( order by fecha_enviado desc ) orden, numero_mensaje, estado, substring(mensaje,1,30) mensaje
+from datos_notificaciones where id_usuario = :idusuario and estado = 1
+order by fecha_enviado desc";
+        //$query = sprintf($query, $codColg, $rngfechag);
+        $stmt = $em->getConnection()->prepare($query);
+        $stmt->bindValue('idusuario', $idUsuario);
+        //$stmt->bindValue('distrito',$idDistrito);
+        $stmt->execute();
+        $entnot = $stmt->fetchAll();
+        
+        return $entnot;
     }
 }

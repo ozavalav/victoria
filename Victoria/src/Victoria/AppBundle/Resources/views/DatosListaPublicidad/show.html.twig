@@ -1,0 +1,80 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>DatosListaPublicidad</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Idlista</th>
+                <td>{{ entity.idLista }}</td>
+            </tr>
+            <tr>
+                <th>Tipoanuncio</th>
+                <td>{{ entity.tipoAnuncio }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Target</th>
+                <td>{{ entity.target }}</td>
+            </tr>
+            <tr>
+                <th>Pautapublicitaria</th>
+                <td>{{ entity.pautaPublicitaria }}</td>
+            </tr>
+            <tr>
+                <th>Personasalcanzadas</th>
+                <td>{{ entity.personasAlcanzadas }}</td>
+            </tr>
+            <tr>
+                <th>Megusta</th>
+                <td>{{ entity.meGusta }}</td>
+            </tr>
+            <tr>
+                <th>Meencanta</th>
+                <td>{{ entity.meEncanta }}</td>
+            </tr>
+            <tr>
+                <th>Medivierte</th>
+                <td>{{ entity.meDivierte }}</td>
+            </tr>
+            <tr>
+                <th>Meenoja</th>
+                <td>{{ entity.meEnoja }}</td>
+            </tr>
+            <tr>
+                <th>Meentristece</th>
+                <td>{{ entity.meEntristece }}</td>
+            </tr>
+            <tr>
+                <th>Comentariospositivos</th>
+                <td>{{ entity.comentariosPositivos }}</td>
+            </tr>
+            <tr>
+                <th>Comentariosnegativos</th>
+                <td>{{ entity.comentariosNegativos }}</td>
+            </tr>
+            <tr>
+                <th>Compartidos</th>
+                <td>{{ entity.compartidos }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('datoslistapublicidad') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('datoslistapublicidad_edit', { 'id': entity.idLista }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 class DatosEventosType extends AbstractType
 {
     /**
@@ -14,17 +16,18 @@ class DatosEventosType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        
         $builder
             ->add('titulo')
-            ->add('fechaInicioPreparacion')
-            ->add('fechaInicio')
-            ->add('fechaFinal')
-            ->add('horaInicio')
+            ->add('descripcion')
+            ->add('fechaInicio',TextType::class,array('label'=>'Fecha inicio'))                
+            ->add('fechaFinal',TextType::class,array('label'=>'Fecha final'))
             ->add('usuarioCreacion')
             ->add('fechaCreacion')
             ->add('usuarioUltimaModificacion')
             ->add('fechaUltimaModificacion')
             ->add('idCampana')
+            ->add('idDistrito')
         ;
     }
     

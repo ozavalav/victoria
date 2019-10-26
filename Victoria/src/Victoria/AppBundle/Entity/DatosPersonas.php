@@ -107,7 +107,12 @@ class DatosPersonas
      */
     private $estado;
 
-
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_comision", type="integer", nullable=false)
+     */
+    private $idComision;
 
     /**
      * Get idPersona
@@ -370,6 +375,29 @@ class DatosPersonas
     {
         return $this->estado;
     }
+    
+    /**
+     * Set idComision
+     *
+     * @param integer $idComision
+     * @return DatosPersonas
+     */
+    public function setIdComision($idComision)
+    {
+        $this->idComision = $idComision;
+
+        return $this;
+    }
+
+    /**
+     * Get idComision
+     *
+     * @return integer 
+     */
+    public function getIdComision()
+    {
+        return $this->idComision;
+    }    
     
     function __toString()
     {

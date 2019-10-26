@@ -3,6 +3,8 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="{{ asset('bundles/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
 {% endblock %}
 {% block menu %}
     {{ menu|raw }}
@@ -11,23 +13,55 @@
 <!-- Content Header (Page header) -->
     <section style="padding-bottom: 20px;"class="content-header">
       <h1>
-        Editar campaña política
+        Editar agenda
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-flag"></i> Campañas</a></li>
-        <li class="active">Editar campaña política</li>
+        <li><a href="#"><i class="fa fa-flag"></i> Agenda</a></li>
+        <li class="active">Editar agenda</li>
       </ol>
     </section>
 {% endblock %}
 {% block content -%}
+    
+   {{ form_start(edit_form) }}
 
-    {{ form(edit_form) }}
+        {{ form_row(edit_form.titulo) }}
+        {{ form_row(edit_form.descripcion) }}
+        {{ form_row(edit_form.fechaInicio) }}
+        {{ form_row(edit_form.fechaFinal) }}
+        {{ form_row(edit_form.idCampana) }}
+        {{ form_row(edit_form.idDistrito) }} 
+        {{ form_row(edit_form.submit) }}
+        {{ form_widget(edit_form._token) }}
+    {{ form_end(edit_form, {'render_rest': false})}}
 
     <ul style="list-style: none; margin-left: 0; text-align: right ">
     <li>
-        <a class="btn btn-md btn-success"{{ path('datoseventos') }}">
+        <a class="btn btn-md btn-success"href="{{ path('datoseventos') }}">
             <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
         </a>
     </li>
     </ul>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{asset('bundles/bower_components/moment/min/moment.min.js')}}"></script>
+    <script src="{{asset('bundles/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+    
+    <script type="text/javascript">
+        $(function () {
+            //Date picker
+    $('#victoria_appbundle_datoseventos_fechaInicio').datepicker({
+        language: "es",
+        todayHighlight: true,
+        autoclose: true
+    });
+    $('#victoria_appbundle_datoseventos_fechaFinal').datepicker({
+        language: "es",
+        todayHighlight: true,
+        autoclose: true
+    });
+
+        });
+    </script>
+{% endblock %} 

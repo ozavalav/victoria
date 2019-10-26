@@ -28,7 +28,13 @@ class AdTiposComision
      * @ORM\Column(name="descripcion", type="string", length=256, nullable=true)
      */
     private $descripcion;
-
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_estructura", type="integer", nullable=false)
+     */
+    private $idEstructura;
 
 
     /**
@@ -62,6 +68,29 @@ class AdTiposComision
     public function getDescripcion()
     {
         return $this->descripcion;
+    }
+    
+    /**
+     * Set idEstructura
+     *
+     * @param integer $idEstructura
+     * @return AdTiposComision
+     */
+    public function setIdEstructura($idEstructura)
+    {
+        $this->idEstructura = $idEstructura;
+
+        return $this;
+    }
+
+    /**
+     * Get idEstructura
+     *
+     * @return integer 
+     */
+    public function getIdEstructura()
+    {
+        return $this->idEstructura;
     }
     
     function __toString()

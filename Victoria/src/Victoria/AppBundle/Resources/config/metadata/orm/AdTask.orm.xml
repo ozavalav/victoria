@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AdTask" table="ad_task">
+    <indexes>
+      <index name="IDX_EAB18940BF396750" columns="id"/>
+      <index name="IDX_EAB1894070C3F9A2" columns="useradd_task"/>
+      <index name="IDX_EAB189407108DE91" columns="userwt_task"/>
+    </indexes>
+    <id name="idTask" type="integer" column="id_task">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="descriptionTask" type="string" column="description_task" length="100" nullable="false"/>
+    <field name="fcinitTask" type="date" column="fcinit_task" nullable="false"/>
+    <field name="stateTask" type="integer" column="state_task" nullable="false"/>
+    <field name="eventoTask" type="integer" column="evento_task" nullable="false"/>
+    <many-to-one field="userwtTask" target-entity="AdUser">
+      <join-columns>
+        <join-column name="userwt_task" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="useraddTask" target-entity="AdUser">
+      <join-columns>
+        <join-column name="useradd_task" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="id" target-entity="AdUser">
+      <join-columns>
+        <join-column name="id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

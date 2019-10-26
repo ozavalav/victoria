@@ -21,22 +21,31 @@ class DatosEventosController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
         $session = $request->getSession();
         $menu = $session->get('_menu');
         
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('VictoriaAppBundle:DatosEventos')->findAll();
+        
+        $entity = new DatosEventos();
+        $form   = $this->createCreateForm($entity);
 
         return $this->render('VictoriaAppBundle:DatosEventos:index.html.twig', array(
             'entities' => $entities,
-            'menu' => $menu
+            'form'   => $form->createView(),
+            'menu' => $menu,
         ));
     }
     /**
      * Creates a new DatosEventos entity.
      *
      */
+
+    
     public function createAction(Request $request)
     {
         $entity = new DatosEventos();
@@ -45,10 +54,27 @@ class DatosEventosController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            
+            $usr= $this->get('security.context')->getToken()->getUser();
+            $usuario = $usr->getUsername();
+            $fecha = new \DateTime("now");
+            $entity->setUsuarioCreacion($usuario);
+            $entity->setUsuarioUltimaModificacion($usuario);
+            $entity->setFechaCreacion($fecha);
+            $entity->setFechaUltimaModificacion($fecha);
+            
+            $fechatmp = $entity->getFechaInicio();            
+            $fecha = new \DateTime($fechatmp);
+            $entity->setFechaInicio($fecha);
+            
+            $fechatmp = $entity->getFechaFinal();            
+            $fecha = new \DateTime($fechatmp);
+            $entity->setFechaFinal($fecha);
+            
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('datoseventos_show', array('id' => $entity->getIdEventos())));
+            return $this->redirect($this->generateUrl('datoseventos'));
         }
 
         return $this->render('VictoriaAppBundle:DatosEventos:new.html.twig', array(
@@ -82,6 +108,7 @@ class DatosEventosController extends Controller
      */
     public function newAction(Request $request)
     {
+
         $session = $request->getSession();
         $menu = $session->get('_menu');
         
@@ -101,6 +128,7 @@ class DatosEventosController extends Controller
      */
     public function showAction(Request $request, $id)
     {
+
         $session = $request->getSession();
         $menu = $session->get('_menu');
         
@@ -112,7 +140,6 @@ class DatosEventosController extends Controller
             throw $this->createNotFoundException('Unable to find DatosEventos entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('VictoriaAppBundle:DatosEventos:show.html.twig', array(
             'entity'      => $entity,
@@ -126,6 +153,7 @@ class DatosEventosController extends Controller
      */
     public function editAction(Request $request, $id)
     {
+
         $session = $request->getSession();
         $menu = $session->get('_menu');
         
@@ -136,13 +164,15 @@ class DatosEventosController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find DatosEventos entity.');
         }
-
-        $editForm = $this->createEditForm($entity);
-
+        
+        $entity->setFechaInicio($entity->getFechaInicio()->format('m/d/Y'));
+        $entity->setFechaFinal($entity->getFechaFinal()->format('m/d/Y'));
+        
+        $editForm = $this->createEditForm($entity); 
+                
         return $this->render('VictoriaAppBundle:DatosEventos:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
             'menu' => $menu,
         ));
     }
@@ -157,7 +187,7 @@ class DatosEventosController extends Controller
     private function createEditForm(DatosEventos $entity)
     {
         $form = $this->createForm(new DatosEventosType(), $entity, array(
-            'action' => $this->generateUrl('datoseventos_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('datoseventos_update', array('id' => $entity->getIdEventos())),
             'method' => 'PUT',
         ));
 
@@ -184,6 +214,21 @@ class DatosEventosController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            
+            $usr= $this->get('security.context')->getToken()->getUser();
+            $usuario = $usr->getUsername();
+            $fecha = new \DateTime("now");
+            $entity->setUsuarioUltimaModificacion($usuario);
+            $entity->setFechaUltimaModificacion($fecha);
+            
+            $fechatmp = $entity->getFechaInicio();            
+            $fecha = new \DateTime($fechatmp);
+            $entity->setFechaInicio($fecha);
+            
+            $fechatmp = $entity->getFechaFinal();            
+            $fecha = new \DateTime($fechatmp);
+            $entity->setFechaFinal($fecha);
+            
             $em->flush();
 
             return $this->redirect($this->generateUrl('datoseventos_edit', array('id' => $id)));

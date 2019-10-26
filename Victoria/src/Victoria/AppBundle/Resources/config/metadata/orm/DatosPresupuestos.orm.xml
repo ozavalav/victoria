@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosPresupuestos" table="datos_presupuestos">
+    <indexes>
+      <index name="IDX_A534A80EB8445919" columns="id_campana"/>
+      <index name="IDX_A534A80EEEFCF568" columns="id_distrito"/>
+    </indexes>
+    <id name="idPresupuesto" type="integer" column="id_presupuesto">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="tipoEgreso" type="integer" column="tipo_egreso" nullable="true"/>
+    <field name="idActividadEgreso" type="integer" column="id_actividad_egreso" nullable="true"/>
+    <field name="fuenteEgreso" type="integer" column="fuente_egreso" nullable="true"/>
+    <field name="descripcion" type="string" column="descripcion" length="256" nullable="true"/>
+    <field name="preparadoPor" type="integer" column="preparado_por" nullable="false"/>
+    <field name="aprobadoPor" type="integer" column="aprobado_por" nullable="true"/>
+    <field name="estado" type="integer" column="estado" nullable="true"/>
+    <field name="totalPresupuestoEstimado" type="decimal" column="total_presupuesto_estimado" precision="10" scale="0" nullable="true"/>
+    <field name="totalPresupuestoEjecutado" type="decimal" column="total_presupuesto_ejecutado" precision="10" scale="0" nullable="true"/>
+    <field name="fechaEvento" type="datetime" column="fecha_evento" nullable="true"/>
+    <field name="lugarEvento" type="string" column="lugar_evento" length="256" nullable="true"/>
+    <field name="objetivoEvento" type="string" column="objetivo_evento" length="512" nullable="true"/>
+    <many-to-one field="idDistrito" target-entity="DatosDistritos">
+      <join-columns>
+        <join-column name="id_distrito" referenced-column-name="id_distrito"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idCampana" target-entity="DatosCampanasPoliticas">
+      <join-columns>
+        <join-column name="id_campana" referenced-column-name="id_campana"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

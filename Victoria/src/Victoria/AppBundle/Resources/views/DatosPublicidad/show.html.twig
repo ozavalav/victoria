@@ -1,0 +1,83 @@
+{% extends '::basemenu.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Información de la publicidad
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-money"></i> Publicidad</a></li>
+        <li class="active">Ver información de la publicidad</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    <table class="table table-striped table-bordered table-responsive">
+        <tbody>
+            <tr>
+                <th>Idpublicidad</th>
+                <td>{{ entity.idpublicidad }}</td>
+            </tr>
+            <tr>
+                <th>Tipopublicidad</th>
+                <td>{{ entity.tipopublicidad }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ entity.estado }}</td>
+            </tr>
+            <tr>
+                <th>Nombremediopublicidad</th>
+                <td>{{ entity.nombremediopublicidad }}</td>
+            </tr>
+            <tr>
+                <th>Tipoanuncio</th>
+                <td>{{ entity.tipoanuncio }}</td>
+            </tr>
+            <tr>
+                <th>Comprobantepago</th>
+                <td>{{ entity.comprobantepago }}</td>
+            </tr>
+            <tr>
+                <th>Usuario creacion</th>
+                <td>{{ entity.usuariocreacion }}</td>
+            </tr>
+            <tr>
+                <th>Fecha creacion</th>
+                <td>{{ entity.fechacreacion|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Usuario ultima modificacion</th>
+                <td>{{ entity.usuarioultimamodificacion }}</td>
+            </tr>
+            <tr>
+                <th>Fecha ultima modificacion</th>
+                <td>{{ entity.fechaultimamodificacion|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+ </table>
+        
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    {% if is_granted('ROLE_ADMIN') %}    
+    <li style="float: right; margin: 0px 0px 5px 10px;">
+        <a style="display: block; " class="btn btn-md btn-success" href="{{ path('datospublicidad_edit', { 'id': entity.idpublicidad     }) }}">
+            <i class="ace-icon fa fa-edit align-top bigger-120"></i> Editar 
+        </a>
+    </li>
+    {% endif %}
+    <li style="float: right;">
+        <a style="display: block;" class="btn btn-md btn-success" href="{{ path('datospublicidad') }}">
+            <i class="ace-icon fa fa-fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>            
+{% endblock %}
+

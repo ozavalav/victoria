@@ -89,8 +89,20 @@ class DatosNotificaciones
      */
     private $idDistrito;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_evento", type="integer", nullable=true)
+     */
+    private $idEvento;
 
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="usuario", type="string", length=25, nullable=false)
+     */
+    private $usuario;    
+    
     /**
      * Get idNotificacion
      *
@@ -168,6 +180,28 @@ class DatosNotificaciones
     public function getEstado()
     {
         return $this->estado;
+    }
+    /**
+     * Set idEvento
+     *
+     * @param integer $idEvento
+     * @return DatosNotificaciones
+     */
+    public function setIdEvento($idEvento)
+    {
+        $this->idEvento = $idEvento;
+
+        return $this;
+    }
+
+    /**
+     * Get idEvento
+     *
+     * @return integer 
+     */
+    public function getIdEvento()
+    {
+        return $this->idEvento;
     }
 
     /**
@@ -284,4 +318,28 @@ class DatosNotificaciones
     {
         return $this->idDistrito;
     }
+    
+    /**
+     * Set usuario
+     *
+     * @param string usuario
+     *
+     * @return DatosNotificaciones
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }    
 }

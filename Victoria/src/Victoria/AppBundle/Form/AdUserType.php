@@ -35,7 +35,7 @@ class AdUserType extends AbstractType
             //add('idMunicipio')
             //->add('idComunidad')
             //->add('isActive')
-            ->add('email',null, array('label'=>'Correo', 'attr' => array('maxlength' => 128, 'placeholder' => 'Correo electrónico del usuario')))
+            ->add('email',null, array('label'=>'Correo', 'required' => true, 'attr' => array('maxlength' => 128, 'placeholder' => 'Correo electrónico del usuario')))
             //->add('fechaCreacion')
             //->add('usuarioCreacion')
             //->add('usuarioUltimaModificacion')
@@ -65,7 +65,7 @@ class AdUserType extends AbstractType
                 'choice_label' => 'nombre',
             ))     
             ->add('acceso', EntityType::class, array(
-                'required' => false,
+                'required' => true,
                 'label' => 'Acceso',
                 'empty_value' => '-- Seleccione acceso --',
                 'empty_data'  => null,               

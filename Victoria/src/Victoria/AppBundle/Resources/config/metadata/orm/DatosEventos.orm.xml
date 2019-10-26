@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosEventos" table="datos_eventos">
+    <indexes>
+      <index name="IDX_AFB9D42AB8445919" columns="id_campana"/>
+      <index name="IDX_AFB9D42AEEFCF568" columns="id_distrito"/>
+    </indexes>
+    <id name="idEventos" type="integer" column="id_eventos">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="titulo" type="string" column="titulo" length="256" nullable="false"/>
+    <field name="descripcion" type="string" column="descripcion" length="256" nullable="true"/>
+    <field name="fechaInicio" type="datetime" column="fecha_inicio" nullable="false"/>
+    <field name="fechaFinal" type="datetime" column="fecha_final" nullable="false"/>
+    <field name="usuarioCreacion" type="string" column="usuario_creacion" length="32" nullable="true"/>
+    <field name="fechaCreacion" type="datetime" column="fecha_creacion" nullable="true"/>
+    <field name="usuarioUltimaModificacion" type="string" column="usuario_ultima_modificacion" length="32" nullable="true"/>
+    <field name="fechaUltimaModificacion" type="datetime" column="fecha_ultima_modificacion" nullable="true"/>
+    <many-to-one field="idDistrito" target-entity="DatosDistritos">
+      <join-columns>
+        <join-column name="id_distrito" referenced-column-name="id_distrito"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idCampana" target-entity="DatosCampanasPoliticas">
+      <join-columns>
+        <join-column name="id_campana" referenced-column-name="id_campana"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

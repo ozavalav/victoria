@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosListaPublicidad" table="datos_lista_publicidad">
+    <id name="idLista" type="integer" column="id_lista">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="idPublicidad" type="integer" column="id_publicidad" nullable="false"/>
+    <field name="tipoAnuncio" type="string" column="tipo_anuncio" length="100" nullable="true"/>
+    <field name="descripcion" type="string" column="descripcion" length="256" nullable="true"/>
+    <field name="target" type="string" column="target" nullable="false"/>
+    <field name="pautaPublicitaria" type="integer" column="pauta_publicitaria" nullable="false"/>
+    <field name="personasAlcanzadas" type="integer" column="personas_alcanzadas" nullable="true"/>
+    <field name="meGusta" type="integer" column="me_gusta" nullable="true"/>
+    <field name="meEncanta" type="integer" column="me_encanta" nullable="true"/>
+    <field name="meDivierte" type="integer" column="me_divierte" nullable="true"/>
+    <field name="meEnoja" type="integer" column="me_enoja" nullable="true"/>
+    <field name="meEntristece" type="integer" column="me_entristece" nullable="true"/>
+    <field name="comentariosPositivos" type="integer" column="comentarios_positivos" nullable="true"/>
+    <field name="comentariosNegativos" type="integer" column="comentarios_negativos" nullable="true"/>
+    <field name="compartidos" type="integer" column="compartidos" nullable="true"/>
+  </entity>
+</doctrine-mapping>

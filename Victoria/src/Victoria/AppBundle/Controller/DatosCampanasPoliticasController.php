@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Victoria\AppBundle\Entity\DatosCampanasPoliticas;
 use Victoria\AppBundle\Form\DatosCampanasPoliticasType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 /**
  * DatosCampanasPoliticas controller.
  *
@@ -21,21 +23,43 @@ class DatosCampanasPoliticasController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
+        /* Carga las variables de sesion del usuarios necesarias para dibujar menu y filtar la información */
         $session = $request->getSession();
         $menu = $session->get('_menu');
+        $idCampana = $session->get('_id_campana');
+        $idDistrito = $session->get('_id_distrito');
+        $idUsuario = $session->get('_id_usuario');
+        
+        /* Obtiene las notificaciones que tiene el usuario */
+        $entnot = $seg->obtenerNotificaciones($idUsuario);
         
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('VictoriaAppBundle:DatosCampanasPoliticas')->findAll();
-
+        if($idCampana == 0 && $idDistrito == 0) {
+            $entities = $em->getRepository('VictoriaAppBundle:DatosCampanasPoliticas')->findAll();
+        } elseif($idCampana != 0 && $idDistrito == 0 ) {
+            $entities = $em->getRepository('VictoriaAppBundle:DatosCampanasPoliticas')->findBy(['idCampana' => $idCampana]);
+        } else {
+            $entities = $em->getRepository('VictoriaAppBundle:DatosCampanasPoliticas')->findBy(['idCampana' => $idCampana]);
+        }
         return $this->render('VictoriaAppBundle:DatosCampanasPoliticas:index.html.twig', array(
             'entities' => $entities,
-            'menu' => $menu
+            'menu' => $menu,
+            'datosnoti' => $entnot,
         ));
     }
     /**
      * Creates a new DatosCampanasPoliticas entity.
-     *
+     * 
      */
     public function createAction(Request $request)
     {
@@ -78,10 +102,19 @@ class DatosCampanasPoliticasController extends Controller
 
     /**
      * Displays a form to create a new DatosCampanasPoliticas entity.
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function newAction(Request $request)
     {
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
         $session = $request->getSession();
         $menu = $session->get('_menu');
         
@@ -120,10 +153,19 @@ class DatosCampanasPoliticasController extends Controller
 
     /**
      * Displays a form to edit an existing DatosCampanasPoliticas entity.
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function editAction(Request $request, $id)
     {
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
         $session = $request->getSession();
         $menu = $session->get('_menu');
         

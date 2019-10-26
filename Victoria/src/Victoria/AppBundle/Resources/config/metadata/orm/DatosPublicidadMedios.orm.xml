@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="DatosPublicidadMedios" table="datos_publicidad_medios">
+    <indexes>
+      <index name="IDX_AFDFBDD1B8445919" columns="id_campana"/>
+      <index name="IDX_AFDFBDD11A051D29" columns="id_publicidad"/>
+    </indexes>
+    <id name="idPublicidadMedios" type="integer" column="id_publicidad_medios">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="nombreMedioPublicitario" type="string" column="nombre_medio_publicitario" length="8" nullable="false"/>
+    <field name="audiencia" type="string" column="audiencia" nullable="false"/>
+    <field name="frecuencia" type="string" column="frecuencia" nullable="false"/>
+    <field name="tipoAnuncio" type="string" column="tipo_anuncio" nullable="false"/>
+    <field name="costo" type="string" column="costo" nullable="false"/>
+    <field name="comprobantePago" type="string" column="comprobante_pago" nullable="false"/>
+    <field name="idEstado" type="integer" column="id_estado" nullable="true"/>
+    <field name="fechaCreacion" type="datetime" column="fecha_creacion" nullable="true"/>
+    <field name="usuarioCreacion" type="string" column="usuario_creacion" length="32" nullable="true"/>
+    <field name="usuarioUltimaModificacion" type="string" column="usuario_ultima_modificacion" length="32" nullable="true"/>
+    <field name="fechaUltimaModificacion" type="datetime" column="fecha_ultima_modificacion" nullable="true"/>
+    <many-to-one field="idPublicidad" target-entity="AdTiposPublicidad">
+      <join-columns>
+        <join-column name="id_publicidad" referenced-column-name="id_publicidad"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idCampana" target-entity="DatosCampanasPoliticas">
+      <join-columns>
+        <join-column name="id_campana" referenced-column-name="id_campana"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

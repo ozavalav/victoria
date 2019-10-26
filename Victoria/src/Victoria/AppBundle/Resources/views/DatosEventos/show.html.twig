@@ -1,9 +1,22 @@
-{% extends '::base.html.twig' %}
+{% extends '::basemenu.html.twig' %}
 
-{% block body -%}
-    <h1>DatosEventos</h1>
-
-    <table class="record_properties">
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Información agenda
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-flag"></i> Agenda</a></li>
+        <li class="active">Ver información de agenda</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    <table class="table table-striped table-bordered table-responsive">
         <tbody>
             <tr>
                 <th>Ideventos</th>
@@ -13,21 +26,26 @@
                 <th>Titulo</th>
                 <td>{{ entity.titulo }}</td>
             </tr>
+
             <tr>
-                <th>Fechainiciopreparacion</th>
-                <td>{{ entity.fechaInicioPreparacion|date('Y-m-d H:i:s') }}</td>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
             </tr>
             <tr>
-                <th>Fechainicio</th>
+                <th>Campaña</th>
+                <td>{{ entity.idCampana }}</td>
+            </tr>
+            <tr>
+                <th>Distrito</th>
+                <td>{{ entity.idDistrito }}</td>
+            </tr>
+            <tr>
+                <th>Fecha final</th>
                 <td>{{ entity.fechaInicio|date('Y-m-d H:i:s') }}</td>
             </tr>
             <tr>
-                <th>Fechafinal</th>
+                <th>Fecha inicio</th>
                 <td>{{ entity.fechaFinal|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
-                <th>Horainicio</th>
-                <td>{{ entity.horaInicio }}</td>
             </tr>
             <tr>
                 <th>Usuariocreacion</th>
@@ -47,18 +65,17 @@
             </tr>
         </tbody>
     </table>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('datoseventos') }}">
-            Back to the list
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li style="float: left; padding: 5px;">
+        <a style="display: block; " class="btn btn-md btn-success" href="{{ path('datoseventos_edit', { 'id': entity.idEventos }) }}">
+            <i class="ace-icon fa fa-edit align-top bigger-120"></i> Editar 
+        </a>
+    </li>    
+    <li style="float: left; padding: 5px;">
+        <a style="display: block;" class="btn btn-md btn-success"  href="{{ path('datoseventos') }}">
+            <i class="ace-icon fa fa-fa-arrow-left align-top bigger-120"></i> Regresar 
         </a>
     </li>
-    <li>
-        <a href="{{ path('datoseventos_edit', { 'id': entity.idEventos }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    </ul>
+        
 {% endblock %}

@@ -7,8 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Victoria\AppBundle\Entity\DatosPresupuestos;
 use Victoria\AppBundle\Form\DatosPresupuestosType;
+use Victoria\AppBundle\Entity\DatosNotificaciones;
+
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
@@ -43,7 +47,7 @@ class DatosPresupuestosController extends Controller
         $idDistrito = $session->get('_id_distrito');
         
         /* Se define que información va a filtar segun el nivel de campana y distrito que tiene asignado*/
-        $strWhere = $seg->fitrarConsulta($idCampana,$idDistrito);
+        $strWhere = $seg->filtrarConsulta($idCampana,$idDistrito);
         
         $query = "select p.id_presupuesto idpresupuesto, 
             p.tipo_egreso,
@@ -93,14 +97,27 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
         $session = $request->getSession();
         $menu = $session->get('_menu');
         $idUsr = $session->get('_id_usuario');
+        $usuario = $session->get('_nombre_usuario');
+        $seg = $this->container->get('victoria_app.vicseguridad');
         
         $entity = new DatosPresupuestos();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
+        
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            
+            /* Generar el numero de secuencia para el id_enc */
+            try {
+                $sequenceName = 'datos_presupuestos_id_presupuesto_seq';
+                $dbConnection = $em->getConnection();
+                $nextvalQuery = $dbConnection->getDatabasePlatform()->getSequenceNextValSQL($sequenceName);
+                $newId = (int)$dbConnection->fetchColumn($nextvalQuery);
+
+            } catch (\Exception $e) {
+                $this->addFlash('error', $e->getMessage());
+                //throw $e;
+            }
+            $entity->setIdPresupuesto($newId);
             /*
              * Busco el estado en la tabla AdEstadoPresupuesto 
              * 1 = Elbaborado, 2 = Aprobado, 3 = Ejecutado, 4 = Cancelado, 9 = Rechazado
@@ -110,7 +127,64 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
             
             $entity->setPreparadoPor($idUsr);
             $entity->setEstado($entest); 
+            
+            $fechatmp = $entity->getFechaEvento();            
+            $fecha = new \DateTime($fechatmp);
+            $entity->setFechaEvento($fecha);
+            
             $em->persist($entity);
+            
+/* -----------------------------------------------------------------------
+ * PROCESO PARA NOTIFICAR EL NUEVO PRESUPUESTO A LOS USUARIOS INTERESADOS
+ * -----------------------------------------------------------------------
+ */            
+            /* Guarda el registro para las notificaciones a los usuarios seleccionados */
+            $usuarios = $request->get('personas');
+            
+            /* Si todos se selecionaron todos los usuarios */
+            if($usuarios[0] == 0) {
+                /* Se define que información va a filtar segun el nivel de campana y distrito que tiene asignado*/
+        $strWhere = $seg->filtrarConsulta($entity->getIdCampana()->getIdCampana(),$entity->getIdDistrito()->getIdDistrito());
+        
+        $query = "select p.id from ad_user p %1\$s";
+        $query = sprintf($query, $strWhere);
+        $stmt = $em->getConnection()->prepare($query);
+        $stmt->execute();
+        $usuarios = $stmt->fetchAll();
+            }
+            
+            foreach($usuarios as $usr) {
+                $noti = new DatosNotificaciones();
+                $noti->setIdCampana($entity->getIdCampana());
+                $noti->setIdDistrito($entity->getIdDistrito());
+                
+                /*Busca el usuario para agregarlo a la entidad de Notificaciones */
+                $etusr = $em->getRepository('VictoriaAppBundle:AdUser')->find($usr);
+                
+                /* Generar el numero de secuencia para el numero de mensaje
+             * este es un numero unico para todos los usuarios que reciben el mensaje 
+             */
+            try {
+                $sequenceName = 'datos_notificaciones_numero_mensaje_seq';
+                $dbConnection = $em->getConnection();
+                $nextvalQuery = $dbConnection->getDatabasePlatform()->getSequenceNextValSQL($sequenceName);
+                $nummsg = (int)$dbConnection->fetchColumn($nextvalQuery);
+
+            } catch (\Exception $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
+                $noti->setNumeroMensaje($nummsg); 
+                $noti->setIdUsuario($etusr);
+                $noti->setMensaje('Revision del presupuesto para la actividad: '.$entity->getDescripcion());
+                $noti->setFechaEnviado($fecha);
+                $noti->setEstado(1); // 1= Enviando; 2=Recibido; 3=Eliminado
+                $noti->setIdEvento($newId); // Se le asigna el mismo id generado para la entidad DatosPresupuesto
+                $noti->setUsuario($usuario);
+                $em->persist($noti);
+                
+            }
+            
+            
             $em->flush();
 
             return $this->redirect($this->generateUrl('datospresupuestos_show', array('id' => $entity->getIdPresupuesto())));
@@ -136,8 +210,18 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
             'action' => $this->generateUrl('datospresupuestos_create'),
             'method' => 'POST',
         ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        
+        
+        $form->add('submit', 'submit', array('label' => 'Create'))
+                ->add('fechaEvento',TextType::class,array('label'=>'Fecha'))
+                /*->add('personas', ChoiceType::class, 
+                        array('choices' => array('Todos' => 0, 'Ninguno'=> 999),
+                        'mapped' => false,    
+                        'choices_as_values' => true,
+                        'multiple' => true,
+                        'label' => 'Personas',
+                        'attr' => array('size' => '10'),    
+                ))*/;
 
         return $form;
     }
@@ -148,6 +232,15 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
      */
     public function newAction(Request $request)
     {
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
         $session = $request->getSession();
         $menu = $session->get('_menu');
         
@@ -202,13 +295,17 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
         $stmt->execute();
         $entity = $stmt->fetchAll();
         
-        /* Incluir en este metodo el detalle de las tareas para visualizar 
-         * toda la información en una sola pantalla.
-         */
+        /* Detalle de las actividades del presupuesto */
+        $query = "select descripcion, round(cantidad * costo_unitario_estimado,2)  total
+from datos_lista_presupuesto
+where id_presupuesto = :idpre";
+        //$query = sprintf($query, $strWhere);
+        $stmt = $em->getConnection()->prepare($query);
+        $stmt->bindValue('idpre',$id);
+        //$stmt->bindValue('distrito',$idDistrito);
+        $stmt->execute();
+        $entdetalle = $stmt->fetchAll();
         
-        // >> *aqui*
-        
-
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find DatosPresupuestos entity.');
         }
@@ -217,6 +314,7 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
 
         return $this->render('VictoriaAppBundle:DatosPresupuestos:show.html.twig', array(
             'entity'      => $entity[0],
+            'detalle' => $entdetalle,
             //'delete_form' => $deleteForm->createView(),
             'menu' => $menu,
         ));

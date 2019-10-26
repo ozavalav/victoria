@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Victoria\AppBundle\Entity\AdTiposComision;
 use Victoria\AppBundle\Form\AdTiposComisionType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 /**
  * AdTiposComision controller.
  *
@@ -21,8 +23,21 @@ class AdTiposComisionController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
         $session = $request->getSession();
         $menu = $session->get('_menu');
+        $idUsuario = $session->get('_id_usuario');
+        
+        /* Obtiene las notificaciones que tiene el usuario */
+        $entnot = $seg->obtenerNotificaciones($idUsuario);
         
         $em = $this->getDoctrine()->getManager();
 
@@ -30,7 +45,8 @@ class AdTiposComisionController extends Controller
 
         return $this->render('VictoriaAppBundle:AdTiposComision:index.html.twig', array(
         'entities' => $entities,
-        'menu' => $menu
+        'menu' => $menu,
+        'datosnoti' => $entnot,    
         ));
     }
     /**
@@ -45,6 +61,9 @@ class AdTiposComisionController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            
+            $entity->setIdEstructura($entity->getIdEstructura()->getIdEstructura());
+            
             $em->persist($entity);
             $em->flush();
 
@@ -78,11 +97,20 @@ class AdTiposComisionController extends Controller
 
     /**
      * Displays a form to create a new AdTiposComision entity.
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function newAction(Request $request)
     {
-                $session = $request->getSession();
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
+        $session = $request->getSession();
         $menu = $session->get('_menu');
         
         $entity = new AdTiposComision();
@@ -121,10 +149,19 @@ class AdTiposComisionController extends Controller
 
     /**
      * Displays a form to edit an existing AdTiposComision entity.
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function editAction(Request $request, $id)
     {
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
         $session = $request->getSession();
         $menu = $session->get('_menu');
         
@@ -142,6 +179,7 @@ class AdTiposComisionController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'menu' => $menu,
+            'idEstructura' => $entity->getIdEstructura(),
         ));
     }
 
@@ -182,6 +220,9 @@ class AdTiposComisionController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            
+            $entity->setIdEstructura($entity->getIdEstructura()->getIdEstructura());
+            
             $em->flush();
 
             return $this->redirect($this->generateUrl('adtiposcomision_edit', array('id' => $id)));

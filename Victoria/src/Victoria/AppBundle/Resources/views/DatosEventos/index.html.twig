@@ -1,11 +1,37 @@
 {% extends '::basemenu.html.twig' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
     
     <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/jquery.dataTables_themeroller.css')}}" />
     <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/focal.css')}}" />
-        <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/fullcalendar.css')}}" />
+ <link rel="stylesheet" href="{{asset('bundles/victoriaapp/calendario/core/main.css')}}" />
+ <link rel="stylesheet" href="{{asset('bundles/victoriaapp/calendario/daygrid/main.css')}}" />
+<!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="{{ asset('bundles/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+<style> 
+    .calendarbg {
+    /* Permalink - use to edit and share this gradient:
+https://colorzilla.com/gradient-editor/#2ab0ed+12,e4f5fc+14,e4f5fc+100
+*/
+    /* Permalink - use to edit and share this gradient:
+https://colorzilla.com/gradient-editor/#2ab0ed+11,ffffff+11,ffffff+100
+*/
+    background: linear-gradient(to bottom,  transparent 11%,#ffffff
+11%,#ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+
+*/
+    filter: progid:DXImageTransform.Microsoft.gradient(
+startColorstr='#2ab0ed', endColorstr='#ffffff',GradientType=0 ); /*
+IE6-9 */
+  padding: 3px;
 
+
+  }
+      #calendar {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  </style>
     
 {% endblock %}
 
@@ -17,112 +43,126 @@
 <!-- Content Header (Page header) -->
     <section style="padding-bottom: 20px;"class="content-header">
       <h1>
-        Calendario de eventos
+        Agenda
       </h1>
-
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+        <a id="btnnuevo" data-toggle="modal" data-target="#modal-default" class="btn btn-md btn-success" href="#">
+            <i class="ace-icon fa fa-plus-square align-top bigger-120"></i> Nuevo 
+        </a>
+    </li>
+    </ul>
+            
     </section>
+
+<style>
+
+
+
+  #calendar {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+</style>
 {% endblock %}
 
 {% block content -%}
 
+  <div id='calendar' class='calendarbg'></div>
 
-                     <div id="calendar">
-             
-             
-         </div>
-
-
+  <!-- Modal de ingreso de datos -->    
+    <div class="modal fade" id="modal-default">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Agregar nuevo evento</h4>
+              </div>
+              
+              <div class="modal-body">
+                {{ form_start(form) }}
+                    {{ form_row(form.titulo) }}
+                    {{ form_row(form.descripcion) }}
+                    {{ form_row(form.fechaInicio) }}
+                    {{ form_row(form.fechaFinal) }}
+                    {{ form_row(form.idCampana) }}
+                    {{ form_row(form.idDistrito) }} 
+                    {{ form_row(form.submit) }}
+                    {{ form_widget(form._token) }}
+                {{ form_end(form, {'render_rest': false})}}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                <!--button type="button" class="btn btn-primary">Save changes</button -->
+              </div>
+               
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal --> 
     {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.bootstrap.min.js')}}"></script> 
-    
-    <script type="text/javascript">
-        $(function () {
-        
-        $('#dynamic-table').DataTable({
-          'paging'      : true,
-          'lengthChange': true,
-          'searching'   : true,
-          'ordering'    : true,
-          'info'        : true,
-          'autoWidth'   : true,
-          language:{
-                    search: "Buscar",
-                    lengthMenu: "Mostrar _MENU_ registros",
-                    emptyTable: "No hay datos...",
-                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    infoFiltered: "(Filtrando de un total de _MAX_ registros)",
-                    paginate: {
-                        first: "Primero",
-                        previous: "Anterior",
-                        next: "Siguiente",
-                        last: "Ultimo"
-                    }
-                }
-        });
+
+  <script src="{{ asset('bundles/victoriaapp/calendario/core/main.js')}}"></script>
+  <script src="{{ asset('bundles/victoriaapp/calendario/interaction/main.js')}}"></script>
+  <script src="{{ asset('bundles/victoriaapp/calendario/daygrid/main.js')}}"></script>
+  
+  <script src="{{asset('bundles/bower_components/moment/min/moment.min.js')}}"></script>
+  <script src="{{asset('bundles/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+
+  <script type="text/javascript">
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      plugins: [ 'interaction', 'dayGrid' ],
+      header: {
+        left: 'prev ,today, next', //prevYear, nextYear
+        center: 'title',
+        right: 'dayGridMonth,dayGridWeek,dayGridDay'
+      },
+     // defaultDate: '2019-08-12',
+      navLinks: true, // can click day/week names to navigate views
+      editable: true,
+      eventLimit: true, // allow "more" link when too many events
+      locale: 'es',
+      events: [
+        {% for entity in entities %}
+        {
+
+          id: {{ entity.idEventos }},
+          title: '{{ entity.titulo }}',
+          start: '{% if entity.fechaInicio %}{{ entity.fechaInicio|date('Y-m-d') }}{% endif%}T{% if entity.fechaInicio %}{{ entity.fechaInicio|date('H:i:s') }}{% endif%}',
+          end: '{% if entity.fechaFinal %}{{ entity.fechaFinal|date('Y-m-d') }}{% endif %}T{% if entity.fechaFinal %}{{ entity.fechaFinal|date('H:i:s') }}{% endif %}',
+          url: '{{ path('datoseventos_show', { 'id': entity.idEventos }) }}'
+
+        },
+        {% endfor %}  
+      ]
+    });
+    calendar.render();
   });
-    </script>   
-        <script src="{{ asset('bundles/victoriaapp/js/moment.min.js')}}"></script>
-    <script src="{{ asset('bundles/victoriaapp/js/fullcalendar.js')}}"></script>
-    <script src="{{ asset('bundles/victoriaapp/js/es.js')}}"></script>
+$(function () {
+            //Date picker
+    $('#victoria_appbundle_datoseventos_fechaInicio').datepicker({
+        language: "es",
+        todayHighlight: true,
+        autoclose: true
+    });
+    $('#victoria_appbundle_datoseventos_fechaFinal').datepicker({
+        language: "es",
+        todayHighlight: true,
+        autoclose: true
+    });
 
-            <script type="text/javascript">
-     
-$(document).ready(function() {
-
-  // page is now ready, initialize the calendar...
-
-  $('#calendar').fullCalendar({
-    events:[ 
-    {
-        id: "1",
-        title: "Primer evento",
-        start: "2019-10-05",
-        end: "2019-10-07 24:00:00",
-        color: "red"
-        //url: "google.com"
-    },
-        {
-        id: "2",
-        title: "Segundo evento",
-        start: "2019-10-07"
-        //url: "google.com"
-    },
-    {
-
-        title: "Calle feliz",
-        start: "2019-10-09",
-        color: "yellow"
-        //url: "google.com"
-    },
-        {
-
-        title: "Marcha",
-        start: "2019-10-11"
-        //url: "google.com"
-    },
-        {
-
-        title: "Charla",
-        start: "2019-10-15",
-        color: "pink"
-        //url: "google.com"
-    },
-        {
-
-        title: "Convivio",
-        start: "2019-10-30",
-        color: "purple"
-        //url: "google.com"
-    }
-    
-           ]
-  })
-
-});
+        });
 </script>
+
 
 {% endblock %}  
