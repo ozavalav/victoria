@@ -1,4 +1,5 @@
 {% extends '::basemenu.html.twig' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
     
@@ -6,6 +7,7 @@
     <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/focal.css')}}" />
     
 {% endblock %}
+
 {% block menu %}
     {{ menu|raw }}
 {% endblock %}
@@ -63,115 +65,116 @@
               </li>
             </ul>
 {% endblock %} 
+
 {% block header %}
 <!-- Content Header (Page header) -->
     <section style="padding-bottom: 20px;"class="content-header">
       <h1>
-        Listado de Campañas publicitarias
+        Listados de votantes
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-money"></i>Publicidad</a></li>
-        <li class="active">Agregar, modificar y eliminar publicidad</li>
+        <li><a href="#"><i class="fa fa-user"></i> Votantes</a></li>
+        <li class="active">Agregar, modificar y eliminar información</li>
       </ol>
     </section>
-    <section style="padding-bottom: 20px;"class="content-header">
-
 {% endblock %}
+
 {% block content -%}
-    {% if is_granted('ROLE_ADMIN') %}
-        
-        <ul style="list-style: none; margin-left: 0; text-align: right ">        
-   
-    <li style="float: right; margin: 0px 0px 5px 10px;">
-        <a style="display: block;" class="btn btn-md btn-success" href="{{ path('datospublicidad_new') }}">
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    {% if is_granted('ROLE_ADMIN') %} 
+    <li>
+        <a id="btnnuevo" data-toggle="modal" data-target="#modal-default" class="btn btn-md btn-success" href="#">
             <i class="ace-icon fa fa-plus-square align-top bigger-120"></i> Nuevo 
         </a>
     </li>
-    
-       <li style="float: right">
-        <a id="btnListado" style="display: block;" class="btn btn-md btn-success" href="#">
-            <i class="ace-icon fa fa-list align-top bigger-120"></i> Detalle 
-        </a>
-    </li>
-
-
-    </ul>
     {% endif %}
-    <table id="dynamic-table" class="display compact">
+    </ul>
+    <ul>
+        <li>
+            <select id="centrov">
+                    <option value="">-- Seleccione un CV --</option>
+                {% for cv in entcv %}
+                     <option value="{{ cv.idcv }}">{{ cv.nombre }}</option>
+                {% endfor %}    
+            </select>
+        </li>    
+    </ul>
+    <table style="overflow-x: auto; " id="dynamic-table" class="display compact table-responsive">
         <thead>
             <tr style="background-color: #E8BF6A">
-                <th class="center"></th>
-                 <th>Id</th>
-                <th>Tipo Publicidad</th>
-                <th>Descripcion</th>
-                <th>Estado</th>
-                <th>Nombre Medio Publicidad</th>
-                <th>Tipo anuncio</th>
-                <th>Actions</th>
+                <th>Id</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Identidad</th>
+                <th>Edad</th>
+                <th>Teléfonos</th>
+                <th>Email</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td class="center">
-                    <label class="pos-rel">
-                        <input type="radio" value="{{ entity.idpublicidad }}" name="sel-enc" class="ace" />
-                        <span class="lbl"></span>
-                    </label>
-                </td>
-                <td><a href="{{ path('datospublicidad_show', { 'id': entity.idpublicidad }) }}">{{ entity.idpublicidad }}</a></td>
-                <td>{{ entity.tipopublicidad }}</td>
-                <td>{{ entity.descripcion }}</td>
-                <td>{{ entity.estado }}</td>
-                <td>{{ entity.nombremediopublicidad }}</td>
-                <td>{{ entity.tipoanuncio }}</td>
+                <td><a href="{{ path('datosvotantes_show', { 'id': entity.idVotante }) }}">{{ entity.idVotante }}</a></td>
+                <td>{{ entity.nombres }}</td>
+                <td>{{ entity.apellidos }}</td>
+                <td>{{ entity.numeroIdentidad }}</td>
+                <td>{{ entity.edad }}</td>
+                <td>{{ entity.telefonos }}</td>
+                <td>{{ entity.email }}</td>
                 <td>
-                    <div class="action-buttons">
-                        <a class="blue" href="{{ path('datospublicidad_show', { 'id': entity.idpublicidad }) }}"title="Ver">
-                                <i class="oz-icon-v fa fa-search-plus bigger-130"></i>
+              
+                       <div class="action-buttons">
+                        <a class="blue" href="{{ path('datosvotantes_show', { 'id': entity.idVotante }) }}"title="Ver">
+                                <i class="oz-icon-v fa fa-search-plus bigger-130"></i> 
                         </a>
-                        {% if is_granted('ROLE_ADMIN') %}
-                        <a class="green"href="{{ path('datospublicidad_edit', { 'id': entity.idpublicidad }) }}" title="Editar">
-                                <i class="oz-icon-e fa fa-pencil bigger-130"></i>
+                        {% if is_granted('ROLE_ADMIN') %} 
+                        <a class="green" href="{{ path('datosvotantes_edit', { 'id': entity.idVotante }) }}" title="Editar">
+                                <i class="oz-icon-e fa fa-pencil bigger-130"></i>  
                         </a>
                         {% endif %}        
-                    </div>
+                        </div>
+               
                 </td>
             </tr>
         {% endfor %}
         </tbody>
- </table>
-            <!-- Modal de ingreso de datos -->    
+    </table>
+
+    <!-- Modal de ingreso de datos -->    
     <div class="modal fade" id="modal-default">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Agregar detalles</h4>
+                <h4 class="modal-title">Agregar nuevo votante</h4>
               </div>
               
               <div class="modal-body">
-                {{ form_start(form) }}    
-                {{ form_row(form.tipoAnuncio) }}
-                {{ form_row(form.descripcion) }}
-                {{ form_row(form.target) }}
-                {{ form_row(form.pautaPublicitaria) }}
-                {{ form_row(form.personasAlcanzadas) }}
-                {{ form_row(form.meGusta) }}
-                {{ form_row(form.meEncanta) }}
-                {{ form_row(form.meDivierte) }}
-                {{ form_row(form.meEnoja) }}
-                {{ form_row(form.meEntristece) }}
-                {{ form_row(form.comentariosPositivos) }}
-                {{ form_row(form.comentariosNegativos) }}
-                {{ form_row(form.compartidos) }}
-                {{ form_row(form.submit) }}
-                {{ form_widget(form._token) }}
-              
-                
-                
-             {{ form_end(form, {'render_rest': false})}}              </div>
+                {{ form_start(form) }}
+                    {{ form_row(form.nombres) }}
+                    {{ form_row(form.apellidos) }}
+                    {{ form_row(form.numeroIdentidad) }}
+                    {{ form_row(form.edad) }}
+                    {{ form_row(form.telefonos) }} 
+                    {#{ form_row(form.idCv) }#} 
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="victoria_appbundle_datosvotantes_idCv">Id cv</label>
+                        <div class="col-sm-10">
+                            <select id="victoria_appbundle_datosvotantes_idCv" name="victoria_appbundle_datosvotantes[idCv]" class="form-control">
+                                <option value=""> -- Seleccione una CV -- </option>
+                                {% for cv in entcv %}
+                                    <option value="{{ cv.idcv }}">{{ cv.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>    
+                    {{ form_row(form.submit) }}
+                    {{ form_row(form.submitadd) }}
+                    {{ form_widget(form._token) }}
+                {{ form_end(form, {'render_rest': false})}}
+              </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
                 <!--button type="button" class="btn btn-primary">Save changes</button -->
@@ -182,14 +185,22 @@
           </div>
           <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal -->    
+    <!-- /.modal --> 
+    
     {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.bootstrap.min.js')}}"></script> 
     
+
     <script type="text/javascript">
+        $( document ).ready(function() {
+            if(1 == {{ modal }} ) {
+                $('#modal-default').modal('toggle');
+            }
+        });
+        
         $(function () {
         
         $('#dynamic-table').DataTable({
@@ -214,41 +225,13 @@
                     }
                 }
         });
-  });
-  $(document).on("click","#dynamic-table tr td",function(){
-    if($(this).parent().find("input:radio").is(':checked')){
-        $(this).parent().css("background-color","");
-        $(this).parent().find("input:radio").prop("checked", false);  
-    } else {
-        $(".ace").each(function(){
-            if($(this).is(':checked')) {
-                $(this).parent().parent().parent().css("background-color","");
-            }
-        });
-        $(this).parent().css("background-color","#CFE7F9");
-        $(this).parent().find("input:radio").prop("checked", true);         
-    }
-   });
-   
-   $('#btnListado').click(function(e){
-        fila = $("#dynamic-table input[name='sel-enc']:radio");
-        if(fila.is(':checked')) {
-            valor = $("#dynamic-table input:radio[name='sel-enc']:checked").val();
-            e.preventDefault();
-                       
-
-    switch ($(this).attr('id')) {
-                case 'btnListado':
-                    url =  '{{ path('datospublicidad') }}'+valor+'/editdetalle';
-    
-    break;
-        }
-            window.location.href=url;               
-        } else {
-            e.preventDefault();
-            alert("Seleccione una publicidad para continuar.");
-        }
+        
+        $('#centrov').change(function(e) {
+        var param = $(this).val();  
+        e.preventDefault(); 
+           url="/Victoria/web/app_dev.php/datosvotantes/"+ "0/" + param + "/filtrar";
+           window.location.href = url;
     });
+  });
     </script>     
-{% endblock %}    
-    
+{% endblock %}  

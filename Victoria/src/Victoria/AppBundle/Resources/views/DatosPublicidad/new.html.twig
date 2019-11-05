@@ -42,7 +42,7 @@
     
 <ul style="list-style: none; margin-left: 0; text-align: right ">
     <li>
-        <a class="btn btn-md btn-success" href="{{ path('datospresupuestos') }}">
+        <a class="btn btn-md btn-success" href="{{ path('datospublicidad') }}">
             <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
         </a>
     </li>
@@ -72,7 +72,7 @@
             
             //*** Busca los distritos segun una campaña selecionada
             
-            $('#victoria_appbundle_datospresupuestos_idCampana').change(function(e) {
+            $('#victoria_appbundle_datospublicidad_idCampana').change(function(e) {
         var valdepto = $(this).val();  
         e.preventDefault(); 
           var param =  valdepto;
@@ -92,7 +92,7 @@
                      $.each(data, function(i) {
                         ejercicio = ejercicio + "<option value='"+data[i].idDistrito+"'>"+data[i].idDistrito+ " - "+data[i].nombre+ "</option>";  
                      });
-                     $('#victoria_appbundle_datospresupuestos_idDistrito').html(ejercicio);
+                     $('#victoria_appbundle_datospublicidad_idDistrito').html(ejercicio);
                      //$('#focal_appbundle_aduser_submit').prop('disabled', true);
                 }
             }
@@ -101,36 +101,7 @@
     
     //*** Busca los usuarios segun el distrito seleccionado ***/
     
-    $('#victoria_appbundle_datospresupuestos_idDistrito').change(function(e) {
-        var valdepto = $(this).val();  
-        e.preventDefault(); 
-          var param =  valdepto;
-           url="{{path('aduser')}}"+'buscarUsuarios/'+ param;
-           alert(url);
-          $.ajax({
-            type:'POST',
-            url:url,
-            beforeSend: function(){
-            $("#lblError").hide();	
-            },
-            dataType: 'json',
-            success:function(data){
-                if(data.message === 'false'){
-                    alert('false');
-                }else{
-                     var ejercicio = "<option value=''> -- seleccionar -- </option>";
-                     var ejercicio = "<option value='0'>todos los usuarios</option>";
-                     $.each(data, function(i) {
-                        ejercicio = ejercicio + "<option value='"+data[i].id+"'>"+data[i].id+ " - "+data[i].username+ "</option>";  
-                     });
-                     $('#victoria_appbundle_datospresupuestos_idActividadEgreso').html(ejercicio);
-                     //$('#focal_appbundle_aduser_submit').prop('disabled', true);
-                }
-            }
-        });
-    });
-    
         });
     </script>
     
-{% endblock %}    
+{% endblock %}      

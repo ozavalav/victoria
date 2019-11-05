@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * DatosPublicidad
  *
- * @ORM\Table(name="datos_publicidad", indexes={@ORM\Index(name="IDX_C4D9A805B8445919", columns={"id_campana"}), @ORM\Index(name="IDX_C4D9A805EEFCF568", columns={"id_distrito"})})
+ * @ORM\Table(name="datos_publicidad", indexes={@ORM\Index(name="IDX_C4D9A805B8445919", columns={"id_campana"}), @ORM\Index(name="IDX_C4D9A805EEFCF568", columns={"id_distrito"}), @ORM\Index(name="IDX_C4D9A8052E099FD6", columns={"tipo_publicidad"})})
  * @ORM\Entity
  */
 class DatosPublicidad
@@ -21,13 +21,6 @@ class DatosPublicidad
      * @ORM\SequenceGenerator(sequenceName="datos_publicidad_id_publicidad_seq", allocationSize=1, initialValue=1)
      */
     private $idPublicidad;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="tipo_publicidad", type="integer", nullable=true)
-     */
-    private $tipoPublicidad;
 
     /**
      * @var string
@@ -79,6 +72,83 @@ class DatosPublicidad
     private $comprobantePago;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="target", type="string", length=100, nullable=true)
+     */
+    private $target;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="pauta_publicitaria", type="integer", nullable=true)
+     */
+    private $pautaPublicitaria;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="personas_alcanzadas", type="integer", nullable=true)
+     */
+    private $personasAlcanzadas;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="me_gusta", type="integer", nullable=true)
+     */
+    private $meGusta;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="me_encanta", type="integer", nullable=true)
+     */
+    private $meEncanta;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="me_divierte", type="integer", nullable=true)
+     */
+    private $meDivierte;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="me_enoja", type="integer", nullable=true)
+     */
+    private $meEnoja;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="me_entristece", type="integer", nullable=true)
+     */
+    private $meEntristece;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="comentarios_positivos", type="integer", nullable=true)
+     */
+    private $comentariosPositivos;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="comentarios_negativos", type="integer", nullable=true)
+     */
+    private $comentariosNegativos;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="compartidos", type="integer", nullable=true)
+     */
+    private $compartidos;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_creacion", type="datetime", nullable=false)
@@ -107,6 +177,13 @@ class DatosPublicidad
     private $fechaUltimaModificacion;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="me_asombra", type="integer", nullable=true)
+     */
+    private $meAsombra;
+
+    /**
      * @var \DatosCampanasPoliticas
      *
      * @ORM\ManyToOne(targetEntity="DatosCampanasPoliticas")
@@ -126,6 +203,16 @@ class DatosPublicidad
      */
     private $idDistrito;
 
+    /**
+     * @var \AdTiposPublicidad
+     *
+     * @ORM\ManyToOne(targetEntity="AdTiposPublicidad")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tipo_publicidad", referencedColumnName="id_publicidad")
+     * })
+     */
+    private $tipoPublicidad;
+
 
 
     /**
@@ -136,29 +223,6 @@ class DatosPublicidad
     public function getIdPublicidad()
     {
         return $this->idPublicidad;
-    }
-
-    /**
-     * Set tipoPublicidad
-     *
-     * @param integer $tipoPublicidad
-     * @return DatosPublicidad
-     */
-    public function setTipoPublicidad($tipoPublicidad)
-    {
-        $this->tipoPublicidad = $tipoPublicidad;
-
-        return $this;
-    }
-
-    /**
-     * Get tipoPublicidad
-     *
-     * @return integer 
-     */
-    public function getTipoPublicidad()
-    {
-        return $this->tipoPublicidad;
     }
 
     /**
@@ -323,6 +387,259 @@ class DatosPublicidad
     }
 
     /**
+     * Set target
+     *
+     * @param string $target
+     * @return DatosPublicidad
+     */
+    public function setTarget($target)
+    {
+        $this->target = $target;
+
+        return $this;
+    }
+
+    /**
+     * Get target
+     *
+     * @return string 
+     */
+    public function getTarget()
+    {
+        return $this->target;
+    }
+
+    /**
+     * Set pautaPublicitaria
+     *
+     * @param integer $pautaPublicitaria
+     * @return DatosPublicidad
+     */
+    public function setPautaPublicitaria($pautaPublicitaria)
+    {
+        $this->pautaPublicitaria = $pautaPublicitaria;
+
+        return $this;
+    }
+
+    /**
+     * Get pautaPublicitaria
+     *
+     * @return integer 
+     */
+    public function getPautaPublicitaria()
+    {
+        return $this->pautaPublicitaria;
+    }
+
+    /**
+     * Set personasAlcanzadas
+     *
+     * @param integer $personasAlcanzadas
+     * @return DatosPublicidad
+     */
+    public function setPersonasAlcanzadas($personasAlcanzadas)
+    {
+        $this->personasAlcanzadas = $personasAlcanzadas;
+
+        return $this;
+    }
+
+    /**
+     * Get personasAlcanzadas
+     *
+     * @return integer 
+     */
+    public function getPersonasAlcanzadas()
+    {
+        return $this->personasAlcanzadas;
+    }
+
+    /**
+     * Set meGusta
+     *
+     * @param integer $meGusta
+     * @return DatosPublicidad
+     */
+    public function setMeGusta($meGusta)
+    {
+        $this->meGusta = $meGusta;
+
+        return $this;
+    }
+
+    /**
+     * Get meGusta
+     *
+     * @return integer 
+     */
+    public function getMeGusta()
+    {
+        return $this->meGusta;
+    }
+
+    /**
+     * Set meEncanta
+     *
+     * @param integer $meEncanta
+     * @return DatosPublicidad
+     */
+    public function setMeEncanta($meEncanta)
+    {
+        $this->meEncanta = $meEncanta;
+
+        return $this;
+    }
+
+    /**
+     * Get meEncanta
+     *
+     * @return integer 
+     */
+    public function getMeEncanta()
+    {
+        return $this->meEncanta;
+    }
+
+    /**
+     * Set meDivierte
+     *
+     * @param integer $meDivierte
+     * @return DatosPublicidad
+     */
+    public function setMeDivierte($meDivierte)
+    {
+        $this->meDivierte = $meDivierte;
+
+        return $this;
+    }
+
+    /**
+     * Get meDivierte
+     *
+     * @return integer 
+     */
+    public function getMeDivierte()
+    {
+        return $this->meDivierte;
+    }
+
+    /**
+     * Set meEnoja
+     *
+     * @param integer $meEnoja
+     * @return DatosPublicidad
+     */
+    public function setMeEnoja($meEnoja)
+    {
+        $this->meEnoja = $meEnoja;
+
+        return $this;
+    }
+
+    /**
+     * Get meEnoja
+     *
+     * @return integer 
+     */
+    public function getMeEnoja()
+    {
+        return $this->meEnoja;
+    }
+
+    /**
+     * Set meEntristece
+     *
+     * @param integer $meEntristece
+     * @return DatosPublicidad
+     */
+    public function setMeEntristece($meEntristece)
+    {
+        $this->meEntristece = $meEntristece;
+
+        return $this;
+    }
+
+    /**
+     * Get meEntristece
+     *
+     * @return integer 
+     */
+    public function getMeEntristece()
+    {
+        return $this->meEntristece;
+    }
+
+    /**
+     * Set comentariosPositivos
+     *
+     * @param integer $comentariosPositivos
+     * @return DatosPublicidad
+     */
+    public function setComentariosPositivos($comentariosPositivos)
+    {
+        $this->comentariosPositivos = $comentariosPositivos;
+
+        return $this;
+    }
+
+    /**
+     * Get comentariosPositivos
+     *
+     * @return integer 
+     */
+    public function getComentariosPositivos()
+    {
+        return $this->comentariosPositivos;
+    }
+
+    /**
+     * Set comentariosNegativos
+     *
+     * @param integer $comentariosNegativos
+     * @return DatosPublicidad
+     */
+    public function setComentariosNegativos($comentariosNegativos)
+    {
+        $this->comentariosNegativos = $comentariosNegativos;
+
+        return $this;
+    }
+
+    /**
+     * Get comentariosNegativos
+     *
+     * @return integer 
+     */
+    public function getComentariosNegativos()
+    {
+        return $this->comentariosNegativos;
+    }
+
+    /**
+     * Set compartidos
+     *
+     * @param integer $compartidos
+     * @return DatosPublicidad
+     */
+    public function setCompartidos($compartidos)
+    {
+        $this->compartidos = $compartidos;
+
+        return $this;
+    }
+
+    /**
+     * Get compartidos
+     *
+     * @return integer 
+     */
+    public function getCompartidos()
+    {
+        return $this->compartidos;
+    }
+
+    /**
      * Set fechaCreacion
      *
      * @param \DateTime $fechaCreacion
@@ -415,6 +732,29 @@ class DatosPublicidad
     }
 
     /**
+     * Set meAsombra
+     *
+     * @param integer $meAsombra
+     * @return DatosPublicidad
+     */
+    public function setMeAsombra($meAsombra)
+    {
+        $this->meAsombra = $meAsombra;
+
+        return $this;
+    }
+
+    /**
+     * Get meAsombra
+     *
+     * @return integer 
+     */
+    public function getMeAsombra()
+    {
+        return $this->meAsombra;
+    }
+
+    /**
      * Set idCampana
      *
      * @param \Victoria\AppBundle\Entity\DatosCampanasPoliticas $idCampana
@@ -458,5 +798,28 @@ class DatosPublicidad
     public function getIdDistrito()
     {
         return $this->idDistrito;
+    }
+
+    /**
+     * Set tipoPublicidad
+     *
+     * @param \Victoria\AppBundle\Entity\AdTiposPublicidad $tipoPublicidad
+     * @return DatosPublicidad
+     */
+    public function setTipoPublicidad(\Victoria\AppBundle\Entity\AdTiposPublicidad $tipoPublicidad = null)
+    {
+        $this->tipoPublicidad = $tipoPublicidad;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoPublicidad
+     *
+     * @return \Victoria\AppBundle\Entity\AdTiposPublicidad 
+     */
+    public function getTipoPublicidad()
+    {
+        return $this->tipoPublicidad;
     }
 }

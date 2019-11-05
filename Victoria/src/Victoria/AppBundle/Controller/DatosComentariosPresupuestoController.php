@@ -39,6 +39,10 @@ class DatosComentariosPresupuestoController extends Controller
         $menu = $session->get('_menu');
         $idCampana = $session->get('_id_campana');
         $idDistrito = $session->get('_id_distrito');
+        $idUsuario = $session->get('_id_usuario');
+        
+        /* Obtiene las notificaciones que tiene el usuario */
+        $entnot = $seg->obtenerNotificaciones($idUsuario);
         
         /* Se define que información va a filtar segun el nivel de campana y distrito que tiene asignado*/
         $strWhere = $seg->filtrarConsulta($idCampana,$idDistrito);
@@ -89,6 +93,7 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
             'entities' => $entities,
             'menu' => $menu,
             'form' => $form->createView(),
+            'datosnoti' => $entnot, 
         ));
     }
     

@@ -1,0 +1,141 @@
+{% extends '::basemenu.html.twig' %}
+{% form_theme edit_form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Editar tarea
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-pencil"></i> Tareas</a></li>
+        <li class="active">Editar tarea</li>
+      </ol>
+    </section>
+{% endblock %}
+
+{% block content -%}
+
+
+
+     {{ form_start(edit_form) }}
+    {{ form_row(edit_form.titulo) }}
+    {{ form_row(edit_form.descripcion) }}
+    {{ form_row(edit_form.idEventos) }}
+    {{ form_row(edit_form.idResponsable) }}
+    {{ form_row(edit_form.idEstado) }}
+    {{ form_row(edit_form.submit) }}
+    {{ form_widget(edit_form._token) }}
+
+    {{ form_widget(edit_form._token) }}
+    
+    <!-- DETALLE DE LA NOTIFICACION -->
+    
+    {{ form_end(edit_form, {'render_rest': false})}}
+
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+        
+    <li>
+        <a class="btn btn-md btn-success"href="{{ path('datostareas')}}">
+            <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+            
+
+    </li>
+    </ul>
+        
+        
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.bootstrap.min.js')}}"></script> 
+    
+    <script type="text/javascript">
+        $(function () {
+        $('#dynamic-table').DataTable({
+          'paging'      : true,
+          'lengthChange': true,
+          'searching'   : true,
+          'ordering'    : true,
+          'info'        : true,
+          'autoWidth'   : true,
+          language:{
+                    search: "Buscar",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    emptyTable: "No hay datos...",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    infoFiltered: "(Filtrando de un total de _MAX_ registros)",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Ultimo"
+                    }
+                }
+        });
+
+    
+  });
+  $(document).on("click","#dynamic-table tr td",function(){
+    if($(this).parent().find("input:radio").is(':checked')){
+        $(this).parent().css("background-color","");
+        $(this).parent().find("input:radio").prop("checked", false);  
+    } else {
+        $(".ace").each(function(){
+            if($(this).is(':checked')) {
+                $(this).parent().parent().parent().css("background-color","");
+            }
+        });
+        $(this).parent().css("background-color","#CFE7F9");
+        $(this).parent().find("input:radio").prop("checked", true);         
+    }
+   });
+   
+   
+   
+        $(function () {
+            
+            //*** Busca los usuarios segun un evento selecionado
+            
+            $('#victoria_appbundle_datostareas_idEventos').change(function(e) {
+        var valdepto = $(this).val();  
+        e.preventDefault(); 
+          var param =  valdepto;
+           url="{{path('aduser')}}"+'buscarUsuariosPorEvento/'+ param;
+          $.ajax({
+            type:'POST',
+            url:url,
+            beforeSend: function(){
+            $("#lblError").hide();	
+            },
+            dataType: 'json',
+            success:function(data){
+                if(data.message === 'false'){
+                    alert('false');
+                }else{
+                     var ejercicio = "<option value=''> -- seleccionar -- </option>";
+                     $.each(data, function(i) {
+                        ejercicio = ejercicio + "<option value='"+data[i].idDistrito+"'>"+data[i].idDistrito+ " - "+data[i].nombre+ "</option>";  
+                     });
+                     $('#victoria_appbundle_datostareas_idResponsable').html(ejercicio);
+                     //$('#focal_appbundle_aduser_submit').prop('disabled', true);
+                }
+            }
+        });
+    }); 
+    
+
+    
+        });
+  
+
+  
+    </script>     
+{% endblock %}  

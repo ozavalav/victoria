@@ -26,6 +26,38 @@ use Victoria\AppBundle\Entity\AppConst;
  */
 class AdUserController extends Controller
 {
+    public function buscarUsuariosPorEventoAction(Request $request, $param)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $response = new JsonResponse();
+        $response->headers->set('Content-Type', 'application/json');
+        
+        $prmCampana = $param;
+        $session = $request->getSession();
+        $codMuni = $session->get('_cod_municipio');
+        $codDep = $session->get('_cod_departamento');
+        $codMuni = substr($codMuni, -2);
+        $prmDep = str_pad($param, 2, "0", STR_PAD_LEFT);
+
+        $strwhere = 'AND e.idEventos = '. $prmCampana;
+        
+        $dql = 'SELECT distinct u.id idDistrito, u.nombreUsuario nombre
+        FROM VictoriaAppBundle:DatosEventos e,  VictoriaAppBundle:DatosDistritos d,
+        VictoriaAppBundle:adUser u
+        WHERE e.idDistrito = d.idDistrito
+        AND d.idDistrito = u.idDistrito   %s';
+        $dql = sprintf($dql, $strwhere);
+        $query = $em->createQuery($dql);
+        //$query->setParameter(1, $prmCampana);
+        $distritos = $query->getResult();
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new GetSetMethodNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+        $jsonContent = $serializer->serialize($distritos, 'json');
+        $response->setData($distritos);
+        return $response;
+    }
+    
     public function buscarMunicipioAction(Request $request, $param)
     {
         $em = $this->getDoctrine()->getManager();
@@ -78,6 +110,37 @@ class AdUserController extends Controller
         
         $dql = 'SELECT d.idDistrito, d.nombre
         FROM VictoriaAppBundle:DatosDistritos d %s order by d.nombre';
+        $dql = sprintf($dql, $strwhere);
+        $query = $em->createQuery($dql);
+        //$query->setParameter(1, $prmCampana);
+        $distritos = $query->getResult();
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new GetSetMethodNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+        $jsonContent = $serializer->serialize($distritos, 'json');
+        $response->setData($distritos);
+        return $response;
+    }
+    
+    /* Busco los distritos segun la campaña politica selecciona */
+    public function buscarCentrosvAction(Request $request, $param)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $response = new JsonResponse();
+        $response->headers->set('Content-Type', 'application/json');
+        
+        $prmDistrito = $param;
+        $session = $request->getSession();
+                
+        $strwhere = '';
+        if ($prmDistrito != 0 ) {
+            $strwhere = 'WHERE d.idDistrito = '. $prmDistrito;
+        }
+
+    //IDENTITY
+        
+        $dql = 'SELECT d.idCv, d.nombre
+        FROM VictoriaAppBundle:DatosCentrosVotacion d %s order by d.nombre';
         $dql = sprintf($dql, $strwhere);
         $query = $em->createQuery($dql);
         //$query->setParameter(1, $prmCampana);

@@ -45,6 +45,10 @@ class DatosPresupuestosController extends Controller
         $menu = $session->get('_menu');
         $idCampana = $session->get('_id_campana');
         $idDistrito = $session->get('_id_distrito');
+        $idUsuario = $session->get('_id_usuario');
+        
+         /* Obtiene las notificaciones que tiene el usuario */
+        $entnot = $seg->obtenerNotificaciones($idUsuario);
         
         /* Se define que información va a filtar segun el nivel de campana y distrito que tiene asignado*/
         $strWhere = $seg->filtrarConsulta($idCampana,$idDistrito);
@@ -86,6 +90,7 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
         return $this->render('VictoriaAppBundle:DatosPresupuestos:index.html.twig', array(
             'entities' => $entities,
             'menu' => $menu,
+            'datosnoti' => $entnot,  
         ));
     }
     /**
@@ -106,7 +111,7 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
         
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            /* Generar el numero de secuencia para el id_enc */
+            /* Generar el numero de secuencia para el id_presupuesto */
             try {
                 $sequenceName = 'datos_presupuestos_id_presupuesto_seq';
                 $dbConnection = $em->getConnection();

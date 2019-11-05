@@ -43,6 +43,11 @@ aduser_buscarDistrito:
     pattern: /buscarDistrito/{param}/
     defaults: { _controller: "VictoriaAppBundle:AdUser:buscarDistrito" }
     requirements: { _method: post|get}
+    
+aduser_buscarCentrosv:
+    pattern: /buscarCentrosv/{param}/
+    defaults: { _controller: "VictoriaAppBundle:AdUser:buscarCentrosv" }
+    requirements: { _method: post|get}    
 
 aduser_buscarUsuarios:
     pattern: /buscarUsuarios/{param}/
@@ -54,3 +59,7 @@ aduser_buscarComision:
     defaults: { _controller: "VictoriaAppBundle:AdUser:buscarComision" }
     requirements: { _method: post|get}
 
+aduser_buscarUsuariosPorEvento:
+    pattern: /buscarUsuariosPorEvento/{param}/
+    defaults: { _controller: "VictoriaAppBundle:AdUser:buscarUsuariosPorEvento" }
+    requirements: { _method: post|get}

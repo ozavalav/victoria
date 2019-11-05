@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class DatosListaPresupuestoType extends AbstractType
+class DatosVotantesType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,12 +15,13 @@ class DatosListaPresupuestoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('idObjetoGasto',null,array('label' => 'Objeto Gasto:', 'attr'=>array('required' => true)))    
-            ->add('descripcion',null,array('label' => 'Descripción:'))
-            ->add('cantidad',null,array('label' => 'Cantidad:'))
-            ->add('costoUnitarioEstimado',null,array('label' => 'Costo U.:'))
-            //->add('costoUnitarioReal',null,array('label' => 'Total'))
-            //->add('idPresupuesto')
+            ->add('nombres')
+            ->add('apellidos')
+            ->add('numeroIdentidad')
+            ->add('edad')
+            ->add('telefonos')
+            ->add('email')
+            ->add('idCv')
         ;
     }
     
@@ -30,7 +31,7 @@ class DatosListaPresupuestoType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Victoria\AppBundle\Entity\DatosListaPresupuesto'
+            'data_class' => 'Victoria\AppBundle\Entity\DatosVotantes'
         ));
     }
 
@@ -39,6 +40,6 @@ class DatosListaPresupuestoType extends AbstractType
      */
     public function getName()
     {
-        return 'victoria_appbundle_datoslistapresupuesto';
+        return 'victoria_appbundle_datosvotantes';
     }
 }

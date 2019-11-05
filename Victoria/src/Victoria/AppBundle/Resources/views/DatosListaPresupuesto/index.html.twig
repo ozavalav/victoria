@@ -10,6 +10,60 @@
 {% block menu %}
     {{ menu|raw }}
 {% endblock %}
+{% block notificaciones %} 
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-bell-o"></i>
+        <span class="label label-warning">{{ datosnoti|length }}</span>
+    </a>
+    <ul class="dropdown-menu">
+        <li class="header">Tiene {{ datosnoti|length }} notificaciones </li>
+        <li>
+          <!-- inner menu: contains the actual data -->
+          <ul class="menu">
+            {% for noti in datosnoti if noti.orden < 7 %}  
+            <li>
+              <a href="{{ path('datosnotificaciones') }}">
+                <i class="fa fa-users text-aqua"></i> {{ noti.mensaje }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="footer"><a href="{{ path('datosnotificaciones')}}">Ver todos</a></li>
+    </ul>
+{% endblock %}
+{% block tareas %}
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-flag-o"></i>
+              <span class="label label-danger">0</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">Tienes 0 tareas</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li><!-- Task item -->
+                    <a href="#">
+                      <h3>
+                        Avance del proyecto
+                        <small class="pull-right">70%</small>
+                      </h3>
+                      <div class="progress xs">
+                        <div class="progress-bar progress-bar-aqua" style="width: 70%" role="progressbar"
+                             aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+                          <span class="sr-only">70% Complete</span>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <!-- end task item -->
+                </ul>
+              </li>
+              <li class="footer">
+                <a href="#">Ver todas las tares</a>
+              </li>
+            </ul>
+{% endblock %} 
 {% block header %}
 <!-- Content Header (Page header) -->
     <section style="padding-bottom: 20px;"class="content-header">
@@ -86,7 +140,8 @@
               </div>
               
               <div class="modal-body">
-                {{ form_start(form) }}    
+                {{ form_start(form) }}
+                {{ form_row(form.idObjetoGasto) }}
                 {{ form_row(form.descripcion) }}
                 {{ form_row(form.cantidad) }}
                 {{ form_row(form.costoUnitarioEstimado) }}

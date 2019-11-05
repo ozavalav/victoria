@@ -1,0 +1,74 @@
+{% extends '::basemenu.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Información de la tarea
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-pencil"></i> Tarea</a></li>
+        <li class="active">Ver información de la tarea</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    <table class="table table-striped table-bordered table-responsive">
+        <tbody>
+            <tr>
+                <th>Idtarea</th>
+                <td>{{ entity.idTarea }}</td>
+            </tr>
+            <tr>
+                <th>Titulo</th>
+                <td>{{ entity.titulo }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Responsable</th>
+                <td>{{ entity.idResponsable }}</td>
+            </tr>
+            <tr>
+                <th>Evento</th>
+                <td>{{ entity.idEventos }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ entity.idEstado }}</td>
+            </tr>
+            <tr>
+                <th>Progreso</th>
+                <td>                   <div class="progress-group col-md-3">
+                    <span class="progress-number"><b> {{ entity.progreso }}</b>%</span>
+
+                    <div class="progress sm">
+                      <div class="progress-bar progress-bar-aqua " style="width: {{ entity.progreso }}%"></div>
+                    </div>
+                  </div></td>
+            </tr>
+
+        </tbody>
+ </table>
+        
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    {% if is_granted('ROLE_ADMIN') %}    
+    <li style="float: right; margin: 0px 0px 5px 10px;">
+        <a style="display: block; " class="btn btn-md btn-success" href="{{ path('datostareas_edit', { 'id': entity.idTarea     }) }}">
+            <i class="ace-icon fa fa-edit align-top bigger-120"></i> Editar 
+        </a>
+    </li>
+    {% endif %}
+    <li style="float: right;">
+        <a style="display: block;" class="btn btn-md btn-success" href="{{ path('datostareas') }}">
+            <i class="ace-icon fa fa-fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+
+    </ul>            
+{% endblock %}

@@ -21,11 +21,24 @@ class DatosEventosController extends Controller
      */
     public function indexAction(Request $request)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw $this->createAccessDeniedException();
-        }
+        $seg = $this->container->get('victoria_app.vicseguridad');
+        
+        /* Verifica que el usuario este autenticado */
+        $ok = $seg->validarUsuario();
+        
+        /* Verifica que el usuario tenga acceso a esta ruta o opción */
+        $ruta = $request->attributes->get('_route'); 
+        $ok = $seg->comprobarAcceso($ruta);
+        
         $session = $request->getSession();
         $menu = $session->get('_menu');
+        $idCampana = $session->get('_id_campana');
+        $idDistrito = $session->get('_id_distrito');
+        $idUsuario = $session->get('_id_usuario');
+        
+        /* Obtiene las notificaciones que tiene el usuario */
+        $entnot = $seg->obtenerNotificaciones($idUsuario);
+        
         
         $em = $this->getDoctrine()->getManager();
 
@@ -38,6 +51,7 @@ class DatosEventosController extends Controller
             'entities' => $entities,
             'form'   => $form->createView(),
             'menu' => $menu,
+            'datosnoti' => $entnot,
         ));
     }
     /**

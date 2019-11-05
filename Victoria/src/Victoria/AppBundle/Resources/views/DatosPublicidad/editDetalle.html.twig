@@ -1,0 +1,72 @@
+{% extends '::basemenu.html.twig' %}
+{% form_theme edit_form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Detalle campaña publicitaria
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-money"></i>Campaña Publicidad</a></li>
+        <li class="active">Detalle campaña publicidad</li>
+      </ol>
+    </section>  
+{% endblock %}
+
+{% block content -%}
+
+    
+    
+    {{ form_start(edit_form) }}
+    {% if idtipopublicidad == 1 %}
+    {{ form_row(edit_form.pautaPublicitaria) }}
+    {{ form_row(edit_form.comprobantePago) }}
+    {{ form_row(edit_form.personasAlcanzadas) }}
+    {{ form_row(edit_form.target) }}
+    {{ form_row(edit_form.comentariosPositivos) }}
+    {{ form_row(edit_form.comentariosNegativos) }}
+    {{ form_row(edit_form.compartidos) }}
+    <br>Listado Reacciones</br>
+        <table>
+        <tr>
+        <td>Me Gusta <i class="fa fa fa-thumbs-up" aria-hidden="true"></i></td>
+        <th width="20%">{{ form_row(edit_form.meGusta) }}</th>
+        <td>Me Encanta <i class="fa fa fa-heart" aria-hidden="true"></i></td>
+        <th width="20%">{{ form_row(edit_form.meEncanta) }}</th>
+        <td>Me Divierte <i class="fa fa fa-smile-o" aria-hidden="true"></i></td>
+        <td width="20%">{{ form_row(edit_form.meDivierte) }}</th>
+        </tr>
+        </tr>
+        <td>Me Asombra <i class="fa fa fa-star" aria-hidden="true"></i></td>
+        <td width="20%">{{ form_row(edit_form.meAsombra) }}</th> 
+        <td>Me Entristece <i class="fa fa fa-frown-o" aria-hidden="true"></i></td>   
+        <td width="20%">{{ form_row(edit_form.meEntristece) }}</th> 
+        <td>Me Enoja <i class="fa fa fa-meh-o" aria-hidden="true"></i></td>
+        <td width="20%">{{ form_row(edit_form.meEnoja) }}</th>
+        </tr>
+    </table>
+    {% else %}
+    {{ form_row(edit_form.pautaPublicitaria) }}
+    {{ form_row(edit_form.comprobantePago) }}
+    {{ form_row(edit_form.personasAlcanzadas) }}
+    {{ form_row(edit_form.target) }}
+    {% endif %}
+        {{ form_row(edit_form.submit) }}
+        {{ form_widget(edit_form._token) }}
+    
+    <!-- DETALLE DE LA NOTIFICACION -->
+    
+    {{ form_end(edit_form, {'render_rest': false})}}
+
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+        <a class="btn btn-md btn-success" href="{{ path('datospublicidad') }}">
+            <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>
+{% endblock %}

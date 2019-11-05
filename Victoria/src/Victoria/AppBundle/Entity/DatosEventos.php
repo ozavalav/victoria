@@ -339,4 +339,9 @@ class DatosEventos
     {
         return $this->idDistrito;
     }
+    
+    function __toString()
+    {
+        return $this->titulo;
+    } 
 }

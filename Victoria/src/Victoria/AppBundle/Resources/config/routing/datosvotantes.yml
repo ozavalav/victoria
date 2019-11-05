@@ -1,0 +1,34 @@
+datosvotantes:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:DatosVotantes:index" }
+    
+datosvotantes_filtros:
+    path:     /{modal}/{cvot}/filtrar
+    defaults: { _controller: "VictoriaAppBundle:DatosVotantes:index", modal: 0, cvot: 0 }    
+
+datosvotantes_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:DatosVotantes:show" }
+
+datosvotantes_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:DatosVotantes:new" }
+
+datosvotantes_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:DatosVotantes:create" }
+    requirements: { _method: post }
+
+datosvotantes_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:DatosVotantes:edit" }
+
+datosvotantes_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:DatosVotantes:update" }
+    requirements: { _method: post|put }
+
+datosvotantes_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:DatosVotantes:delete" }
+    requirements: { _method: post|delete }

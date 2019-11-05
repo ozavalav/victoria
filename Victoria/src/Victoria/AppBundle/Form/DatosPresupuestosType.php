@@ -42,6 +42,7 @@ class DatosPresupuestosType extends AbstractType
             //->add('totalPresupuestoEjecutado')
             ->add('idCampana',null,array('label'=>'Campaña'))
             ->add('idDistrito',null,array('label' => 'Distrito'))
+            ->add('idCv',null,array('label' => 'Centro Votación'))    
         ;
     }
     

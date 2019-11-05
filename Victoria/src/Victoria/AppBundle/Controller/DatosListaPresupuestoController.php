@@ -37,6 +37,10 @@ class DatosListaPresupuestoController extends Controller
         /* Carga las variables de sesion del usuarios necesarias para dibujar menu y filtar la información */
         $session = $request->getSession();
         $menu = $session->get('_menu');
+        $idUsuario = $session->get('_id_usuario');
+        
+        /* Obtiene las notificaciones que tiene el usuario */
+        $entnot = $seg->obtenerNotificaciones($idUsuario);
 
         $entities = $em->getRepository('VictoriaAppBundle:DatosListaPresupuesto')->findBy(array('idPresupuesto' => $id ));
 
@@ -48,6 +52,7 @@ class DatosListaPresupuestoController extends Controller
             'entities' => $entities,
             'form' => $form->createView(),
             'menu' => $menu,
+            'datosnoti' => $entnot,
             'idpresupuesto' => $id,
         ));
     }

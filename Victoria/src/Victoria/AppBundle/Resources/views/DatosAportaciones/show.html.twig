@@ -1,0 +1,79 @@
+{% extends '::basemenu.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Información del aportador
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-user"></i> Aportante</a></li>
+        <li class="active">Ver información del aportador</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    <table class="table table-striped table-bordered table-responsive">
+        <tbody>
+            <tr>
+                <th>Idaportador</th>
+                <td>{{ entity.idAportador }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Tipoaportador</th>
+                <td>{{ entity.tipoAportador }}</td>
+            </tr>
+            <tr>
+                <th>Tipoaportacion</th>
+                <td>{{ entity.tipoAportacion }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Valoraportacion</th>
+                <td>{{ entity.valorAportacion }}</td>
+            </tr>
+            <tr>
+                <th>Telefono</th>
+                <td>{{ entity.telefono }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ entity.email }}</td>
+            </tr>
+            <tr>
+                <th>Compromiso</th>
+                <td>{{ entity.compromiso }}</td>
+            </tr>
+            <tr>
+                <th>Aportadoractual</th>
+                <td>{{ entity.aportadorActual }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="box-footer">        
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    {% if is_granted('ROLE_ADMIN') %}     
+    <li style="float: left; padding: 5px;">
+        <a style="display: block; " class="btn btn-md btn-success" href="{{ path('datosaportaciones_edit', { 'id': entity.idAportador }) }}">
+            <i class="ace-icon fa fa-edit align-top bigger-120"></i> Editar 
+        </a>
+    </li>
+    {% endif %}
+    <li style="float: left; padding: 5px;">
+        <a style="display: block;" class="btn btn-md btn-success" href="{{ path('datosaportaciones') }}">
+            <i class="ace-icon fa fa-fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>
+    </div> 
+{% endblock %}

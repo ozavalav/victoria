@@ -2,6 +2,13 @@ datospublicidad:
     path:     /
     defaults: { _controller: "VictoriaAppBundle:DatosPublicidad:index" }
 
+datoslistapublicidad_solo:
+    path:     /
+    
+datospublicidad_editdetalle:
+    path:     /{id}/editdetalle    
+    defaults: { _controller: "VictoriaAppBundle:DatosPublicidad:editdetalle" }
+    
 datospublicidad_show:
     path:     /{id}/show
     defaults: { _controller: "VictoriaAppBundle:DatosPublicidad:show" }
@@ -19,6 +26,11 @@ datospublicidad_edit:
     path:     /{id}/edit
     defaults: { _controller: "VictoriaAppBundle:DatosPublicidad:edit" }
 
+datospublicidad_updatedetalle:
+    path:     /{id}/updatedetalle
+    defaults: { _controller: "VictoriaAppBundle:DatosPublicidad:updatedetalle" }
+    requirements: { _method: post|put }
+    
 datospublicidad_update:
     path:     /{id}/update
     defaults: { _controller: "VictoriaAppBundle:DatosPublicidad:update" }

@@ -60,7 +60,15 @@ class DatosListaPresupuesto
      */
     private $idPresupuesto;
 
-
+    /**
+     * @var \AdObjetoGastos
+     *
+     * @ORM\ManyToOne(targetEntity="AdObjetoGastos")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_objeto_gasto", referencedColumnName="id_objeto_gasto")
+     * })
+     */
+    private $idObjetoGasto;
 
     /**
      * Get idLista
@@ -185,5 +193,28 @@ class DatosListaPresupuesto
     public function getIdPresupuesto()
     {
         return $this->idPresupuesto;
+    }
+    
+    /**
+     * Set idObjetoGasto
+     *
+     * @param \Victoria\AppBundle\Entity\AdObjetoGastos $idObjetoGasto
+     * @return AdObjetoGastos
+     */
+    public function setIdObjetoGasto(\Victoria\AppBundle\Entity\AdObjetoGastos $idObjetoGasto = null)
+    {
+        $this->idObjetoGasto = $idObjetoGasto;
+
+        return $this;
+    }
+
+    /**
+     * Get idObjetoGasto
+     *
+     * @return \Victoria\AppBundle\Entity\AbObjetoGastos 
+     */
+    public function getIdObjetoGasto()
+    {
+        return $this->idObjetoGasto;
     }
 }

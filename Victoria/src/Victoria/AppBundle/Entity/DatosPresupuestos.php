@@ -112,6 +112,16 @@ class DatosPresupuestos
     private $idDistrito;
     
     /**
+     * @var \DatosCentrosVotacion
+     *
+     * @ORM\ManyToOne(targetEntity="DatosCentrosVotacion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_cv", referencedColumnName="id_cv")
+     * })
+     */
+    private $idCv;
+    
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_evento", type="datetime", nullable=false)
@@ -455,6 +465,29 @@ class DatosPresupuestos
     public function getIdDistrito()
     {
         return $this->idDistrito;
+    }
+    
+    /**
+     * Set idCv
+     *
+     * @param \Victoria\AppBundle\Entity\DatosCentrosVotacion $idCv
+     * @return DatosPresupuestos
+     */
+    public function setIdCv(\Victoria\AppBundle\Entity\DatosCentrosVotacion $idCv = null)
+    {
+        $this->idCv = $idCv;
+
+        return $this;
+    }
+
+    /**
+     * Get idCv
+     *
+     * @return \Victoria\AppBundle\Entity\DatosCentrosVotacion 
+     */
+    public function getIdCv()
+    {
+        return $this->idCv;
     }
     
     /**

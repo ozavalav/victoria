@@ -1,0 +1,39 @@
+datostareas:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:DatosTareas:index" }
+
+datostareas_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:DatosTareas:show" }
+
+datostareas_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:DatosTareas:new" }
+
+datostareas_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:DatosTareas:create" }
+    requirements: { _method: post }
+
+datostareas_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:DatosTareas:edit" }
+
+datostareas_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:DatosTareas:update" }
+    requirements: { _method: post|put }
+    
+datostareas_editmodal:
+    path:     /{id}/editmodal
+    defaults: { _controller: "VictoriaAppBundle:DatosTareas:editmodal" }
+
+datostareas_updatemodal:
+    path:     /{id}/updatemodal
+    defaults: { _controller: "VictoriaAppBundle:DatosTareas:updatemodal" }
+    requirements: { _method: post|put }
+
+datostareas_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:DatosTareas:delete" }
+    requirements: { _method: post|delete }

@@ -136,6 +136,47 @@ order by c.id_estructura";
         $stmt->execute();
         $entest = $stmt->fetchAll();
         
+/* Obtiene el gasto por campaña politica */
+        $query = "select cp.id_campana campana, cp.nombre, coalesce(sum(l.cantidad * l.costo_unitario_estimado),0) total
+from datos_presupuestos p join datos_lista_presupuesto l on (l.id_presupuesto = p.id_presupuesto)
+right join datos_campanas_politicas cp on (cp.id_campana = p.id_campana)
+where cp.id_campana <> 0
+group by cp.id_campana, cp.nombre
+order by total desc";
+        $stmt = $em->getConnection()->prepare($query);
+        $stmt->execute();
+        $egcamp = $stmt->fetchAll();
+        
+/* Obtiene el gasto por distrito */
+        $query = "select d.id_distrito distrito, d.id_campana campana, d.nombre, coalesce(sum(l.cantidad * l.costo_unitario_estimado),0) total
+from datos_presupuestos p join datos_lista_presupuesto l on (l.id_presupuesto = p.id_presupuesto)
+right join datos_distritos d on (d.id_distrito = p.id_distrito)
+where d.id_campana <> 0 -- campaña politica seleccionada
+group by d.id_distrito, d.id_campana, d.nombre
+order by total desc";
+        $stmt = $em->getConnection()->prepare($query);
+        $stmt->execute();
+        $egdis = $stmt->fetchAll();        
+        
+/* Obtiene el gasto por centro de votación */
+        $query = "select cv.id_cv cv, cv.id_distrito distrito, cv.nombre, coalesce(sum(l.cantidad * l.costo_unitario_estimado),0) total
+from datos_presupuestos p join datos_lista_presupuesto l on (l.id_presupuesto = p.id_presupuesto)
+right join datos_centros_votacion cv on (cv.id_cv = p.id_cv)
+where cv.id_distrito <> 0-- Distrito selecionado
+group by cv.id_cv, cv.id_distrito, cv.nombre
+order by total desc";
+        $stmt = $em->getConnection()->prepare($query);
+        $stmt->execute();
+        $egcv = $stmt->fetchAll(); 
+        
+        
+        /* Carga electoral de los CV vrs. los votantes registrados */
+        $query = "select round(((select count(*)::decimal from datos_votantes) / sum(cargar_electoral)::decimal) * 100,0) carga 
+from datos_centros_votacion";
+        $stmt = $em->getConnection()->prepare($query);
+        $stmt->execute();
+        $cevsvo = $stmt->fetchAll(); 
+        
         /* Crea el menu segun los acceso que tiene el usuario 
          * y los graba como una variable de sesion para ser utilizado en cada carga de pagina
          */
@@ -147,6 +188,10 @@ order by c.id_estructura";
                     'menu' => $strmenu->getContent(),
                     'datosnoti' => $entnot,
                     'entest' => $entest,
+                    'egcamp' => $egcamp,
+                    'egdis' => $egdis,
+                    'egcv' => $egcv,
+                    'cevsvo' => $cevsvo[0],
                 ));
     }
     
