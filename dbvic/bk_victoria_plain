@@ -1,0 +1,3003 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.1.14
+-- Dumped by pg_dump version 9.1.13
+-- Started on 2019-11-05 07:54:23 CST
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 220 (class 3079 OID 11644)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2242 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 161 (class 1259 OID 284668)
+-- Dependencies: 5
+-- Name: ad_acceso_grant; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_acceso_grant (
+    id_acceso integer NOT NULL,
+    objeto character varying(8) NOT NULL,
+    id_estado integer NOT NULL,
+    fecha_creacion timestamp without time zone NOT NULL,
+    usuario_creacion character varying(32) NOT NULL,
+    usuario_ultima_modificacion character varying(32) NOT NULL,
+    fecha_ultima_modificacion timestamp without time zone NOT NULL,
+    id_acceso_grant integer NOT NULL
+);
+
+
+ALTER TABLE public.ad_acceso_grant OWNER TO postgres;
+
+--
+-- TOC entry 171 (class 1259 OID 284731)
+-- Dependencies: 5
+-- Name: ad_acceso_grant_id_acceso_grant_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE ad_acceso_grant_id_acceso_grant_seq
+    START WITH 118
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.ad_acceso_grant_id_acceso_grant_seq OWNER TO postgres;
+
+--
+-- TOC entry 162 (class 1259 OID 284673)
+-- Dependencies: 5
+-- Name: ad_departamentos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_departamentos (
+    id integer NOT NULL,
+    cod_departamento character varying(5),
+    nombre character varying(64)
+);
+
+
+ALTER TABLE public.ad_departamentos OWNER TO postgres;
+
+--
+-- TOC entry 194 (class 1259 OID 293119)
+-- Dependencies: 5
+-- Name: ad_estados_presupuesto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_estados_presupuesto (
+    id_estado_presupuesto smallint NOT NULL,
+    descripcion character varying(128)
+);
+
+
+ALTER TABLE public.ad_estados_presupuesto OWNER TO postgres;
+
+--
+-- TOC entry 169 (class 1259 OID 284726)
+-- Dependencies: 5
+-- Name: ad_grant; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_grant (
+    objeto character varying(8) NOT NULL,
+    nombre character varying(64) NOT NULL,
+    titulo character varying(64) NOT NULL,
+    objeto_padre character varying(8) NOT NULL,
+    nombre_imagen character varying(128),
+    orden integer NOT NULL,
+    visible integer NOT NULL,
+    tipo_objeto integer NOT NULL,
+    id_estado integer NOT NULL,
+    fecha_creacion timestamp without time zone NOT NULL,
+    usuario_creacion character varying(32) NOT NULL,
+    usuario_ultima_modificacion character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.ad_grant OWNER TO postgres;
+
+--
+-- TOC entry 163 (class 1259 OID 284676)
+-- Dependencies: 5
+-- Name: ad_municipios; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_municipios (
+    id integer NOT NULL,
+    cod_departamento character varying(5),
+    cod_municipio character varying(5),
+    nombre character varying(64)
+);
+
+
+ALTER TABLE public.ad_municipios OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 309633)
+-- Dependencies: 5
+-- Name: ad_objeto_gastos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_objeto_gastos (
+    id_objeto_gasto smallint NOT NULL,
+    descripcion character varying(128)
+);
+
+
+ALTER TABLE public.ad_objeto_gastos OWNER TO postgres;
+
+--
+-- TOC entry 178 (class 1259 OID 284826)
+-- Dependencies: 5
+-- Name: ad_partidos_politicos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_partidos_politicos (
+    id_partido_politico integer NOT NULL,
+    descripcion character varying(256)
+);
+
+
+ALTER TABLE public.ad_partidos_politicos OWNER TO postgres;
+
+--
+-- TOC entry 168 (class 1259 OID 284721)
+-- Dependencies: 5
+-- Name: ad_periodo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_periodo (
+    periodo smallint NOT NULL,
+    estado smallint
+);
+
+
+ALTER TABLE public.ad_periodo OWNER TO postgres;
+
+--
+-- TOC entry 164 (class 1259 OID 284679)
+-- Dependencies: 5
+-- Name: ad_roles; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_roles (
+    id_rol integer NOT NULL,
+    rol character varying(128) NOT NULL,
+    id_estado integer NOT NULL,
+    fecha_creacion timestamp without time zone NOT NULL,
+    usuario_creacion character varying(32) NOT NULL,
+    usuario_ultima_modificacion character varying(32) NOT NULL,
+    fecha_ultima_modificacion timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.ad_roles OWNER TO postgres;
+
+--
+-- TOC entry 170 (class 1259 OID 284729)
+-- Dependencies: 5
+-- Name: ad_roles_id_rol_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE ad_roles_id_rol_seq
+    START WITH 5
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 10000
+    CACHE 1;
+
+
+ALTER TABLE public.ad_roles_id_rol_seq OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 309542)
+-- Dependencies: 5
+-- Name: ad_task; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_task (
+    id_task integer NOT NULL,
+    description_task character varying(100) NOT NULL,
+    fcinit_task date NOT NULL,
+    userwt_task integer NOT NULL,
+    id integer NOT NULL,
+    state_task integer NOT NULL,
+    useradd_task integer NOT NULL,
+    evento_task integer NOT NULL
+);
+
+
+ALTER TABLE public.ad_task OWNER TO postgres;
+
+--
+-- TOC entry 193 (class 1259 OID 293114)
+-- Dependencies: 5
+-- Name: ad_tipo_egresos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_tipo_egresos (
+    id_tipo_egreso smallint NOT NULL,
+    descripcion character varying(128)
+);
+
+
+ALTER TABLE public.ad_tipo_egresos OWNER TO postgres;
+
+--
+-- TOC entry 175 (class 1259 OID 284747)
+-- Dependencies: 5
+-- Name: ad_tipos_comision; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_tipos_comision (
+    id_tipo_comision integer NOT NULL,
+    descripcion character varying(256),
+    id_estructura integer
+);
+
+
+ALTER TABLE public.ad_tipos_comision OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 309598)
+-- Dependencies: 5
+-- Name: ad_tipos_comision_id_tipo_comision_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE ad_tipos_comision_id_tipo_comision_seq
+    START WITH 8
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.ad_tipos_comision_id_tipo_comision_seq OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1259 OID 309690)
+-- Dependencies: 5
+-- Name: ad_tipos_estados_tareas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_tipos_estados_tareas (
+    id_tipo_estado_tareas integer NOT NULL,
+    descripcion character varying NOT NULL
+);
+
+
+ALTER TABLE public.ad_tipos_estados_tareas OWNER TO postgres;
+
+--
+-- TOC entry 197 (class 1259 OID 301315)
+-- Dependencies: 5
+-- Name: ad_tipos_publicidad; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_tipos_publicidad (
+    id_publicidad integer NOT NULL,
+    fecha_creacion timestamp without time zone NOT NULL,
+    usuario_creacion character varying(32) NOT NULL,
+    usuario_ultima_modificacion character varying(32) NOT NULL,
+    fecha_ultima_modificacion timestamp without time zone NOT NULL,
+    nombre character varying
+);
+
+
+ALTER TABLE public.ad_tipos_publicidad OWNER TO postgres;
+
+--
+-- TOC entry 165 (class 1259 OID 284682)
+-- Dependencies: 1950 5
+-- Name: ad_user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ad_user (
+    id integer NOT NULL,
+    username character varying(25) NOT NULL,
+    password character varying(128) NOT NULL,
+    salt character varying(32) DEFAULT NULL::character varying,
+    nombre_usuario character varying(128) NOT NULL,
+    id_estado integer NOT NULL,
+    id_comunidad integer,
+    is_active boolean,
+    email character varying(128),
+    fecha_creacion timestamp without time zone NOT NULL,
+    usuario_creacion character varying(32) NOT NULL,
+    usuario_ultima_modificacion character varying(32) NOT NULL,
+    fecha_ultima_modificacion timestamp without time zone NOT NULL,
+    cod_municipio character varying(5) NOT NULL,
+    cod_departamento character varying(3) NOT NULL,
+    acceso integer NOT NULL,
+    id_estructura integer NOT NULL,
+    id_campana integer NOT NULL,
+    id_distrito integer NOT NULL
+);
+
+
+ALTER TABLE public.ad_user OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 284735)
+-- Dependencies: 5
+-- Name: ad_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE ad_user_id_seq
+    START WITH 1027
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ad_user_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 166 (class 1259 OID 284689)
+-- Dependencies: 5
+-- Name: admin_roles; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE admin_roles (
+    id integer NOT NULL,
+    nombre character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.admin_roles OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 309786)
+-- Dependencies: 5
+-- Name: datos_aportaciones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_aportaciones (
+    id_aportador integer NOT NULL,
+    nombre character varying(256),
+    tipo_aportador integer,
+    tipo_aportacion integer,
+    descripcion character varying(512),
+    valor_aportacion integer,
+    telefono character varying(60),
+    email character varying(128),
+    compromiso character varying(512),
+    aportador_actual integer,
+    id_campana integer NOT NULL
+);
+
+
+ALTER TABLE public.datos_aportaciones OWNER TO postgres;
+
+--
+-- TOC entry 2243 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: COLUMN datos_aportaciones.tipo_aportador; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN datos_aportaciones.tipo_aportador IS '1 = Persona 2 = Empresa';
+
+
+--
+-- TOC entry 2244 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: COLUMN datos_aportaciones.tipo_aportacion; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN datos_aportaciones.tipo_aportacion IS '1 = Economica 2 = En especies';
+
+
+--
+-- TOC entry 2245 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: COLUMN datos_aportaciones.descripcion; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN datos_aportaciones.descripcion IS 'Descripcion de la aportacion que recibio';
+
+
+--
+-- TOC entry 2246 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: COLUMN datos_aportaciones.valor_aportacion; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN datos_aportaciones.valor_aportacion IS 'Representa el valor monerario de la aportacion';
+
+
+--
+-- TOC entry 2247 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: COLUMN datos_aportaciones.telefono; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN datos_aportaciones.telefono IS 'Telefono de la persona';
+
+
+--
+-- TOC entry 2248 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: COLUMN datos_aportaciones.email; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN datos_aportaciones.email IS 'Email de la persona';
+
+
+--
+-- TOC entry 2249 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: COLUMN datos_aportaciones.compromiso; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN datos_aportaciones.compromiso IS 'Compromiso adquirido con la persona que dio la aportacion';
+
+
+--
+-- TOC entry 2250 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: COLUMN datos_aportaciones.aportador_actual; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN datos_aportaciones.aportador_actual IS '1 = Si es un aportador actual 2 = Aportador futuro';
+
+
+--
+-- TOC entry 2251 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: COLUMN datos_aportaciones.id_campana; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN datos_aportaciones.id_campana IS 'Campaña a la que esta dando la aportacion';
+
+
+--
+-- TOC entry 219 (class 1259 OID 309799)
+-- Dependencies: 5
+-- Name: datos_aportaciones_id_aportador_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_aportaciones_id_aportador_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_aportaciones_id_aportador_seq OWNER TO postgres;
+
+--
+-- TOC entry 177 (class 1259 OID 284818)
+-- Dependencies: 5
+-- Name: datos_campanas_politicas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_campanas_politicas (
+    id_campana integer NOT NULL,
+    nombre character varying(256) NOT NULL,
+    candidato character varying(256) NOT NULL,
+    id_partido_politico integer NOT NULL
+);
+
+
+ALTER TABLE public.datos_campanas_politicas OWNER TO postgres;
+
+--
+-- TOC entry 180 (class 1259 OID 284858)
+-- Dependencies: 5
+-- Name: datos_campanas_politicas_id_campana_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_campanas_politicas_id_campana_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_campanas_politicas_id_campana_seq OWNER TO postgres;
+
+--
+-- TOC entry 182 (class 1259 OID 284865)
+-- Dependencies: 5
+-- Name: datos_centros_votacion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_centros_votacion (
+    id_cv integer NOT NULL,
+    id_campana integer NOT NULL,
+    id_distrito integer NOT NULL,
+    nombre character varying(256) NOT NULL,
+    tipo_cv integer NOT NULL,
+    direccion character varying(512) NOT NULL,
+    nombre_edificio character varying(256),
+    cargar_electoral integer,
+    numero_mesas integer
+);
+
+
+ALTER TABLE public.datos_centros_votacion OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 301373)
+-- Dependencies: 5
+-- Name: datos_centros_votacion_id_cv_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_centros_votacion_id_cv_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_centros_votacion_id_cv_seq OWNER TO postgres;
+
+--
+-- TOC entry 191 (class 1259 OID 293099)
+-- Dependencies: 5
+-- Name: datos_comentarios_presupuesto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_comentarios_presupuesto (
+    id_comentario integer NOT NULL,
+    id_presupuesto integer NOT NULL,
+    mensaje character varying(512),
+    archivo character varying(256),
+    usuario character varying(25)
+);
+
+
+ALTER TABLE public.datos_comentarios_presupuesto OWNER TO postgres;
+
+--
+-- TOC entry 196 (class 1259 OID 301313)
+-- Dependencies: 5
+-- Name: datos_comentarios_presupuesto_id_comentario_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_comentarios_presupuesto_id_comentario_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_comentarios_presupuesto_id_comentario_seq OWNER TO postgres;
+
+--
+-- TOC entry 174 (class 1259 OID 284742)
+-- Dependencies: 1951 1952 5
+-- Name: datos_comisiones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_comisiones (
+    id_comision integer NOT NULL,
+    id_estructura integer NOT NULL,
+    id_tipo_comision integer NOT NULL,
+    id_campana integer NOT NULL,
+    descripcion character varying(256),
+    id_persona integer NOT NULL,
+    id_distrito integer DEFAULT 0 NOT NULL,
+    id_cv integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.datos_comisiones OWNER TO postgres;
+
+--
+-- TOC entry 179 (class 1259 OID 284856)
+-- Dependencies: 5
+-- Name: datos_comisiones_id_comision_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_comisiones_id_comision_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_comisiones_id_comision_seq OWNER TO postgres;
+
+--
+-- TOC entry 181 (class 1259 OID 284860)
+-- Dependencies: 5
+-- Name: datos_distritos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_distritos (
+    id_distrito integer NOT NULL,
+    id_campana integer NOT NULL,
+    nombre character varying(256) NOT NULL
+);
+
+
+ALTER TABLE public.datos_distritos OWNER TO postgres;
+
+--
+-- TOC entry 188 (class 1259 OID 293060)
+-- Dependencies: 5
+-- Name: datos_distritos_id_distrito_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_distritos_id_distrito_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_distritos_id_distrito_seq OWNER TO postgres;
+
+--
+-- TOC entry 173 (class 1259 OID 284737)
+-- Dependencies: 5
+-- Name: datos_estructuras; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_estructuras (
+    id_estructura integer NOT NULL,
+    nombre character varying(256) NOT NULL,
+    tipo_estructura character(5) NOT NULL
+);
+
+
+ALTER TABLE public.datos_estructuras OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 301385)
+-- Dependencies: 5
+-- Name: datos_eventos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_eventos (
+    id_eventos integer NOT NULL,
+    titulo character varying(256) NOT NULL,
+    descripcion character varying(256),
+    fecha_inicio timestamp without time zone NOT NULL,
+    fecha_final timestamp without time zone NOT NULL,
+    id_campana integer NOT NULL,
+    id_distrito integer NOT NULL,
+    usuario_creacion character varying(32),
+    fecha_creacion timestamp without time zone,
+    usuario_ultima_modificacion character varying(32),
+    fecha_ultima_modificacion timestamp without time zone
+);
+
+
+ALTER TABLE public.datos_eventos OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 301403)
+-- Dependencies: 5
+-- Name: datos_eventos_id_eventos_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_eventos_id_eventos_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_eventos_id_eventos_seq OWNER TO postgres;
+
+--
+-- TOC entry 190 (class 1259 OID 293089)
+-- Dependencies: 5
+-- Name: datos_lista_presupuesto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_lista_presupuesto (
+    id_lista integer NOT NULL,
+    id_presupuesto integer NOT NULL,
+    descripcion character varying(256),
+    cantidad numeric,
+    costo_unitario_estimado numeric,
+    costo_unitario_real numeric,
+    id_objeto_gasto integer NOT NULL
+);
+
+
+ALTER TABLE public.datos_lista_presupuesto OWNER TO postgres;
+
+--
+-- TOC entry 195 (class 1259 OID 301254)
+-- Dependencies: 5
+-- Name: datos_lista_presupuesto_id_lista_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_lista_presupuesto_id_lista_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_lista_presupuesto_id_lista_seq OWNER TO postgres;
+
+--
+-- TOC entry 206 (class 1259 OID 309581)
+-- Dependencies: 5
+-- Name: datos_lista_publicidad; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_lista_publicidad (
+    id_lista integer NOT NULL,
+    id_publicidad integer NOT NULL,
+    tipo_anuncio character varying(100),
+    descripcion character varying(256),
+    target character varying NOT NULL,
+    pauta_publicitaria integer NOT NULL,
+    personas_alcanzadas integer,
+    me_gusta integer,
+    me_encanta integer,
+    me_divierte integer,
+    me_enoja integer,
+    me_entristece integer,
+    comentarios_positivos integer,
+    comentarios_negativos integer,
+    compartidos integer
+);
+
+
+ALTER TABLE public.datos_lista_publicidad OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 309591)
+-- Dependencies: 5
+-- Name: datos_lista_publicidad_id_lista_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_lista_publicidad_id_lista_seq
+    START WITH 100
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_lista_publicidad_id_lista_seq OWNER TO postgres;
+
+--
+-- TOC entry 183 (class 1259 OID 285014)
+-- Dependencies: 1953 5
+-- Name: datos_notificaciones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_notificaciones (
+    id_notificacion integer NOT NULL,
+    id_campana integer NOT NULL,
+    id_distrito integer NOT NULL,
+    id_usuario integer NOT NULL,
+    numero_mensaje integer NOT NULL,
+    mensaje character varying(1024) NOT NULL,
+    estado integer DEFAULT 1 NOT NULL,
+    fecha_enviado timestamp without time zone,
+    fecha_recibido timestamp without time zone,
+    id_evento integer,
+    usuario character varying(25)
+);
+
+
+ALTER TABLE public.datos_notificaciones OWNER TO postgres;
+
+--
+-- TOC entry 184 (class 1259 OID 285038)
+-- Dependencies: 5
+-- Name: datos_notificaciones_id_notificacion_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_notificaciones_id_notificacion_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_notificaciones_id_notificacion_seq OWNER TO postgres;
+
+--
+-- TOC entry 185 (class 1259 OID 285040)
+-- Dependencies: 5
+-- Name: datos_notificaciones_numero_mensaje_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_notificaciones_numero_mensaje_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_notificaciones_numero_mensaje_seq OWNER TO postgres;
+
+--
+-- TOC entry 176 (class 1259 OID 284774)
+-- Dependencies: 5
+-- Name: datos_personas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_personas (
+    id_persona integer NOT NULL,
+    nombres character varying(256) NOT NULL,
+    apellidos character varying(256),
+    numero_identidad character varying(13) NOT NULL,
+    telefono_1 character varying(14) NOT NULL,
+    telefono_2 character varying(14),
+    telefono_3 character varying(14),
+    email character varying(256) NOT NULL,
+    id_estructura integer NOT NULL,
+    id_campana integer NOT NULL,
+    estado integer NOT NULL,
+    id_distrito integer NOT NULL,
+    id_comision integer NOT NULL
+);
+
+
+ALTER TABLE public.datos_personas OWNER TO postgres;
+
+--
+-- TOC entry 187 (class 1259 OID 293058)
+-- Dependencies: 5
+-- Name: datos_personas_id_persona_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_personas_id_persona_seq
+    START WITH 4
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_personas_id_persona_seq OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1259 OID 293062)
+-- Dependencies: 1954 1955 1956 5
+-- Name: datos_presupuestos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_presupuestos (
+    id_presupuesto integer NOT NULL,
+    id_campana integer DEFAULT 0 NOT NULL,
+    id_distrito integer DEFAULT 0 NOT NULL,
+    tipo_egreso integer,
+    id_actividad_egreso integer,
+    fuente_egreso integer,
+    descripcion character varying(256),
+    preparado_por integer NOT NULL,
+    aprobado_por integer,
+    estado integer,
+    total_presupuesto_estimado numeric,
+    total_presupuesto_ejecutado numeric,
+    fecha_evento timestamp without time zone,
+    lugar_evento character varying(256),
+    objetivo_evento character varying(512),
+    id_cv integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.datos_presupuestos OWNER TO postgres;
+
+--
+-- TOC entry 192 (class 1259 OID 293112)
+-- Dependencies: 5
+-- Name: datos_presupuestos_id_presupuesto_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_presupuestos_id_presupuesto_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_presupuestos_id_presupuesto_seq OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 309658)
+-- Dependencies: 1957 5
+-- Name: datos_publicidad; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_publicidad (
+    id_publicidad integer NOT NULL,
+    id_campana integer NOT NULL,
+    id_distrito integer DEFAULT 0 NOT NULL,
+    tipo_publicidad integer,
+    descripcion character varying(256),
+    preparado_por integer NOT NULL,
+    aprobado_por integer,
+    estado integer,
+    nombre_medio_publicidad character varying(100),
+    tipo_anuncio character varying(100),
+    comprobante_pago character varying(100),
+    target character varying(100),
+    pauta_publicitaria integer,
+    personas_alcanzadas integer,
+    me_gusta integer,
+    me_encanta integer,
+    me_divierte integer,
+    me_enoja integer,
+    me_entristece integer,
+    comentarios_positivos integer,
+    comentarios_negativos integer,
+    compartidos integer,
+    fecha_creacion timestamp without time zone NOT NULL,
+    usuario_creacion character varying(32) NOT NULL,
+    usuario_ultima_modificacion character varying(32) NOT NULL,
+    fecha_ultima_modificacion timestamp without time zone NOT NULL,
+    me_asombra integer
+);
+
+
+ALTER TABLE public.datos_publicidad OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 309589)
+-- Dependencies: 5
+-- Name: datos_publicidad_id_publicidad_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_publicidad_id_publicidad_seq
+    START WITH 100
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_publicidad_id_publicidad_seq OWNER TO postgres;
+
+--
+-- TOC entry 199 (class 1259 OID 301341)
+-- Dependencies: 5
+-- Name: datos_publicidad_medios; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_publicidad_medios (
+    id_publicidad integer NOT NULL,
+    id_campana integer NOT NULL,
+    nombre_medio_publicitario character varying(8) NOT NULL,
+    audiencia character varying NOT NULL,
+    frecuencia character varying NOT NULL,
+    tipo_anuncio character varying NOT NULL,
+    costo character varying NOT NULL,
+    comprobante_pago character varying NOT NULL,
+    id_estado integer,
+    fecha_creacion timestamp without time zone,
+    usuario_creacion character varying(32),
+    usuario_ultima_modificacion character varying(32),
+    fecha_ultima_modificacion timestamp without time zone,
+    id_publicidad_medios integer NOT NULL
+);
+
+
+ALTER TABLE public.datos_publicidad_medios OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 301369)
+-- Dependencies: 5
+-- Name: datos_publicidad_medios_id_publicidad_medios_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_publicidad_medios_id_publicidad_medios_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_publicidad_medios_id_publicidad_medios_seq OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 301323)
+-- Dependencies: 5
+-- Name: datos_publicidad_redes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_publicidad_redes (
+    id_publicidad integer NOT NULL,
+    id_campana integer NOT NULL,
+    target character varying NOT NULL,
+    pauta_publicitaria integer NOT NULL,
+    personas_alcanzadas integer,
+    me_gusta integer,
+    me_encanta integer,
+    me_divierte integer,
+    me_enoja integer,
+    me_entristece integer,
+    comentarios_positivos integer,
+    comentarios_negativos integer,
+    compartidos integer,
+    resumen_interaccion character varying(100),
+    nombre_medio_publicitario character varying(100),
+    tipo_anuncio character varying(100),
+    comprobante_pago character varying(100),
+    estado integer,
+    fecha_creacion timestamp without time zone,
+    usuario_creacion character varying(32),
+    usuario_ultima_modificacion character varying(32),
+    fecha_ultima_modificacion timestamp without time zone,
+    id_publicidad_redes integer NOT NULL
+);
+
+
+ALTER TABLE public.datos_publicidad_redes OWNER TO postgres;
+
+--
+-- TOC entry 201 (class 1259 OID 301371)
+-- Dependencies: 5
+-- Name: datos_publicidad_redes_id_publicidad_redes_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_publicidad_redes_id_publicidad_redes_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_publicidad_redes_id_publicidad_redes_seq OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 309762)
+-- Dependencies: 1959 1960 1961 1962 5
+-- Name: datos_tareas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_tareas (
+    id_tarea integer NOT NULL,
+    titulo character varying(50),
+    descripcion character varying(256),
+    progreso integer DEFAULT 0 NOT NULL,
+    id_responsable integer NOT NULL,
+    id_estado integer DEFAULT 1 NOT NULL,
+    id_eventos integer NOT NULL,
+    fecha_creacion timestamp without time zone NOT NULL,
+    usuario_creacion character varying(32) NOT NULL,
+    usuario_ultima_modificacion character varying(32) NOT NULL,
+    fecha_ultima_modificacion timestamp without time zone NOT NULL,
+    CONSTRAINT ch_progreso_max CHECK ((progreso <= 100)),
+    CONSTRAINT ch_progreso_min CHECK ((progreso >= 0))
+);
+
+
+ALTER TABLE public.datos_tareas OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 309719)
+-- Dependencies: 5
+-- Name: datos_tareas_id_tarea_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_tareas_id_tarea_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_tareas_id_tarea_seq OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 309746)
+-- Dependencies: 1958 5
+-- Name: datos_votantes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datos_votantes (
+    id_votante integer NOT NULL,
+    nombres character varying(256) NOT NULL,
+    apellidos character varying(256),
+    numero_identidad character varying(13) NOT NULL,
+    edad integer DEFAULT 0,
+    telefonos character varying(60) NOT NULL,
+    email character varying(256),
+    id_cv integer NOT NULL
+);
+
+
+ALTER TABLE public.datos_votantes OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 309760)
+-- Dependencies: 5
+-- Name: datos_votantes_id_votante_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE datos_votantes_id_votante_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1;
+
+
+ALTER TABLE public.datos_votantes_id_votante_seq OWNER TO postgres;
+
+--
+-- TOC entry 186 (class 1259 OID 293056)
+-- Dependencies: 5
+-- Name: nextid; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE nextid
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.nextid OWNER TO postgres;
+
+--
+-- TOC entry 214 (class 1259 OID 309721)
+-- Dependencies: 5
+-- Name: responsables_tareas_id_tarea_responsable_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE responsables_tareas_id_tarea_responsable_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.responsables_tareas_id_tarea_responsable_seq OWNER TO postgres;
+
+--
+-- TOC entry 167 (class 1259 OID 284692)
+-- Dependencies: 5
+-- Name: user_role; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE user_role (
+    user_id integer NOT NULL,
+    role_id integer NOT NULL
+);
+
+
+ALTER TABLE public.user_role OWNER TO postgres;
+
+--
+-- TOC entry 2176 (class 0 OID 284668)
+-- Dependencies: 161 2235
+-- Data for Name: ad_acceso_grant; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o0001', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 551);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o1000', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 552);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o1100', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 553);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o1200', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 554);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o1500', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 555);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o1600', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 556);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o1700', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 557);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o2000', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 558);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o1210', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 559);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o1300', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 560);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o1400', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 561);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o2200', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 562);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o2300', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 563);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o3000', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 564);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o4000', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 565);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o4100', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 566);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o4200', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 567);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o5000', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 568);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o6000', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 569);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o7000', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 570);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o7100', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 571);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o7200', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 572);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (1, 'o8000', 1, '2019-11-05 03:35:58', 'focal', 'focal', '2019-11-05 03:35:58', 573);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (9, 'o0001', 1, '2019-10-25 22:06:57', 'focal', 'focal', '2019-10-25 22:06:57', 493);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (9, 'o1000', 1, '2019-10-25 22:06:57', 'focal', 'focal', '2019-10-25 22:06:57', 494);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (9, 'o1300', 1, '2019-10-25 22:06:57', 'focal', 'focal', '2019-10-25 22:06:57', 495);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (9, 'o1500', 1, '2019-10-25 22:06:57', 'focal', 'focal', '2019-10-25 22:06:57', 496);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (9, 'o2000', 1, '2019-10-25 22:06:57', 'focal', 'focal', '2019-10-25 22:06:57', 497);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (9, 'o2200', 1, '2019-10-25 22:06:57', 'focal', 'focal', '2019-10-25 22:06:57', 498);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (9, 'o4000', 1, '2019-10-25 22:06:57', 'focal', 'focal', '2019-10-25 22:06:57', 499);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (9, 'o4200', 1, '2019-10-25 22:06:57', 'focal', 'focal', '2019-10-25 22:06:57', 500);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (9, 'o8000', 1, '2019-10-25 22:06:57', 'focal', 'focal', '2019-10-25 22:06:57', 501);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o0001', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 538);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o1000', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 539);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o1500', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 540);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o2000', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 541);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o1210', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 542);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o1300', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 543);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o1400', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 544);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o2200', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 545);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o2300', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 546);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o4000', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 547);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o4100', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 548);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o4200', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 549);
+INSERT INTO ad_acceso_grant (id_acceso, objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, id_acceso_grant) VALUES (10, 'o8000', 1, '2019-11-03 15:57:45', 'focal', 'focal', '2019-11-03 15:57:45', 550);
+
+
+--
+-- TOC entry 2252 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: ad_acceso_grant_id_acceso_grant_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('ad_acceso_grant_id_acceso_grant_seq', 573, true);
+
+
+--
+-- TOC entry 2177 (class 0 OID 284673)
+-- Dependencies: 162 2235
+-- Data for Name: ad_departamentos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (1, '01', 'ATLANTIDA');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (2, '02', 'COLON');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (3, '03', 'COMAYAGUA');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (4, '04', 'COPAN');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (5, '05', 'CORTES');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (6, '06', 'CHOLUTECA');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (7, '07', 'EL PARAISO');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (8, '08', 'FRANCISCO MORAZAN');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (9, '09', 'GRACIAS A DIOS');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (10, '10', 'INTIBUCA');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (11, '11', 'ISLAS DE LA BAHIA');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (12, '12', 'LA PAZ');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (13, '13', 'LEMPIRA');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (14, '14', 'OCOTEPEQUE');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (15, '15', 'OLANCHO');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (16, '16', 'SANTA BARBARA');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (17, '17', 'VALLE');
+INSERT INTO ad_departamentos (id, cod_departamento, nombre) VALUES (18, '18', 'YORO');
+
+
+--
+-- TOC entry 2209 (class 0 OID 293119)
+-- Dependencies: 194 2235
+-- Data for Name: ad_estados_presupuesto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_estados_presupuesto (id_estado_presupuesto, descripcion) VALUES (1, 'Elaborado');
+INSERT INTO ad_estados_presupuesto (id_estado_presupuesto, descripcion) VALUES (2, 'Aprobado');
+INSERT INTO ad_estados_presupuesto (id_estado_presupuesto, descripcion) VALUES (3, 'Ejecutado');
+INSERT INTO ad_estados_presupuesto (id_estado_presupuesto, descripcion) VALUES (4, 'Cancelado');
+
+
+--
+-- TOC entry 2184 (class 0 OID 284726)
+-- Dependencies: 169 2235
+-- Data for Name: ad_grant; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o5200', 'datospublicidadredes', 'Redes', 'o5000', 'fa-circle-o', 2, 1, 2, 2, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o5000', 'datospublicidad', 'Campañas pub.', 'o0001', 'fa-flag-o', 1, 1, 3, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o3000', 'datostareas', 'Tareas', 'o0001', 'fa-check-square-o', 1, 1, 3, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o1700', 'datosaportaciones', 'Aportaciones', 'o1000', 'fa-user-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o2100', 'datoscomisiones/list', 'Asignar estructura', 'o2000', 'fa-circle-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o2200', 'datosnotificaciones', 'Notificaciones', 'o2000', 'fa-circle-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o1500', 'datospersonas', 'Personas', 'o1000', 'fa-user-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o1600', 'adtiposcomision', 'Tipos Comisiones', 'o1000', 'fa-user-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o4200', 'datoscomentariospresupuesto', 'Comentarios', 'o4000', 'fa-circle-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o4100', 'datospresupuestos', 'Actividades', 'o4000', 'fa-circle-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o4000', 'Eventos', 'Eventos', 'o0001', 'fa-money', 1, 1, 1, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o6000', 'datoseventos', 'Agenda', 'o0001', 'fa-calendar', 1, 1, 3, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o1300', 'datosdistritos', 'Distritos', 'o2000', 'fa-circle-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o1400', 'datoscentrosvotacion', 'Centros Votación', 'o2000', 'fa-circle-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o1210', 'datoscampanaspoliticas', 'Campañas Politicas', 'o2000', 'fa-circle-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o2300', 'datosvotantes', 'Votantes', 'o2000', 'fa-circle-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o5100', 'datospublicidadmedios', 'Medios', 'o5000', 'fa-circle-o', 2, 1, 2, 2, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o0001', 'MENU', 'MENU', '0', NULL, 0, 1, 1, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o7000', 'reportes', 'Reportes', 'o0001', 'fa-book', 1, 1, 1, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o8000', 'logout', 'Salir', 'o0001', 'fa-sign-out', 1, 1, 3, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o2000', 'Estructuras', 'Estructuras', 'o0001', 'fa-sitemap', 1, 1, 1, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o1000', 'Administracion', 'Administración', 'o0001', 'fa-gear', 1, 1, 1, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o1100', 'aduser', 'Usuarios', 'o1000', 'fa-user-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o1200', 'adroles', 'Roles', 'o1000', 'fa-circle-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o7100', 'repestructuras', 'Estructuras', 'o7000', 'fa-circle-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+INSERT INTO ad_grant (objeto, nombre, titulo, objeto_padre, nombre_imagen, orden, visible, tipo_objeto, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion) VALUES ('o7200', 'repcompanas', 'Campañas', 'o7000', 'fa-circle-o', 2, 1, 2, 1, '2019-02-03 00:00:00', 'ozavala', 'ozavala');
+
+
+--
+-- TOC entry 2178 (class 0 OID 284676)
+-- Dependencies: 163 2235
+-- Data for Name: ad_municipios; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (1, '01', '0101', 'LA CEIBA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (2, '01', '0102', 'EL PORVENIR');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (3, '01', '0103', 'ESPARTA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (4, '01', '0104', 'JUTIAPA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (5, '01', '0105', 'LA MASICA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (6, '01', '0106', 'SAN FRANCISCO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (7, '01', '0107', 'TELA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (8, '01', '0108', 'ARIZONA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (9, '02', '0201', 'TRUJILLO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (10, '02', '0202', 'BALFATE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (11, '02', '0203', 'IRIONA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (12, '02', '0204', 'LIMÓN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (13, '02', '0205', 'SANTA FE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (14, '02', '0206', 'SANTA ROSA DE AGU N');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (15, '02', '0207', 'SONAGUERA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (16, '02', '0208', 'SABA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (17, '02', '0209', 'TOCOA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (18, '02', '0210', 'BONITO ORIENTAL');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (19, '03', '0301', 'COMAYAGUA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (20, '03', '0302', 'AJUTERIQUE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (21, '03', '0303', 'EL ROSARIO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (22, '03', '0304', 'ESQUÍAS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (23, '03', '0305', 'HUMUYA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (24, '03', '0306', 'LA LIBERTAD');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (25, '03', '0307', 'LAMANÍ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (26, '03', '0308', 'LA TRINIDAD');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (27, '03', '0309', 'LEJAMANÍ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (28, '03', '0310', 'MEÁMBAR');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (29, '03', '0311', 'MINAS DE ORO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (30, '03', '0312', 'OJOS DE AGUA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (31, '03', '0313', 'SAN JERÓNIMO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (32, '03', '0314', 'SAN JOSÉ DE COMAYAGUA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (33, '03', '0315', 'SAN JOSÉ DEL POTRERO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (34, '03', '0316', 'SAN LUIS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (35, '03', '0317', 'SAN SEBASTIÁN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (36, '03', '0318', 'SIGUATEPEQUE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (37, '03', '0319', 'VILLA DE SAN ANTONIO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (38, '03', '0320', 'LAS LAJAS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (39, '03', '0321', 'TAULABÉ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (40, '04', '0401', 'SANTA ROSA DE COPÁN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (41, '04', '0402', 'CABAÑAS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (42, '04', '0403', 'CONCEPCIÓN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (43, '04', '0404', 'COPÁN RUINAS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (44, '04', '0405', 'CORQUÍN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (45, '04', '0406', 'CUCUYAGUA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (46, '04', '0407', 'DOLORES');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (47, '04', '0408', 'DULCE NOMBRE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (48, '04', '0409', 'EL PARAÍSO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (49, '04', '0410', 'FLORIDA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (50, '04', '0411', 'LA JIGUA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (51, '04', '0412', 'LA UNIÓN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (52, '04', '0413', 'NUEVA ARCADIA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (53, '04', '0414', 'SAN AGUSTÍN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (54, '04', '0415', 'SAN ANTONIO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (55, '04', '0416', 'SAN JERÓNIMO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (56, '04', '0417', 'SAN JOSÉ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (57, '04', '0418', 'SAN JUAN DE OPOA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (58, '04', '0419', 'SAN NICOLÁS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (59, '04', '0420', 'SAN PEDRO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (60, '04', '0421', 'SANTA RITA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (61, '04', '0422', 'TRINIDAD DE COPÁN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (62, '04', '0423', 'VERACRUZ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (63, '05', '0501', 'SAN PEDRO SULA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (64, '05', '0502', 'CHOLOMA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (65, '05', '0503', 'OMOA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (66, '05', '0504', 'PIMIENTA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (67, '05', '0505', 'POTRERILLOS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (68, '05', '0506', 'PUERTO CORTÉS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (69, '05', '0507', 'SAN ANTONIO DE CORTÉS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (70, '05', '0508', 'SAN FRANCISCO DE YOJOA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (71, '05', '0509', 'SAN MANUEL');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (72, '05', '0510', 'SANTA CRUZ DE YOJOA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (73, '05', '0511', 'VILLANUEVA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (74, '05', '0512', 'LA LIMA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (75, '06', '0601', 'CHOLUTECA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (76, '06', '0602', 'APACILAGUA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (77, '06', '0603', 'CONCEPCIÓN DE MARIA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (78, '06', '0604', 'DUYURE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (79, '06', '0605', 'EL CORPUS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (80, '06', '0606', 'EL TRIUNFO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (81, '06', '0607', 'MARCOVIA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (82, '06', '0608', 'MOROLICA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (83, '06', '0609', 'NAMASIGUE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (84, '06', '0610', 'OROCUINA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (85, '06', '0611', 'PESPIRE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (86, '06', '0612', 'SAN ANTONIO DE FLORES');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (87, '06', '0613', 'SAN ISIDRO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (88, '06', '0614', 'SAN JOSÉ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (89, '06', '0615', 'SAN MARCOS DE COLON');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (90, '06', '0616', 'SANTA ANA DE YUSGUARE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (91, '07', '0701', 'YUSCARÁN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (92, '07', '0702', 'ALAUCA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (93, '07', '0703', 'DANLÍ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (94, '07', '0704', 'EL PARAÍSO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (95, '07', '0705', 'GUINOPE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (96, '07', '0706', 'JACALEAPA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (97, '07', '0707', 'LIURE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (98, '07', '0708', 'MOROCELÍ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (99, '07', '0709', 'OROPOLÍ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (100, '07', '0710', 'POTRERILLOS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (101, '07', '0711', 'SAN ANTONIO DE FLORES');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (102, '07', '0712', 'SAN LUCAS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (103, '07', '0713', 'SAN MATÍAS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (104, '07', '0714', 'SOLEDAD');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (105, '07', '0715', 'TEUPASENTI');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (106, '07', '0716', 'TEXIGUAT');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (107, '07', '0717', 'VADO ANCHO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (108, '07', '0718', 'YAUYUPE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (109, '07', '0719', 'TROJES');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (110, '08', '0801', 'DISTRITO CENTRAL');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (111, '08', '0802', 'ALUBAREN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (112, '08', '0803', 'CEDROS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (113, '08', '0804', 'CURARÉN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (114, '08', '0805', 'EL PORVENIR');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (115, '08', '0806', 'GUAIMACA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (116, '08', '0807', 'LA LIBERTAD');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (117, '08', '0808', 'LA VENTA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (118, '08', '0809', 'LEPATERIQUE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (119, '08', '0810', 'MARAITA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (120, '08', '0811', 'MARALE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (121, '08', '0812', 'NUEVA ARMENIA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (122, '08', '0813', 'OJOJONA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (123, '08', '0814', 'ORICA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (124, '08', '0815', 'REITOCA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (125, '08', '0816', 'SABANAGRANDE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (126, '08', '0817', 'SAN ANTONIO DE ORIENTE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (127, '08', '0818', 'SAN BUENAVENTURA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (128, '08', '0819', 'SAN IGNACIO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (129, '08', '0820', 'SAN JUAN DE FLORES');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (130, '08', '0821', 'SAN MIGUELITO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (131, '08', '0822', 'SANTA ANA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (132, '08', '0823', 'SANTA LUCÍA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (133, '08', '0824', 'TALANGA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (134, '08', '0825', 'TATUMBLA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (135, '08', '0826', 'VALLE DE ANGELES');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (136, '08', '0827', 'VILLA DE SAN FRANCISCO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (137, '08', '0828', 'VALLECILLO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (138, '09', '0901', 'PUERTO LEMPIRA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (139, '09', '0902', 'BRUS LAGUNA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (140, '09', '0903', 'JUAN FRANCISCO BULNES');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (141, '09', '0904', 'AHUAS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (142, '09', '0905', 'WAMPUSIRPI');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (143, '09', '0906', 'VILLEDA MORALES');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (144, '10', '1001', 'LA ESPERANZA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (145, '10', '1002', 'CAMASCA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (146, '10', '1003', 'COLOMONCAGUA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (147, '10', '1004', 'CONCEPCIÓN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (148, '10', '1005', 'DOLORES');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (149, '10', '1006', 'INTIBUCÁ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (150, '10', '1007', 'JESÚS DE OTORO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (151, '10', '1008', 'MAGDALENA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (152, '10', '1009', 'MASAGUARA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (153, '10', '1010', 'SAN ANTONIO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (154, '10', '1011', 'SAN ISIDRO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (155, '10', '1012', 'SAN JUAN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (156, '10', '1013', 'SAN MARCOS DE LA SIERRA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (157, '10', '1014', 'SAN MIGUELITO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (158, '10', '1015', 'SANTA LUCÍA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (159, '10', '1016', 'YAMARANGUILA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (160, '10', '1017', 'SAN FRANCISCO DE OPALACA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (161, '11', '1101', 'ROATÁN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (162, '11', '1102', 'GUANAJA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (163, '11', '1103', 'JOSÉ SANTOS GUARDIOLA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (164, '11', '1104', 'UTILA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (165, '12', '1201', 'LA PAZ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (166, '12', '1202', 'AGUANQUETERIQUE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (167, '12', '1203', 'CABAÑAS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (168, '12', '1204', 'CANE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (169, '12', '1205', 'CHINACLA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (170, '12', '1206', 'GUAJIQUIRO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (171, '12', '1207', 'LAUTERIQUE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (172, '12', '1208', 'MARCALA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (173, '12', '1209', 'MERCEDES DE ORIENTE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (174, '12', '1210', 'OPATORO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (175, '12', '1211', 'SAN ANTONIO DEL NORTE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (176, '12', '1212', 'SAN JOSÉ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (177, '12', '1213', 'SAN JUAN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (178, '12', '1214', 'SAN PEDRO DE TUTULE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (179, '12', '1215', 'SANTA ANA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (180, '12', '1216', 'SANTA ELENA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (181, '12', '1217', 'SANTA MARÍA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (182, '12', '1218', 'SANTIAGO DE PURINGLA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (183, '12', '1219', 'YARULA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (184, '13', '1301', 'GRACIAS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (185, '13', '1302', 'BELÉN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (186, '13', '1303', 'CANDELARIA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (187, '13', '1304', 'COLOLACA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (188, '13', '1305', 'ERANDIQUE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (189, '13', '1306', 'GUALCINCE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (190, '13', '1307', 'GUARITA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (191, '13', '1308', 'LA CAMPA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (192, '13', '1309', 'LA IGUALA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (193, '13', '1310', 'LAS FLORES');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (194, '13', '1311', 'LA UNIÓN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (195, '13', '1312', 'LA VIRTUD');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (196, '13', '1313', 'LEPAERA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (197, '13', '1314', 'MAPULACA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (198, '13', '1315', 'PIRAERA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (199, '13', '1316', 'SAN ANDRÉS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (200, '13', '1317', 'SAN FRANCISCO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (201, '13', '1318', 'SAN JUAN GUARITA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (202, '13', '1319', 'SAN MANUEL COLOHETE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (203, '13', '1320', 'SAN RAFAEL');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (204, '13', '1321', 'SAN SEBASTIÁN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (205, '13', '1322', 'SANTA CRUZ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (206, '13', '1323', 'TALGUA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (207, '13', '1324', 'TAMBLA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (208, '13', '1325', 'TOMALÁ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (209, '13', '1326', 'VALLADOLID');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (210, '13', '1327', 'VIRGINIA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (211, '13', '1328', 'SAN MARCOS DE CAIQUÍN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (212, '14', '1401', 'OCOTEPEQUE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (213, '14', '1402', 'BELÉN GUALCHO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (214, '14', '1403', 'CONCEPCIÓN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (215, '14', '1404', 'DOLORES MERENDÓN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (216, '14', '1405', 'FRATERNIDAD');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (217, '14', '1406', 'LA ENCARNACIÓN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (218, '14', '1407', 'LA LABOR');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (219, '14', '1408', 'LUCERNA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (220, '14', '1409', 'MERCEDES');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (221, '14', '1410', 'SAN FERNANDO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (222, '14', '1411', 'SAN FRANCISCO DEL VALLE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (223, '14', '1412', 'SAN JORGE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (224, '14', '1413', 'SAN MARCOS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (225, '14', '1414', 'SANTA FE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (226, '14', '1415', 'SENSENTI');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (227, '14', '1416', 'SINUAPA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (228, '15', '1501', 'JUTICALPA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (229, '15', '1502', 'CAMPAMENTO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (230, '15', '1503', 'CATACAMAS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (231, '15', '1504', 'CONCORDIA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (232, '15', '1505', 'DULCE NOMBRE DE CULMÍ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (233, '15', '1506', 'EL ROSARIO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (234, '15', '1507', 'ESQUIPULAS DEL NORTE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (235, '15', '1508', 'GUALACO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (236, '15', '1509', 'GUARIZAMA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (237, '15', '1510', 'GUATA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (238, '15', '1511', 'GUAYAPE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (239, '15', '1512', 'JANO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (240, '15', '1513', 'LA UNIÓN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (241, '15', '1514', 'MANGULILE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (242, '15', '1515', 'MANTO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (243, '15', '1516', 'SALAMÁ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (244, '15', '1517', 'SAN ESTEBAN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (245, '15', '1518', 'SAN FRANCISCO DE BECERRA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (246, '15', '1519', 'SAN FRANCISCO DE LA PAZ');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (247, '15', '1520', 'SANTA MARÍA DEL REAL');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (248, '15', '1521', 'SILCA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (249, '15', '1522', 'YOCÓN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (250, '15', '1523', 'PATUCA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (251, '16', '1601', 'SANTA BÁRBARA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (252, '16', '1602', 'ARADA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (253, '16', '1603', 'ATIMA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (254, '16', '1604', 'AZACUALPA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (255, '16', '1605', 'CEGUACA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (256, '16', '1606', 'SAN JOSÉ DE COLINAS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (257, '16', '1607', 'CONCEPCIÓN DEL NORTE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (258, '16', '1608', 'CONCEPCIÓN DEL SUR');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (259, '16', '1609', 'CHINDA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (260, '16', '1610', 'EL NÍSPERO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (261, '16', '1611', 'GUALALA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (262, '16', '1612', 'ILAMA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (263, '16', '1613', 'MACUELIZO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (264, '16', '1614', 'NARANJITO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (265, '16', '1615', 'NUEVO CELILAC');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (266, '16', '1616', 'PETOA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (267, '16', '1617', 'PROTECCIÓN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (268, '16', '1618', 'QUIMISTÁN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (269, '16', '1619', 'SAN FRANCISCO DE OJUERA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (270, '16', '1620', 'SAN LUIS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (271, '16', '1621', 'SAN MARCOS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (272, '16', '1622', 'SAN NICOLÁS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (273, '16', '1623', 'SAN PEDRO ZACAPA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (274, '16', '1624', 'SANTA RITA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (275, '16', '1625', 'SAN VICENTE CENTENARIO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (276, '16', '1626', 'TRINIDAD');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (277, '16', '1627', 'LAS VEGAS');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (278, '16', '1628', 'NUEVA FRONTERA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (279, '17', '1701', 'NACAOME');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (280, '17', '1702', 'ALIANZA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (281, '17', '1703', 'AMAPALA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (282, '17', '1704', 'ARAMECINA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (283, '17', '1705', 'CARIDAD');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (284, '17', '1706', 'GOASCORÁN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (285, '17', '1707', 'LANGUE');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (286, '17', '1708', 'SAN FRANCISCO DE CORAY');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (287, '17', '1709', 'SAN LORENZO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (288, '18', '1801', 'YORO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (289, '18', '1802', 'ARENAL');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (290, '18', '1803', 'EL NEGRITO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (291, '18', '1804', 'EL PROGRESO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (292, '18', '1805', 'JOCÓN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (293, '18', '1806', 'MORAZÁN');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (294, '18', '1807', 'OLANCHITO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (295, '18', '1808', 'SANTA RITA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (296, '18', '1809', 'SULACO');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (297, '18', '1810', 'VICTORIA');
+INSERT INTO ad_municipios (id, cod_departamento, cod_municipio, nombre) VALUES (298, '18', '1811', 'YORITO');
+
+
+--
+-- TOC entry 2225 (class 0 OID 309633)
+-- Dependencies: 210 2235
+-- Data for Name: ad_objeto_gastos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_objeto_gastos (id_objeto_gasto, descripcion) VALUES (1, 'Transporte');
+INSERT INTO ad_objeto_gastos (id_objeto_gasto, descripcion) VALUES (3, 'Audiovisuales');
+INSERT INTO ad_objeto_gastos (id_objeto_gasto, descripcion) VALUES (4, 'Decoracion');
+INSERT INTO ad_objeto_gastos (id_objeto_gasto, descripcion) VALUES (5, 'Logistica general');
+INSERT INTO ad_objeto_gastos (id_objeto_gasto, descripcion) VALUES (6, 'Planilla de transporte');
+INSERT INTO ad_objeto_gastos (id_objeto_gasto, descripcion) VALUES (7, 'Planilla de alimentación');
+INSERT INTO ad_objeto_gastos (id_objeto_gasto, descripcion) VALUES (8, 'Hospedaje');
+INSERT INTO ad_objeto_gastos (id_objeto_gasto, descripcion) VALUES (2, 'Alimentación');
+
+
+--
+-- TOC entry 2193 (class 0 OID 284826)
+-- Dependencies: 178 2235
+-- Data for Name: ad_partidos_politicos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_partidos_politicos (id_partido_politico, descripcion) VALUES (1, 'Victoria');
+
+
+--
+-- TOC entry 2183 (class 0 OID 284721)
+-- Dependencies: 168 2235
+-- Data for Name: ad_periodo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_periodo (periodo, estado) VALUES (2020, 1);
+
+
+--
+-- TOC entry 2179 (class 0 OID 284679)
+-- Dependencies: 164 2235
+-- Data for Name: ad_roles; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_roles (id_rol, rol, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion) VALUES (1, 'Administrador', 1, '2019-02-03 10:38:50', 'focal', 'focal', '2019-02-03 19:58:55');
+INSERT INTO ad_roles (id_rol, rol, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion) VALUES (9, 'Territorial', 1, '2019-09-30 17:54:39', 'focal', 'focal', '2019-09-30 17:54:39');
+INSERT INTO ad_roles (id_rol, rol, id_estado, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion) VALUES (10, 'Distrital', 1, '2019-09-30 17:56:27', 'focal', 'focal', '2019-09-30 17:56:27');
+
+
+--
+-- TOC entry 2253 (class 0 OID 0)
+-- Dependencies: 170
+-- Name: ad_roles_id_rol_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('ad_roles_id_rol_seq', 10, true);
+
+
+--
+-- TOC entry 2220 (class 0 OID 309542)
+-- Dependencies: 205 2235
+-- Data for Name: ad_task; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2208 (class 0 OID 293114)
+-- Dependencies: 193 2235
+-- Data for Name: ad_tipo_egresos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_tipo_egresos (id_tipo_egreso, descripcion) VALUES (1, 'Eventos');
+INSERT INTO ad_tipo_egresos (id_tipo_egreso, descripcion) VALUES (3, 'Tareas');
+INSERT INTO ad_tipo_egresos (id_tipo_egreso, descripcion) VALUES (4, 'Otros');
+INSERT INTO ad_tipo_egresos (id_tipo_egreso, descripcion) VALUES (2, 'Campañas');
+
+
+--
+-- TOC entry 2190 (class 0 OID 284747)
+-- Dependencies: 175 2235
+-- Data for Name: ad_tipos_comision; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_tipos_comision (id_tipo_comision, descripcion, id_estructura) VALUES (1, 'Gerente de Campaña', 1);
+INSERT INTO ad_tipos_comision (id_tipo_comision, descripcion, id_estructura) VALUES (2, 'Coordinador Territorial', 1);
+INSERT INTO ad_tipos_comision (id_tipo_comision, descripcion, id_estructura) VALUES (3, 'Coordinador de Distrito', 1);
+INSERT INTO ad_tipos_comision (id_tipo_comision, descripcion, id_estructura) VALUES (4, 'Coordinador CV', 1);
+INSERT INTO ad_tipos_comision (id_tipo_comision, descripcion, id_estructura) VALUES (8, 'Jefe Distrital', 2);
+INSERT INTO ad_tipos_comision (id_tipo_comision, descripcion, id_estructura) VALUES (9, 'Coordinador Avanzada', 2);
+INSERT INTO ad_tipos_comision (id_tipo_comision, descripcion, id_estructura) VALUES (10, 'Transporte y comida', 2);
+INSERT INTO ad_tipos_comision (id_tipo_comision, descripcion, id_estructura) VALUES (11, 'Transporte y comida', 3);
+INSERT INTO ad_tipos_comision (id_tipo_comision, descripcion, id_estructura) VALUES (12, 'Logistica y eventos', 3);
+
+
+--
+-- TOC entry 2254 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: ad_tipos_comision_id_tipo_comision_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('ad_tipos_comision_id_tipo_comision_seq', 12, true);
+
+
+--
+-- TOC entry 2227 (class 0 OID 309690)
+-- Dependencies: 212 2235
+-- Data for Name: ad_tipos_estados_tareas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_tipos_estados_tareas (id_tipo_estado_tareas, descripcion) VALUES (1, 'Creado');
+INSERT INTO ad_tipos_estados_tareas (id_tipo_estado_tareas, descripcion) VALUES (2, 'Asignado');
+INSERT INTO ad_tipos_estados_tareas (id_tipo_estado_tareas, descripcion) VALUES (3, 'Recibido');
+INSERT INTO ad_tipos_estados_tareas (id_tipo_estado_tareas, descripcion) VALUES (4, 'Sin Empezar');
+INSERT INTO ad_tipos_estados_tareas (id_tipo_estado_tareas, descripcion) VALUES (5, 'En Proceso');
+INSERT INTO ad_tipos_estados_tareas (id_tipo_estado_tareas, descripcion) VALUES (6, 'Terminado');
+INSERT INTO ad_tipos_estados_tareas (id_tipo_estado_tareas, descripcion) VALUES (7, 'Cancelada');
+
+
+--
+-- TOC entry 2212 (class 0 OID 301315)
+-- Dependencies: 197 2235
+-- Data for Name: ad_tipos_publicidad; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_tipos_publicidad (id_publicidad, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, nombre) VALUES (2, '2019-10-05 00:00:00', 'focal', 'focal', '2019-10-05 00:00:00', 'Prensa');
+INSERT INTO ad_tipos_publicidad (id_publicidad, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, nombre) VALUES (3, '2019-10-05 00:00:00', 'focal', 'focal', '2019-10-05 00:00:00', 'Radio');
+INSERT INTO ad_tipos_publicidad (id_publicidad, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, nombre) VALUES (4, '2019-10-05 00:00:00', 'focal', 'focal', '2019-10-05 00:00:00', 'Television');
+INSERT INTO ad_tipos_publicidad (id_publicidad, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, nombre) VALUES (1, '2019-10-05 00:00:00', 'focal', 'focal', '2019-10-05 00:00:00', 'Redes sociales');
+
+
+--
+-- TOC entry 2180 (class 0 OID 284682)
+-- Dependencies: 165 2235
+-- Data for Name: ad_user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO ad_user (id, username, password, salt, nombre_usuario, id_estado, id_comunidad, is_active, email, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, cod_municipio, cod_departamento, acceso, id_estructura, id_campana, id_distrito) VALUES (13, 'daniel', 'V7YwKuq9V8vimLDaB1/ioRtdmdThJNizl6j5sp8BDle6wDEW+QyXmT7/2HOZnbrzRmhlO2Zx55xhfugVnZDoWw==', '4d9c86de2bb5785580669d44bb22ce70', 'daniel', 1, NULL, true, 'daniel@mail.com', '2019-10-16 18:07:46', 'focal', 'focal', '2019-10-24 13:55:23', '0502', '05', 10, 1, 6, 6);
+INSERT INTO ad_user (id, username, password, salt, nombre_usuario, id_estado, id_comunidad, is_active, email, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, cod_municipio, cod_departamento, acceso, id_estructura, id_campana, id_distrito) VALUES (16, 'user', 'RPY9rtRXXKBZjtXy+FCpfYBjrHzHzCG2V3+LXE8WavNMz/cn81zYXVoYy0t0XVbI7ASuKUnePnnVw0yTv9agYg==', 'f0badbec56b61d7cf6189146cc5c52cc', 'Usuario Prueba', 1, NULL, true, 'correo_inst@mail.com', '2019-10-24 12:09:04', 'focal', 'focal', '2019-10-26 01:05:58', '0501', '05', 10, 3, 6, 6);
+INSERT INTO ad_user (id, username, password, salt, nombre_usuario, id_estado, id_comunidad, is_active, email, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, cod_municipio, cod_departamento, acceso, id_estructura, id_campana, id_distrito) VALUES (17, 'gere', 'Eh2yc3R+L2eOwMWGMJ9uae3qziLi3EpqVQSlg9DnwFifDuRrwh5xZcuKnIroxbgXMA8oZG5Y0gI7++E5PIzqFg==', 'f2bb354aa7bf897584c87223b777946d', 'Gerente TGU', 1, NULL, true, 'gere@mail.com', '2019-10-26 01:18:08', 'focal', 'focal', '2019-10-26 01:18:08', '0501', '05', 10, 1, 7, 0);
+INSERT INTO ad_user (id, username, password, salt, nombre_usuario, id_estado, id_comunidad, is_active, email, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, cod_municipio, cod_departamento, acceso, id_estructura, id_campana, id_distrito) VALUES (8, 'ulises', 'BkArh9R3EVIx2WpO7sUFd9pLfVmuZdGzqqxzSPgBF0SyuIYw/1/R5WCOn0y66qVMXLaN/S+m8Y+L7dUbFoTacw==', 'b3e6eba148599e15755db5ce3228d9d1', 'Ulises Bedrosiam', 1, NULL, true, 'ulises@mail.com', '2019-09-30 18:00:21', 'focal', 'focal', '2019-09-30 18:00:21', '0501', '05', 1, 1, 0, 0);
+INSERT INTO ad_user (id, username, password, salt, nombre_usuario, id_estado, id_comunidad, is_active, email, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, cod_municipio, cod_departamento, acceso, id_estructura, id_campana, id_distrito) VALUES (10, 'alfaro', 'C+kU34vAGpRvqTtN9iI0R+Z/YxsWo523UsN+sMfJpyASK0dDCVW3rk9b4Wgm5Jd5YkUUBQdGtB8FtVRAOTcyCg==', 'fd1d4bc401bc6c1134d6b9553131ad6d', 'Fernando Alfaro', 1, NULL, true, 'alfaro@mail.om', '2019-09-30 18:04:12', 'focal', 'focal', '2019-09-30 18:04:12', '0501', '05', 9, 2, 1, 1);
+INSERT INTO ad_user (id, username, password, salt, nombre_usuario, id_estado, id_comunidad, is_active, email, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, cod_municipio, cod_departamento, acceso, id_estructura, id_campana, id_distrito) VALUES (11, 'alinarez', 'E0oOAUMm/gQuMZU/6HLhG/ag+7qFZqbGa6MvA+PkVnOOSmuFgiq6YI5I1Lnmduq1Vs34dLPAy7ANxZgXH4fxyQ==', 'b57b00bcbe70f7a173cb78fcf234a236', 'Arnoldo Linarez', 1, NULL, true, 'alinarez@mail.com', '2019-09-30 18:06:03', 'focal', 'focal', '2019-09-30 18:06:03', '0501', '05', 10, 3, 1, 1);
+INSERT INTO ad_user (id, username, password, salt, nombre_usuario, id_estado, id_comunidad, is_active, email, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, cod_municipio, cod_departamento, acceso, id_estructura, id_campana, id_distrito) VALUES (1, 'focal', 'k7Btb1UNkLEjGL/T6Qv2JiAK2AuhccSpub+QHafQn4Z8bX0P7lyTDwizVs4LEGWncXt1VhkAktO/K7pKDMUvhg==', '638889c61bb3ddb3644182da77af5f1b', 'Administrador', 1, 1, true, NULL, '2017-06-14 00:00:00', 'ozavala', 'admin', '2019-09-22 13:57:27', '1620', '16', 1, 1, 0, 0);
+INSERT INTO ad_user (id, username, password, salt, nombre_usuario, id_estado, id_comunidad, is_active, email, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, cod_municipio, cod_departamento, acceso, id_estructura, id_campana, id_distrito) VALUES (12, 'dalfaro', 'kqppV/JuNoEhwXcPFafSI98rKaa0ASGGcg4tcum4Sz2izWM7r2MPG8G2OyIJDwbRnc8cEZFHdfSVi6aqxTF8fA==', 'b90bde32bd67544d3a9ce9763de9d1be', 'Darold Alfaro Reyes', 1, NULL, true, 'darold@gmail.com', '2019-10-16 16:36:31', 'focal', 'focal', '2019-10-18 17:05:28', '0101', '01', 1, 1, 4, 3);
+
+
+--
+-- TOC entry 2255 (class 0 OID 0)
+-- Dependencies: 172
+-- Name: ad_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('ad_user_id_seq', 17, true);
+
+
+--
+-- TOC entry 2181 (class 0 OID 284689)
+-- Dependencies: 166 2235
+-- Data for Name: admin_roles; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO admin_roles (id, nombre) VALUES (1, 'ROLE_USER');
+INSERT INTO admin_roles (id, nombre) VALUES (3, 'ROLE_ADMIN');
+
+
+--
+-- TOC entry 2233 (class 0 OID 309786)
+-- Dependencies: 218 2235
+-- Data for Name: datos_aportaciones; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_aportaciones (id_aportador, nombre, tipo_aportador, tipo_aportacion, descripcion, valor_aportacion, telefono, email, compromiso, aportador_actual, id_campana) VALUES (3, 'Aportante numero uno', 1, 1, 'Dio para la promocion de la campaña', 85350, '555', 'email@mail.com', 'Figurar como asesor', 1, 6);
+INSERT INTO datos_aportaciones (id_aportador, nombre, tipo_aportador, tipo_aportacion, descripcion, valor_aportacion, telefono, email, compromiso, aportador_actual, id_campana) VALUES (4, 'Aportante numero dos', 2, 1, 'Pago de panilla de transporte', 100000, '45678', 'email@mail.com', 'Contratación de personal', 2, 6);
+INSERT INTO datos_aportaciones (id_aportador, nombre, tipo_aportador, tipo_aportacion, descripcion, valor_aportacion, telefono, email, compromiso, aportador_actual, id_campana) VALUES (2, 'Prueba', 2, 2, 'Mochilas', 20000, '89892334', 'aportador@gmail.com', 'Presencia de marca', 1, 0);
+
+
+--
+-- TOC entry 2256 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: datos_aportaciones_id_aportador_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_aportaciones_id_aportador_seq', 4, true);
+
+
+--
+-- TOC entry 2192 (class 0 OID 284818)
+-- Dependencies: 177 2235
+-- Data for Name: datos_campanas_politicas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_campanas_politicas (id_campana, nombre, candidato, id_partido_politico) VALUES (0, 'Todas', 'Todos', 1);
+INSERT INTO datos_campanas_politicas (id_campana, nombre, candidato, id_partido_politico) VALUES (7, 'Avancemos TGU', 'El mismo TGU', 1);
+INSERT INTO datos_campanas_politicas (id_campana, nombre, candidato, id_partido_politico) VALUES (8, 'Avancemos TELA', 'El mismo Tela', 1);
+INSERT INTO datos_campanas_politicas (id_campana, nombre, candidato, id_partido_politico) VALUES (6, 'Avancemos SPS', 'El mismo de siempre', 1);
+
+
+--
+-- TOC entry 2257 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: datos_campanas_politicas_id_campana_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_campanas_politicas_id_campana_seq', 8, true);
+
+
+--
+-- TOC entry 2197 (class 0 OID 284865)
+-- Dependencies: 182 2235
+-- Data for Name: datos_centros_votacion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_centros_votacion (id_cv, id_campana, id_distrito, nombre, tipo_cv, direccion, nombre_edificio, cargar_electoral, numero_mesas) VALUES (0, 0, 0, 'Todos', 0, 'Ninguna', 'Ninguno', 0, 0);
+INSERT INTO datos_centros_votacion (id_cv, id_campana, id_distrito, nombre, tipo_cv, direccion, nombre_edificio, cargar_electoral, numero_mesas) VALUES (3, 6, 6, 'CV numero uno', 1, 'Col. numero uno', 'Esc. numero uno', 5000, 100);
+INSERT INTO datos_centros_votacion (id_cv, id_campana, id_distrito, nombre, tipo_cv, direccion, nombre_edificio, cargar_electoral, numero_mesas) VALUES (4, 6, 6, 'CV numero dos', 1, 'Col. numero dos', 'Esc. numero dos', 6000, 20);
+INSERT INTO datos_centros_votacion (id_cv, id_campana, id_distrito, nombre, tipo_cv, direccion, nombre_edificio, cargar_electoral, numero_mesas) VALUES (5, 6, 7, 'CV D2 numero uno', 1, 'Col. D2 numero uno', 'Esc. D2 numero uno', 8750, 30);
+INSERT INTO datos_centros_votacion (id_cv, id_campana, id_distrito, nombre, tipo_cv, direccion, nombre_edificio, cargar_electoral, numero_mesas) VALUES (6, 6, 7, 'CV D2 numero dos', 1, 'Col. D2 numero dos', 'Esc. D2 numero dos', 4900, 12);
+INSERT INTO datos_centros_votacion (id_cv, id_campana, id_distrito, nombre, tipo_cv, direccion, nombre_edificio, cargar_electoral, numero_mesas) VALUES (7, 6, 6, 'CV Prueba SPS 1', 1, 'Prueba', 'Prueba', 1000, 10);
+
+
+--
+-- TOC entry 2258 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: datos_centros_votacion_id_cv_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_centros_votacion_id_cv_seq', 7, true);
+
+
+--
+-- TOC entry 2206 (class 0 OID 293099)
+-- Dependencies: 191 2235
+-- Data for Name: datos_comentarios_presupuesto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_comentarios_presupuesto (id_comentario, id_presupuesto, mensaje, archivo, usuario) VALUES (7, 58, '<p>Incluir por favor un pequeño refrigerio para los invitados<br></p>', NULL, 'Usuario Prueba');
+
+
+--
+-- TOC entry 2259 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: datos_comentarios_presupuesto_id_comentario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_comentarios_presupuesto_id_comentario_seq', 7, true);
+
+
+--
+-- TOC entry 2189 (class 0 OID 284742)
+-- Dependencies: 174 2235
+-- Data for Name: datos_comisiones; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2260 (class 0 OID 0)
+-- Dependencies: 179
+-- Name: datos_comisiones_id_comision_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_comisiones_id_comision_seq', 21, true);
+
+
+--
+-- TOC entry 2196 (class 0 OID 284860)
+-- Dependencies: 181 2235
+-- Data for Name: datos_distritos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_distritos (id_distrito, id_campana, nombre) VALUES (0, 0, 'Todos');
+INSERT INTO datos_distritos (id_distrito, id_campana, nombre) VALUES (6, 6, 'Distrito SPS 1');
+INSERT INTO datos_distritos (id_distrito, id_campana, nombre) VALUES (7, 6, 'Distrito SPS 2');
+INSERT INTO datos_distritos (id_distrito, id_campana, nombre) VALUES (8, 6, 'Distrito SPS 3');
+INSERT INTO datos_distritos (id_distrito, id_campana, nombre) VALUES (11, 7, 'Distrito TGU C');
+INSERT INTO datos_distritos (id_distrito, id_campana, nombre) VALUES (12, 8, 'Distrito TELA 1');
+INSERT INTO datos_distritos (id_distrito, id_campana, nombre) VALUES (13, 8, 'Distrito TELA 2');
+INSERT INTO datos_distritos (id_distrito, id_campana, nombre) VALUES (9, 7, 'Distrito TGU A');
+INSERT INTO datos_distritos (id_distrito, id_campana, nombre) VALUES (10, 7, 'Distrito TGU 1');
+
+
+--
+-- TOC entry 2261 (class 0 OID 0)
+-- Dependencies: 188
+-- Name: datos_distritos_id_distrito_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_distritos_id_distrito_seq', 13, true);
+
+
+--
+-- TOC entry 2188 (class 0 OID 284737)
+-- Dependencies: 173 2235
+-- Data for Name: datos_estructuras; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_estructuras (id_estructura, nombre, tipo_estructura) VALUES (2, 'Estructura B', 'B    ');
+INSERT INTO datos_estructuras (id_estructura, nombre, tipo_estructura) VALUES (3, 'Estructura C', 'C    ');
+INSERT INTO datos_estructuras (id_estructura, nombre, tipo_estructura) VALUES (1, 'Estructura A', 'A    ');
+
+
+--
+-- TOC entry 2218 (class 0 OID 301385)
+-- Dependencies: 203 2235
+-- Data for Name: datos_eventos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_eventos (id_eventos, titulo, descripcion, fecha_inicio, fecha_final, id_campana, id_distrito, usuario_creacion, fecha_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion) VALUES (6, 'Evento', 'Evento', '2019-11-04 00:00:00', '2019-11-06 00:00:00', 7, 6, NULL, NULL, 'focal', '2019-11-03 07:55:40');
+
+
+--
+-- TOC entry 2262 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: datos_eventos_id_eventos_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_eventos_id_eventos_seq', 6, true);
+
+
+--
+-- TOC entry 2205 (class 0 OID 293089)
+-- Dependencies: 190 2235
+-- Data for Name: datos_lista_presupuesto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_lista_presupuesto (id_lista, id_presupuesto, descripcion, cantidad, costo_unitario_estimado, costo_unitario_real, id_objeto_gasto) VALUES (16, 58, 'Transporte', 1, 1000, NULL, 1);
+INSERT INTO datos_lista_presupuesto (id_lista, id_presupuesto, descripcion, cantidad, costo_unitario_estimado, costo_unitario_real, id_objeto_gasto) VALUES (17, 58, 'Estipendio de transporte', 50, 30, NULL, 6);
+INSERT INTO datos_lista_presupuesto (id_lista, id_presupuesto, descripcion, cantidad, costo_unitario_estimado, costo_unitario_real, id_objeto_gasto) VALUES (18, 58, 'Meriendas', 50, 40, NULL, 2);
+INSERT INTO datos_lista_presupuesto (id_lista, id_presupuesto, descripcion, cantidad, costo_unitario_estimado, costo_unitario_real, id_objeto_gasto) VALUES (19, 58, 'Astas y Banderas', 3, 100, NULL, 4);
+INSERT INTO datos_lista_presupuesto (id_lista, id_presupuesto, descripcion, cantidad, costo_unitario_estimado, costo_unitario_real, id_objeto_gasto) VALUES (20, 59, 'Materiales', 1, 5000, NULL, 5);
+INSERT INTO datos_lista_presupuesto (id_lista, id_presupuesto, descripcion, cantidad, costo_unitario_estimado, costo_unitario_real, id_objeto_gasto) VALUES (21, 59, 'Transporte en vehiculo prestados', 5, 500, NULL, 1);
+INSERT INTO datos_lista_presupuesto (id_lista, id_presupuesto, descripcion, cantidad, costo_unitario_estimado, costo_unitario_real, id_objeto_gasto) VALUES (22, 59, 'Alimentación a los voluntarios', 20, 120, NULL, 2);
+
+
+--
+-- TOC entry 2263 (class 0 OID 0)
+-- Dependencies: 195
+-- Name: datos_lista_presupuesto_id_lista_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_lista_presupuesto_id_lista_seq', 22, true);
+
+
+--
+-- TOC entry 2221 (class 0 OID 309581)
+-- Dependencies: 206 2235
+-- Data for Name: datos_lista_publicidad; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_lista_publicidad (id_lista, id_publicidad, tipo_anuncio, descripcion, target, pauta_publicitaria, personas_alcanzadas, me_gusta, me_encanta, me_divierte, me_enoja, me_entristece, comentarios_positivos, comentarios_negativos, compartidos) VALUES (100, 100, '1', 'Prueba lista', 'jovenes', 100, 1000, 2, 3, 4, 5, 3, 20, 20, 1);
+
+
+--
+-- TOC entry 2264 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: datos_lista_publicidad_id_lista_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_lista_publicidad_id_lista_seq', 100, true);
+
+
+--
+-- TOC entry 2198 (class 0 OID 285014)
+-- Dependencies: 183 2235
+-- Data for Name: datos_notificaciones; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (46, 6, 6, 13, 45, 'Por favor seguir trabajando', 1, '2019-10-26 08:22:42', NULL, NULL, 'Administrador');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (47, 6, 6, 16, 45, 'Por favor seguir trabajando', 2, '2019-10-26 08:22:42', NULL, NULL, 'Administrador');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (49, 0, 0, 8, 48, 'Reunión mañana temprano', 1, '2019-10-26 10:05:21', NULL, NULL, 'Administrador');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (50, 0, 0, 1, 48, 'Reunión mañana temprano', 1, '2019-10-26 10:05:21', NULL, NULL, 'Administrador');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (61, 6, 0, 13, 60, 'Evento especial Expocentro', 1, '2019-10-26 10:31:33', NULL, NULL, 'Administrador');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (62, 6, 0, 16, 60, 'Evento especial Expocentro', 2, '2019-10-26 10:31:33', NULL, NULL, 'Administrador');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (65, 6, 6, 13, 64, 'Reunión de coordinadores en monumento La Madre', 1, '2019-10-26 11:37:09', NULL, NULL, 'daniel');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (66, 6, 6, 16, 64, 'Reunión de coordinadores en monumento La Madre', 1, '2019-10-26 11:37:09', NULL, NULL, 'daniel');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (52, 0, 0, 13, 51, 'Contribución para el nuevo evento', 3, '2019-10-26 10:27:24', NULL, NULL, 'daniel');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (53, 0, 0, 16, 51, 'Contribución para el nuevo evento', 3, '2019-10-26 10:27:24', NULL, NULL, 'daniel');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (54, 0, 0, 17, 51, 'Contribución para el nuevo evento', 3, '2019-10-26 10:27:24', NULL, NULL, 'daniel');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (55, 0, 0, 8, 51, 'Contribución para el nuevo evento', 3, '2019-10-26 10:27:24', NULL, NULL, 'daniel');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (56, 0, 0, 10, 51, 'Contribución para el nuevo evento', 3, '2019-10-26 10:27:24', NULL, NULL, 'daniel');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (57, 0, 0, 11, 51, 'Contribución para el nuevo evento', 3, '2019-10-26 10:27:24', NULL, NULL, 'daniel');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (58, 0, 0, 1, 51, 'Contribución para el nuevo evento', 3, '2019-10-26 10:27:24', NULL, NULL, 'daniel');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (59, 0, 0, 12, 51, 'Contribución para el nuevo evento', 3, '2019-10-26 10:27:24', NULL, NULL, 'daniel');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (68, 6, 6, 13, 67, 'Revision del presupuesto para la actividad: Prueba de presupuesto', 1, '2019-10-31 00:00:00', NULL, 58, 'Administrador');
+INSERT INTO datos_notificaciones (id_notificacion, id_campana, id_distrito, id_usuario, numero_mensaje, mensaje, estado, fecha_enviado, fecha_recibido, id_evento, usuario) VALUES (70, 6, 6, 16, 69, 'Revision del presupuesto para la actividad: Prueba de presupuesto', 1, '2019-10-31 00:00:00', NULL, 58, 'Administrador');
+
+
+--
+-- TOC entry 2265 (class 0 OID 0)
+-- Dependencies: 184
+-- Name: datos_notificaciones_id_notificacion_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_notificaciones_id_notificacion_seq', 1, false);
+
+
+--
+-- TOC entry 2266 (class 0 OID 0)
+-- Dependencies: 185
+-- Name: datos_notificaciones_numero_mensaje_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_notificaciones_numero_mensaje_seq', 70, true);
+
+
+--
+-- TOC entry 2191 (class 0 OID 284774)
+-- Dependencies: 176 2235
+-- Data for Name: datos_personas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_personas (id_persona, nombres, apellidos, numero_identidad, telefono_1, telefono_2, telefono_3, email, id_estructura, id_campana, estado, id_distrito, id_comision) VALUES (26, 'Persona', 'Persona', '0501', '111', '111', '111', 'correo@mail.com', 3, 6, 1, 6, 11);
+INSERT INTO datos_personas (id_persona, nombres, apellidos, numero_identidad, telefono_1, telefono_2, telefono_3, email, id_estructura, id_campana, estado, id_distrito, id_comision) VALUES (25, 'Prueba', 'Prueba', '0501', '555', '555', '555', 'email@mail.com', 2, 6, 1, 6, 10);
+INSERT INTO datos_personas (id_persona, nombres, apellidos, numero_identidad, telefono_1, telefono_2, telefono_3, email, id_estructura, id_campana, estado, id_distrito, id_comision) VALUES (24, 'Usuario Prueba', 'Prueba', '0801', '555', '444', '333', 'correo@mail.com', 1, 6, 1, 6, 4);
+INSERT INTO datos_personas (id_persona, nombres, apellidos, numero_identidad, telefono_1, telefono_2, telefono_3, email, id_estructura, id_campana, estado, id_distrito, id_comision) VALUES (27, 'Gerente TGU', NULL, '0801', '222', '222', '222', 'gere@mail.com', 1, 7, 1, 0, 3);
+
+
+--
+-- TOC entry 2267 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: datos_personas_id_persona_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_personas_id_persona_seq', 27, true);
+
+
+--
+-- TOC entry 2204 (class 0 OID 293062)
+-- Dependencies: 189 2235
+-- Data for Name: datos_presupuestos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_presupuestos (id_presupuesto, id_campana, id_distrito, tipo_egreso, id_actividad_egreso, fuente_egreso, descripcion, preparado_por, aprobado_por, estado, total_presupuesto_estimado, total_presupuesto_ejecutado, fecha_evento, lugar_evento, objetivo_evento, id_cv) VALUES (58, 6, 6, 1, NULL, 1, 'Prueba de presupuesto', 1, NULL, 1, NULL, NULL, '2019-10-31 00:00:00', 'lugar de siempre', 'Prueba de presupuesto', 7);
+INSERT INTO datos_presupuestos (id_presupuesto, id_campana, id_distrito, tipo_egreso, id_actividad_egreso, fuente_egreso, descripcion, preparado_por, aprobado_por, estado, total_presupuesto_estimado, total_presupuesto_ejecutado, fecha_evento, lugar_evento, objetivo_evento, id_cv) VALUES (59, 6, 7, 1, NULL, 1, 'Pintar escuelas', 1, NULL, 1, NULL, NULL, '2019-10-31 00:00:00', 'San Pedro Sula', 'Pintas las escuelas', 5);
+INSERT INTO datos_presupuestos (id_presupuesto, id_campana, id_distrito, tipo_egreso, id_actividad_egreso, fuente_egreso, descripcion, preparado_por, aprobado_por, estado, total_presupuesto_estimado, total_presupuesto_ejecutado, fecha_evento, lugar_evento, objetivo_evento, id_cv) VALUES (65, 6, 6, 2, NULL, NULL, 'Anuncio de prensa', 1, NULL, 1, NULL, NULL, NULL, NULL, 'Medio: Diario Tipo: Anuncio', 0);
+INSERT INTO datos_presupuestos (id_presupuesto, id_campana, id_distrito, tipo_egreso, id_actividad_egreso, fuente_egreso, descripcion, preparado_por, aprobado_por, estado, total_presupuesto_estimado, total_presupuesto_ejecutado, fecha_evento, lugar_evento, objetivo_evento, id_cv) VALUES (66, 6, 6, 2, NULL, NULL, 'Publicidad radio', 1, NULL, 1, NULL, NULL, NULL, NULL, 'Medio: Radio America Tipo: Anuncio 30min', 0);
+
+
+--
+-- TOC entry 2268 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: datos_presupuestos_id_presupuesto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_presupuestos_id_presupuesto_seq', 66, true);
+
+
+--
+-- TOC entry 2226 (class 0 OID 309658)
+-- Dependencies: 211 2235
+-- Data for Name: datos_publicidad; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_publicidad (id_publicidad, id_campana, id_distrito, tipo_publicidad, descripcion, preparado_por, aprobado_por, estado, nombre_medio_publicidad, tipo_anuncio, comprobante_pago, target, pauta_publicitaria, personas_alcanzadas, me_gusta, me_encanta, me_divierte, me_enoja, me_entristece, comentarios_positivos, comentarios_negativos, compartidos, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, me_asombra) VALUES (102, 7, 6, 2, 'Prensa', 1, NULL, 1, 'Publicidad', 'Tipo', 'uno', 'Jovenes', 4, 1000, 20, 20, 20, 20, 20, 850, 50, 200, '2019-11-03 09:51:36', 'focal', 'focal', '2019-11-03 09:51:36', 20);
+INSERT INTO datos_publicidad (id_publicidad, id_campana, id_distrito, tipo_publicidad, descripcion, preparado_por, aprobado_por, estado, nombre_medio_publicidad, tipo_anuncio, comprobante_pago, target, pauta_publicitaria, personas_alcanzadas, me_gusta, me_encanta, me_divierte, me_enoja, me_entristece, comentarios_positivos, comentarios_negativos, compartidos, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, me_asombra) VALUES (104, 7, 10, 1, 'Redes sociiales', 1, NULL, 1, 'Facebook', 'Temporal', '123459', '10', 12, 50, 10, 10, 10, 10, 10, 10, 10, 10, '2019-11-03 17:40:14', 'focal', 'focal', '2019-11-03 17:40:14', 10);
+INSERT INTO datos_publicidad (id_publicidad, id_campana, id_distrito, tipo_publicidad, descripcion, preparado_por, aprobado_por, estado, nombre_medio_publicidad, tipo_anuncio, comprobante_pago, target, pauta_publicitaria, personas_alcanzadas, me_gusta, me_encanta, me_divierte, me_enoja, me_entristece, comentarios_positivos, comentarios_negativos, compartidos, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, me_asombra) VALUES (103, 8, 12, 4, 'Television', 1, NULL, 1, 'Tele', 'Tipo', 'comprobandte', '50', 50, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-11-03 12:42:51', 'focal', 'focal', '2019-11-03 12:42:51', NULL);
+INSERT INTO datos_publicidad (id_publicidad, id_campana, id_distrito, tipo_publicidad, descripcion, preparado_por, aprobado_por, estado, nombre_medio_publicidad, tipo_anuncio, comprobante_pago, target, pauta_publicitaria, personas_alcanzadas, me_gusta, me_encanta, me_divierte, me_enoja, me_entristece, comentarios_positivos, comentarios_negativos, compartidos, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, me_asombra) VALUES (113, 6, 6, 2, 'Anuncio de prensa', 1, NULL, 1, 'Diario', 'Anuncio', '123', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-11-03 23:41:35', 'focal', 'focal', '2019-11-03 23:41:35', NULL);
+INSERT INTO datos_publicidad (id_publicidad, id_campana, id_distrito, tipo_publicidad, descripcion, preparado_por, aprobado_por, estado, nombre_medio_publicidad, tipo_anuncio, comprobante_pago, target, pauta_publicitaria, personas_alcanzadas, me_gusta, me_encanta, me_divierte, me_enoja, me_entristece, comentarios_positivos, comentarios_negativos, compartidos, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion, me_asombra) VALUES (114, 6, 6, 3, 'Publicidad radio', 1, NULL, 1, 'Radio America', 'Anuncio 30min', '123', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-11-03 23:54:50', 'focal', 'focal', '2019-11-03 23:54:50', NULL);
+
+
+--
+-- TOC entry 2269 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: datos_publicidad_id_publicidad_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_publicidad_id_publicidad_seq', 114, true);
+
+
+--
+-- TOC entry 2214 (class 0 OID 301341)
+-- Dependencies: 199 2235
+-- Data for Name: datos_publicidad_medios; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2270 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: datos_publicidad_medios_id_publicidad_medios_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_publicidad_medios_id_publicidad_medios_seq', 2, true);
+
+
+--
+-- TOC entry 2213 (class 0 OID 301323)
+-- Dependencies: 198 2235
+-- Data for Name: datos_publicidad_redes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2271 (class 0 OID 0)
+-- Dependencies: 201
+-- Name: datos_publicidad_redes_id_publicidad_redes_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_publicidad_redes_id_publicidad_redes_seq', 1, true);
+
+
+--
+-- TOC entry 2232 (class 0 OID 309762)
+-- Dependencies: 217 2235
+-- Data for Name: datos_tareas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_tareas (id_tarea, titulo, descripcion, progreso, id_responsable, id_estado, id_eventos, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion) VALUES (7, 'Tareas nueva', 'Tarea de prueba', 0, 13, 1, 6, '2019-11-04 00:50:11', 'focal', 'focal', '2019-11-04 00:50:11');
+INSERT INTO datos_tareas (id_tarea, titulo, descripcion, progreso, id_responsable, id_estado, id_eventos, fecha_creacion, usuario_creacion, usuario_ultima_modificacion, fecha_ultima_modificacion) VALUES (8, 'Programatica', 'Programatica', 45, 16, 6, 6, '2019-11-04 10:55:47', 'focal', 'focal', '2019-11-04 10:57:49');
+
+
+--
+-- TOC entry 2272 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: datos_tareas_id_tarea_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_tareas_id_tarea_seq', 8, true);
+
+
+--
+-- TOC entry 2230 (class 0 OID 309746)
+-- Dependencies: 215 2235
+-- Data for Name: datos_votantes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO datos_votantes (id_votante, nombres, apellidos, numero_identidad, edad, telefonos, email, id_cv) VALUES (1, 'Prueba', 'Prueba', '0501', 20, '55', NULL, 3);
+INSERT INTO datos_votantes (id_votante, nombres, apellidos, numero_identidad, edad, telefonos, email, id_cv) VALUES (2, 'Nombre dos', 'Apellidos dos', '5011', 20, '34', NULL, 3);
+INSERT INTO datos_votantes (id_votante, nombres, apellidos, numero_identidad, edad, telefonos, email, id_cv) VALUES (3, 'Nombre tres', 'Apellido tres', '3040', 34, '3030', NULL, 3);
+INSERT INTO datos_votantes (id_votante, nombres, apellidos, numero_identidad, edad, telefonos, email, id_cv) VALUES (5, 'Votante5', 'Apellido5', '50505', 55, '555', NULL, 4);
+INSERT INTO datos_votantes (id_votante, nombres, apellidos, numero_identidad, edad, telefonos, email, id_cv) VALUES (6, 'Votante6', 'Apellido6', '0606', 66, '9696', NULL, 4);
+INSERT INTO datos_votantes (id_votante, nombres, apellidos, numero_identidad, edad, telefonos, email, id_cv) VALUES (7, 'Nombre7', 'Apellido7', '0707', 77, '777', NULL, 4);
+INSERT INTO datos_votantes (id_votante, nombres, apellidos, numero_identidad, edad, telefonos, email, id_cv) VALUES (8, 'Nombre8', 'Apellido8', '0808', 88, '888', NULL, 5);
+INSERT INTO datos_votantes (id_votante, nombres, apellidos, numero_identidad, edad, telefonos, email, id_cv) VALUES (9, 'Nombre9', 'Apellido9', '0909', 99, '9999', NULL, 5);
+INSERT INTO datos_votantes (id_votante, nombres, apellidos, numero_identidad, edad, telefonos, email, id_cv) VALUES (4, 'Nombre4', 'Apellido4', '04010', 33, '24324', NULL, 3);
+
+
+--
+-- TOC entry 2273 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: datos_votantes_id_votante_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('datos_votantes_id_votante_seq', 9, true);
+
+
+--
+-- TOC entry 2274 (class 0 OID 0)
+-- Dependencies: 186
+-- Name: nextid; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('nextid', 3, true);
+
+
+--
+-- TOC entry 2275 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: responsables_tareas_id_tarea_responsable_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('responsables_tareas_id_tarea_responsable_seq', 4, true);
+
+
+--
+-- TOC entry 2182 (class 0 OID 284692)
+-- Dependencies: 167 2235
+-- Data for Name: user_role; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO user_role (user_id, role_id) VALUES (1, 3);
+INSERT INTO user_role (user_id, role_id) VALUES (8, 3);
+INSERT INTO user_role (user_id, role_id) VALUES (10, 3);
+INSERT INTO user_role (user_id, role_id) VALUES (11, 1);
+INSERT INTO user_role (user_id, role_id) VALUES (12, 1);
+INSERT INTO user_role (user_id, role_id) VALUES (16, 1);
+INSERT INTO user_role (user_id, role_id) VALUES (13, 3);
+INSERT INTO user_role (user_id, role_id) VALUES (17, 3);
+
+
+--
+-- TOC entry 1984 (class 2606 OID 284734)
+-- Dependencies: 169 169 2236
+-- Name: ad_grant_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_grant
+    ADD CONSTRAINT ad_grant_pkey PRIMARY KEY (objeto);
+
+
+--
+-- TOC entry 1982 (class 2606 OID 284725)
+-- Dependencies: 168 168 2236
+-- Name: ad_periodo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_periodo
+    ADD CONSTRAINT ad_periodo_pkey PRIMARY KEY (periodo);
+
+
+--
+-- TOC entry 1976 (class 2606 OID 284696)
+-- Dependencies: 166 166 2236
+-- Name: admin_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY admin_roles
+    ADD CONSTRAINT admin_roles_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2013 (class 2606 OID 293123)
+-- Dependencies: 194 194 2236
+-- Name: id_estado_presupuesto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_estados_presupuesto
+    ADD CONSTRAINT id_estado_presupuesto_pkey PRIMARY KEY (id_estado_presupuesto);
+
+
+--
+-- TOC entry 2027 (class 2606 OID 309637)
+-- Dependencies: 210 210 2236
+-- Name: id_objeto_gasto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_objeto_gastos
+    ADD CONSTRAINT id_objeto_gasto_pkey PRIMARY KEY (id_objeto_gasto);
+
+
+--
+-- TOC entry 2011 (class 2606 OID 293118)
+-- Dependencies: 193 193 2236
+-- Name: id_tipo_egreso_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_tipo_egresos
+    ADD CONSTRAINT id_tipo_egreso_pkey PRIMARY KEY (id_tipo_egreso);
+
+
+--
+-- TOC entry 1966 (class 2606 OID 284698)
+-- Dependencies: 162 162 2236
+-- Name: pk_ad_departamentos_id_departamento; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_departamentos
+    ADD CONSTRAINT pk_ad_departamentos_id_departamento PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1970 (class 2606 OID 284700)
+-- Dependencies: 164 164 2236
+-- Name: pk_ad_rol_id_rol; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_roles
+    ADD CONSTRAINT pk_ad_rol_id_rol PRIMARY KEY (id_rol);
+
+
+--
+-- TOC entry 1964 (class 2606 OID 284672)
+-- Dependencies: 161 161 2236
+-- Name: pk_id_acceso_grant; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_acceso_grant
+    ADD CONSTRAINT pk_id_acceso_grant PRIMARY KEY (id_acceso_grant);
+
+
+--
+-- TOC entry 2037 (class 2606 OID 309793)
+-- Dependencies: 218 218 2236
+-- Name: pk_id_aportador_datos_aportaciones; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_aportaciones
+    ADD CONSTRAINT pk_id_aportador_datos_aportaciones PRIMARY KEY (id_aportador);
+
+
+--
+-- TOC entry 1995 (class 2606 OID 284825)
+-- Dependencies: 177 177 2236
+-- Name: pk_id_campana_datos_campanas_politicas; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_campanas_politicas
+    ADD CONSTRAINT pk_id_campana_datos_campanas_politicas PRIMARY KEY (id_campana);
+
+
+--
+-- TOC entry 2009 (class 2606 OID 293106)
+-- Dependencies: 191 191 2236
+-- Name: pk_id_comentario_datos_comentarios_presupuesto; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_comentarios_presupuesto
+    ADD CONSTRAINT pk_id_comentario_datos_comentarios_presupuesto PRIMARY KEY (id_comentario);
+
+
+--
+-- TOC entry 1989 (class 2606 OID 284746)
+-- Dependencies: 174 174 2236
+-- Name: pk_id_comision_datos_comisiones; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_comisiones
+    ADD CONSTRAINT pk_id_comision_datos_comisiones PRIMARY KEY (id_comision);
+
+
+--
+-- TOC entry 2001 (class 2606 OID 284872)
+-- Dependencies: 182 182 2236
+-- Name: pk_id_cv_datos_centros_votacion; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_centros_votacion
+    ADD CONSTRAINT pk_id_cv_datos_centros_votacion PRIMARY KEY (id_cv);
+
+
+--
+-- TOC entry 1999 (class 2606 OID 284864)
+-- Dependencies: 181 181 2236
+-- Name: pk_id_distrito_datos_distritos; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_distritos
+    ADD CONSTRAINT pk_id_distrito_datos_distritos PRIMARY KEY (id_distrito);
+
+
+--
+-- TOC entry 1986 (class 2606 OID 284741)
+-- Dependencies: 173 173 2236
+-- Name: pk_id_estructura_datos_estructura; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_estructuras
+    ADD CONSTRAINT pk_id_estructura_datos_estructura PRIMARY KEY (id_estructura);
+
+
+--
+-- TOC entry 2021 (class 2606 OID 301392)
+-- Dependencies: 203 203 2236
+-- Name: pk_id_eventos_datos_eventos; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_eventos
+    ADD CONSTRAINT pk_id_eventos_datos_eventos PRIMARY KEY (id_eventos);
+
+
+--
+-- TOC entry 2007 (class 2606 OID 293093)
+-- Dependencies: 190 190 2236
+-- Name: pk_id_lista; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_lista_presupuesto
+    ADD CONSTRAINT pk_id_lista PRIMARY KEY (id_lista);
+
+
+--
+-- TOC entry 2025 (class 2606 OID 309588)
+-- Dependencies: 206 206 2236
+-- Name: pk_id_lista_publicidad; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_lista_publicidad
+    ADD CONSTRAINT pk_id_lista_publicidad PRIMARY KEY (id_lista);
+
+
+--
+-- TOC entry 1968 (class 2606 OID 284702)
+-- Dependencies: 163 163 2236
+-- Name: pk_id_municipios_ad_municipios; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_municipios
+    ADD CONSTRAINT pk_id_municipios_ad_municipios PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2003 (class 2606 OID 285022)
+-- Dependencies: 183 183 2236
+-- Name: pk_id_notificacion_datos_notificaciones; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_notificaciones
+    ADD CONSTRAINT pk_id_notificacion_datos_notificaciones PRIMARY KEY (id_notificacion);
+
+
+--
+-- TOC entry 1997 (class 2606 OID 284830)
+-- Dependencies: 178 178 2236
+-- Name: pk_id_partido_politico_ad_partidos_politicos; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_partidos_politicos
+    ADD CONSTRAINT pk_id_partido_politico_ad_partidos_politicos PRIMARY KEY (id_partido_politico);
+
+
+--
+-- TOC entry 1993 (class 2606 OID 284781)
+-- Dependencies: 176 176 2236
+-- Name: pk_id_persona_datos_personas; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_personas
+    ADD CONSTRAINT pk_id_persona_datos_personas PRIMARY KEY (id_persona);
+
+
+--
+-- TOC entry 2005 (class 2606 OID 293068)
+-- Dependencies: 189 189 2236
+-- Name: pk_id_presupuesto_datos_presupuestos; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_presupuestos
+    ADD CONSTRAINT pk_id_presupuesto_datos_presupuestos PRIMARY KEY (id_presupuesto);
+
+
+--
+-- TOC entry 2029 (class 2606 OID 309666)
+-- Dependencies: 211 211 2236
+-- Name: pk_id_publicidad_datos_publicidad; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_publicidad
+    ADD CONSTRAINT pk_id_publicidad_datos_publicidad PRIMARY KEY (id_publicidad);
+
+
+--
+-- TOC entry 2019 (class 2606 OID 301348)
+-- Dependencies: 199 199 2236
+-- Name: pk_id_publicidad_medios; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_publicidad_medios
+    ADD CONSTRAINT pk_id_publicidad_medios PRIMARY KEY (id_publicidad_medios);
+
+
+--
+-- TOC entry 2017 (class 2606 OID 301330)
+-- Dependencies: 198 198 2236
+-- Name: pk_id_publicidad_redes; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_publicidad_redes
+    ADD CONSTRAINT pk_id_publicidad_redes PRIMARY KEY (id_publicidad_redes);
+
+
+--
+-- TOC entry 2035 (class 2606 OID 309770)
+-- Dependencies: 217 217 2236
+-- Name: pk_id_tarea_datos_tareas; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_tareas
+    ADD CONSTRAINT pk_id_tarea_datos_tareas PRIMARY KEY (id_tarea);
+
+
+--
+-- TOC entry 1991 (class 2606 OID 284751)
+-- Dependencies: 175 175 2236
+-- Name: pk_id_tipo_comision_ad_tipos_comision; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_tipos_comision
+    ADD CONSTRAINT pk_id_tipo_comision_ad_tipos_comision PRIMARY KEY (id_tipo_comision);
+
+
+--
+-- TOC entry 2031 (class 2606 OID 309697)
+-- Dependencies: 212 212 2236
+-- Name: pk_id_tipo_estado_tareas; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_tipos_estados_tareas
+    ADD CONSTRAINT pk_id_tipo_estado_tareas PRIMARY KEY (id_tipo_estado_tareas);
+
+
+--
+-- TOC entry 2015 (class 2606 OID 301322)
+-- Dependencies: 197 197 2236
+-- Name: pk_id_tipos_publicidad; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_tipos_publicidad
+    ADD CONSTRAINT pk_id_tipos_publicidad PRIMARY KEY (id_publicidad);
+
+
+--
+-- TOC entry 2033 (class 2606 OID 309753)
+-- Dependencies: 215 215 2236
+-- Name: pk_id_votante_datos_votantes; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY datos_votantes
+    ADD CONSTRAINT pk_id_votante_datos_votantes PRIMARY KEY (id_votante);
+
+
+--
+-- TOC entry 2023 (class 2606 OID 309546)
+-- Dependencies: 205 205 2236
+-- Name: pk_task; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_task
+    ADD CONSTRAINT pk_task PRIMARY KEY (id_task);
+
+
+--
+-- TOC entry 1974 (class 2606 OID 284704)
+-- Dependencies: 165 165 2236
+-- Name: pk_user; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_user
+    ADD CONSTRAINT pk_user PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1972 (class 2606 OID 284706)
+-- Dependencies: 164 164 2236
+-- Name: uq_ad_acceso_acceso; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ad_roles
+    ADD CONSTRAINT uq_ad_acceso_acceso UNIQUE (rol);
+
+
+--
+-- TOC entry 1980 (class 2606 OID 284708)
+-- Dependencies: 167 167 167 2236
+-- Name: user_role_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY user_role
+    ADD CONSTRAINT user_role_pkey PRIMARY KEY (user_id, role_id);
+
+
+--
+-- TOC entry 1977 (class 1259 OID 284709)
+-- Dependencies: 167 2236
+-- Name: idx_2de8c6a3a76ed395; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX idx_2de8c6a3a76ed395 ON user_role USING btree (user_id);
+
+
+--
+-- TOC entry 1978 (class 1259 OID 284710)
+-- Dependencies: 167 2236
+-- Name: idx_2de8c6a3d60322ac; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX idx_2de8c6a3d60322ac ON user_role USING btree (role_id);
+
+
+--
+-- TOC entry 1987 (class 1259 OID 284817)
+-- Dependencies: 174 174 174 174 2236
+-- Name: idx_datos_comisiones; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX idx_datos_comisiones ON datos_comisiones USING btree (id_estructura, id_tipo_comision, id_campana, id_persona);
+
+
+--
+-- TOC entry 2038 (class 2606 OID 284711)
+-- Dependencies: 165 167 1973 2236
+-- Name: fk_2de8c6a3a76ed395; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY user_role
+    ADD CONSTRAINT fk_2de8c6a3a76ed395 FOREIGN KEY (user_id) REFERENCES ad_user(id);
+
+
+--
+-- TOC entry 2039 (class 2606 OID 284716)
+-- Dependencies: 166 1975 167 2236
+-- Name: fk_2de8c6a3d60322ac; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY user_role
+    ADD CONSTRAINT fk_2de8c6a3d60322ac FOREIGN KEY (role_id) REFERENCES admin_roles(id);
+
+
+--
+-- TOC entry 2064 (class 2606 OID 309547)
+-- Dependencies: 205 1973 165 2236
+-- Name: fk_ad_task_ad_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY ad_task
+    ADD CONSTRAINT fk_ad_task_ad_user_id FOREIGN KEY (id) REFERENCES ad_user(id);
+
+
+--
+-- TOC entry 2065 (class 2606 OID 309552)
+-- Dependencies: 205 1973 165 2236
+-- Name: fk_ad_task_useradd_task; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY ad_task
+    ADD CONSTRAINT fk_ad_task_useradd_task FOREIGN KEY (useradd_task) REFERENCES ad_user(id);
+
+
+--
+-- TOC entry 2066 (class 2606 OID 309557)
+-- Dependencies: 165 1973 205 2236
+-- Name: fk_ad_task_userwt_task; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY ad_task
+    ADD CONSTRAINT fk_ad_task_userwt_task FOREIGN KEY (userwt_task) REFERENCES ad_user(id);
+
+
+--
+-- TOC entry 2074 (class 2606 OID 309794)
+-- Dependencies: 218 177 1994 2236
+-- Name: fk_id_camapan_datos_aportaciones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_aportaciones
+    ADD CONSTRAINT fk_id_camapan_datos_aportaciones FOREIGN KEY (id_campana) REFERENCES datos_campanas_politicas(id_campana);
+
+
+--
+-- TOC entry 2058 (class 2606 OID 301331)
+-- Dependencies: 177 1994 198 2236
+-- Name: fk_id_campana_datos_campanas_politicas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_publicidad_redes
+    ADD CONSTRAINT fk_id_campana_datos_campanas_politicas FOREIGN KEY (id_campana) REFERENCES datos_campanas_politicas(id_campana) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2060 (class 2606 OID 301349)
+-- Dependencies: 177 1994 199 2236
+-- Name: fk_id_campana_datos_campanas_politicas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_publicidad_medios
+    ADD CONSTRAINT fk_id_campana_datos_campanas_politicas FOREIGN KEY (id_campana) REFERENCES datos_campanas_politicas(id_campana) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2067 (class 2606 OID 309667)
+-- Dependencies: 1994 177 211 2236
+-- Name: fk_id_campana_datos_campanas_politicas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_publicidad
+    ADD CONSTRAINT fk_id_campana_datos_campanas_politicas FOREIGN KEY (id_campana) REFERENCES datos_campanas_politicas(id_campana) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2047 (class 2606 OID 284873)
+-- Dependencies: 182 1994 177 2236
+-- Name: fk_id_campana_datos_centros_votacion; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_centros_votacion
+    ADD CONSTRAINT fk_id_campana_datos_centros_votacion FOREIGN KEY (id_campana) REFERENCES datos_campanas_politicas(id_campana);
+
+
+--
+-- TOC entry 2046 (class 2606 OID 284883)
+-- Dependencies: 177 181 1994 2236
+-- Name: fk_id_campana_datos_distritos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_distritos
+    ADD CONSTRAINT fk_id_campana_datos_distritos FOREIGN KEY (id_campana) REFERENCES datos_campanas_politicas(id_campana);
+
+
+--
+-- TOC entry 2062 (class 2606 OID 301393)
+-- Dependencies: 203 1994 177 2236
+-- Name: fk_id_campana_datos_eventos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_eventos
+    ADD CONSTRAINT fk_id_campana_datos_eventos FOREIGN KEY (id_campana) REFERENCES datos_campanas_politicas(id_campana);
+
+
+--
+-- TOC entry 2040 (class 2606 OID 284970)
+-- Dependencies: 177 174 1994 2236
+-- Name: fk_id_campana_politica_datos_comisiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_comisiones
+    ADD CONSTRAINT fk_id_campana_politica_datos_comisiones FOREIGN KEY (id_campana) REFERENCES datos_campanas_politicas(id_campana) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2052 (class 2606 OID 309618)
+-- Dependencies: 189 1994 177 2236
+-- Name: fk_id_campana_politica_datos_presupuestos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_presupuestos
+    ADD CONSTRAINT fk_id_campana_politica_datos_presupuestos FOREIGN KEY (id_campana) REFERENCES datos_campanas_politicas(id_campana) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2049 (class 2606 OID 309522)
+-- Dependencies: 1994 177 183 2236
+-- Name: fk_id_campanas_datos_notificaciones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_notificaciones
+    ADD CONSTRAINT fk_id_campanas_datos_notificaciones FOREIGN KEY (id_campana) REFERENCES datos_campanas_politicas(id_campana);
+
+
+--
+-- TOC entry 2070 (class 2606 OID 309755)
+-- Dependencies: 2000 215 182 2236
+-- Name: fk_id_centro_votacion_datos_votantes; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_votantes
+    ADD CONSTRAINT fk_id_centro_votacion_datos_votantes FOREIGN KEY (id_cv) REFERENCES datos_centros_votacion(id_cv);
+
+
+--
+-- TOC entry 2054 (class 2606 OID 309628)
+-- Dependencies: 189 182 2000 2236
+-- Name: fk_id_cv_datos_centro_votacion; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_presupuestos
+    ADD CONSTRAINT fk_id_cv_datos_centro_votacion FOREIGN KEY (id_cv) REFERENCES datos_centros_votacion(id_cv);
+
+
+--
+-- TOC entry 2048 (class 2606 OID 284878)
+-- Dependencies: 182 1998 181 2236
+-- Name: fk_id_distrito_datos_centros_votacion; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_centros_votacion
+    ADD CONSTRAINT fk_id_distrito_datos_centros_votacion FOREIGN KEY (id_distrito) REFERENCES datos_distritos(id_distrito);
+
+
+--
+-- TOC entry 2063 (class 2606 OID 301398)
+-- Dependencies: 1998 181 203 2236
+-- Name: fk_id_distrito_datos_eventos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_eventos
+    ADD CONSTRAINT fk_id_distrito_datos_eventos FOREIGN KEY (id_distrito) REFERENCES datos_distritos(id_distrito);
+
+
+--
+-- TOC entry 2050 (class 2606 OID 309527)
+-- Dependencies: 183 1998 181 2236
+-- Name: fk_id_distrito_datos_notificaciones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_notificaciones
+    ADD CONSTRAINT fk_id_distrito_datos_notificaciones FOREIGN KEY (id_distrito) REFERENCES datos_distritos(id_distrito);
+
+
+--
+-- TOC entry 2053 (class 2606 OID 309623)
+-- Dependencies: 189 1998 181 2236
+-- Name: fk_id_distrito_datos_presupuestos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_presupuestos
+    ADD CONSTRAINT fk_id_distrito_datos_presupuestos FOREIGN KEY (id_distrito) REFERENCES datos_distritos(id_distrito) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2068 (class 2606 OID 309672)
+-- Dependencies: 1998 211 181 2236
+-- Name: fk_id_distrito_datos_publicidad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_publicidad
+    ADD CONSTRAINT fk_id_distrito_datos_publicidad FOREIGN KEY (id_distrito) REFERENCES datos_distritos(id_distrito) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2071 (class 2606 OID 309771)
+-- Dependencies: 2030 217 212 2236
+-- Name: fk_id_estado_datos_tareas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_tareas
+    ADD CONSTRAINT fk_id_estado_datos_tareas FOREIGN KEY (id_estado) REFERENCES ad_tipos_estados_tareas(id_tipo_estado_tareas) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2044 (class 2606 OID 309593)
+-- Dependencies: 175 1985 173 2236
+-- Name: fk_id_estructura_ad_tipos_comisiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY ad_tipos_comision
+    ADD CONSTRAINT fk_id_estructura_ad_tipos_comisiones FOREIGN KEY (id_estructura) REFERENCES datos_estructuras(id_estructura);
+
+
+--
+-- TOC entry 2041 (class 2606 OID 284975)
+-- Dependencies: 173 1985 174 2236
+-- Name: fk_id_estructura_dato_comisiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_comisiones
+    ADD CONSTRAINT fk_id_estructura_dato_comisiones FOREIGN KEY (id_estructura) REFERENCES datos_estructuras(id_estructura) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2072 (class 2606 OID 309776)
+-- Dependencies: 2020 203 217 2236
+-- Name: fk_id_eventos_datos_tareas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_tareas
+    ADD CONSTRAINT fk_id_eventos_datos_tareas FOREIGN KEY (id_eventos) REFERENCES datos_eventos(id_eventos) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2056 (class 2606 OID 309653)
+-- Dependencies: 190 2026 210 2236
+-- Name: fk_id_objeto_gasto_dastos_lista_presupuesto; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_lista_presupuesto
+    ADD CONSTRAINT fk_id_objeto_gasto_dastos_lista_presupuesto FOREIGN KEY (id_objeto_gasto) REFERENCES ad_objeto_gastos(id_objeto_gasto);
+
+
+--
+-- TOC entry 2045 (class 2606 OID 284831)
+-- Dependencies: 177 1996 178 2236
+-- Name: fk_id_partido_politico_datos_campanas_politicas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_campanas_politicas
+    ADD CONSTRAINT fk_id_partido_politico_datos_campanas_politicas FOREIGN KEY (id_partido_politico) REFERENCES ad_partidos_politicos(id_partido_politico) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2042 (class 2606 OID 284980)
+-- Dependencies: 174 176 1992 2236
+-- Name: fk_id_persona_datos_comisiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_comisiones
+    ADD CONSTRAINT fk_id_persona_datos_comisiones FOREIGN KEY (id_persona) REFERENCES datos_personas(id_persona) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2057 (class 2606 OID 309537)
+-- Dependencies: 191 189 2004 2236
+-- Name: fk_id_presupuesto_datos_comentarios_presupuesto; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_comentarios_presupuesto
+    ADD CONSTRAINT fk_id_presupuesto_datos_comentarios_presupuesto FOREIGN KEY (id_presupuesto) REFERENCES datos_presupuestos(id_presupuesto) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2055 (class 2606 OID 309648)
+-- Dependencies: 190 2004 189 2236
+-- Name: fk_id_presupuesto_datos_lista_presupuesto; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_lista_presupuesto
+    ADD CONSTRAINT fk_id_presupuesto_datos_lista_presupuesto FOREIGN KEY (id_presupuesto) REFERENCES datos_presupuestos(id_presupuesto) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2069 (class 2606 OID 309677)
+-- Dependencies: 197 211 2014 2236
+-- Name: fk_id_publicidad_ad_tipos_publicidad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_publicidad
+    ADD CONSTRAINT fk_id_publicidad_ad_tipos_publicidad FOREIGN KEY (tipo_publicidad) REFERENCES ad_tipos_publicidad(id_publicidad) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2059 (class 2606 OID 301336)
+-- Dependencies: 198 197 2014 2236
+-- Name: fk_id_publicidad_tipos_publicidad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_publicidad_redes
+    ADD CONSTRAINT fk_id_publicidad_tipos_publicidad FOREIGN KEY (id_publicidad) REFERENCES ad_tipos_publicidad(id_publicidad) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2061 (class 2606 OID 301354)
+-- Dependencies: 199 197 2014 2236
+-- Name: fk_id_publicidad_tipos_publicidad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_publicidad_medios
+    ADD CONSTRAINT fk_id_publicidad_tipos_publicidad FOREIGN KEY (id_publicidad) REFERENCES ad_tipos_publicidad(id_publicidad) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2073 (class 2606 OID 309781)
+-- Dependencies: 217 1973 165 2236
+-- Name: fk_id_responsable_datos_tareas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_tareas
+    ADD CONSTRAINT fk_id_responsable_datos_tareas FOREIGN KEY (id_responsable) REFERENCES ad_user(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2051 (class 2606 OID 309532)
+-- Dependencies: 183 165 1973 2236
+-- Name: fk_id_usuario_datos_notificaciones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_notificaciones
+    ADD CONSTRAINT fk_id_usuario_datos_notificaciones FOREIGN KEY (id_usuario) REFERENCES ad_user(id);
+
+
+--
+-- TOC entry 2043 (class 2606 OID 284985)
+-- Dependencies: 175 1990 174 2236
+-- Name: fk_tipo_comision_datos_comisiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY datos_comisiones
+    ADD CONSTRAINT fk_tipo_comision_datos_comisiones FOREIGN KEY (id_tipo_comision) REFERENCES ad_tipos_comision(id_tipo_comision) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2241 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2019-11-05 07:54:24 CST
+
+--
+-- PostgreSQL database dump complete
+--
+
