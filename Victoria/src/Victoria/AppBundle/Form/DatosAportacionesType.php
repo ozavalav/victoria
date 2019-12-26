@@ -92,9 +92,8 @@ class DatosAportacionesType extends AbstractType
             ))
             ->add('idCampana', EntityType::class, array(
                 'class' => 'VictoriaAppBundle:DatosCampanasPoliticas',
-                'label' => 'Campaña politica'
-            ))
-        ;
+                'label' => 'Campaña politica', 'attr'=>array('required' => true)))
+                        ;
     }
     
     /**

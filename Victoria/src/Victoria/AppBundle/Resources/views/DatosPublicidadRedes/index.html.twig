@@ -30,23 +30,21 @@
         </a>
     </li>
     </ul>
-    < <table id="dynamic-table" class="display compact">
+    <table id="dynamic-table" class="display compact" style="width:100%">
         <thead>
             <tr style="background-color: #E8BF6A">
-                <th>Id</th>
                 <th>Target</th>
                 <th>Pauta publicitaria</th>
                 <th>Personas alcanzadas</th>
                 <th>Resumen</th>
                 <th>Medio publicitario</th>
                 <th>Tipo anuncio</th>
-                <th>Actions</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('datospublicidadredes_show', { 'id': entity.idPublicidadRedes }) }}">{{ entity.idPublicidadRedes }}</a></td>
                 <td>{{ entity.target }}</td>
                 <td>{{ entity.pautaPublicitaria }}</td>
                 <td>{{ entity.personasAlcanzadas }}</td>                
@@ -87,6 +85,7 @@
           'ordering'    : true,
           'info'        : true,
           'autoWidth'   : true,
+          'scrollX'     : true,
           language:{
                     search: "Buscar",
                     lengthMenu: "Mostrar _MENU_ registros",

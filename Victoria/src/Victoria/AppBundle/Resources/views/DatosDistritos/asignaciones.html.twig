@@ -1,0 +1,98 @@
+{% extends '::basemenu.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/jquery.dataTables_themeroller.css')}}" />
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/focal.css')}}" />
+    
+{% endblock %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Listado de personas asignadas a las comisiones
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-map-marker"></i> Distritos</a></li>
+        <li class="active">Ver las asignaciones del C.V.</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+
+    </ul>
+    <table id="dynamic-table" style="width: 100%" class="display compact table-responsive">
+        <thead>
+            <tr style="background-color: #E8BF6A">
+                <th>Nombre personas</th>
+                <th>Comision</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.nombres }}</td>
+                <td>{{ entity.descripcion }}</td>
+                <td>
+                <ul>
+                     <div class="action-buttons">
+                        <a class="blue" href="{{ path('datosdistritos_verpersona', { 'id': entity.id_persona }) }}" title="Ver">
+                                <i class="oz-icon-v fa fa-search-plus bigger-130"></i>
+                        </a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a class="green"  href="{{ path('datosdistritos_borrarpersona', { 'id': entity.id_persona }) }}" title="Borrar Asignación">
+                                <i class="oz-icon-e fa fa-trash bigger-130"></i>
+                        </a>
+                        {% endif %}        
+                     </div>
+                </ul>                
+                </td>
+            </tr>
+        {% endfor %}
+        
+        </tbody>
+   </table>
+        
+    {% endblock %}
+    
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.bootstrap.min.js')}}"></script> 
+    
+    <script type="text/javascript">
+        $(function () {
+        
+        $('#dynamic-table').DataTable({
+          'paging'      : true,
+          'lengthChange': true,
+          'searching'   : true,
+          'ordering'    : true,
+          'info'        : true,
+          'autoWidth'   : true,
+          'responsive'  : true,
+          language:{
+                    search: "Buscar",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    emptyTable: "No hay datos...",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    infoFiltered: "(Filtrando de un total de _MAX_ registros)",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Ultimo"
+                    }
+                }
+        });
+    });      
+    </script>     
+{% endblock %}    

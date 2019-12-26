@@ -40,6 +40,8 @@ class DatosPersonasController extends Controller
         
         /* Obtiene las notificaciones que tiene el usuario */
         $entnot = $seg->obtenerNotificaciones($idUsuario);
+        /* Obtiene las tareas que tiene el usuario */
+        $enttar = $seg->obtenerTareas($idUsuario);
         
         $em = $this->getDoctrine()->getManager();
         
@@ -55,6 +57,7 @@ class DatosPersonasController extends Controller
             'entities' => $entities,
             'menu' => $menu,
             'datosnoti' => $entnot,    
+            'datostar' => $enttar,    
         ));
     }
     /**
@@ -73,6 +76,14 @@ class DatosPersonasController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            
+            /* Valida que el el numero de identidad sea unico en la tabla de personas */
+            $numid = $entity->getNumeroIdentidad();
+            $enttmp = $em->getRepository('VictoriaAppBundle:DatosPersonas')->findBy(array('numeroIdentidad' => $numid));
+            
+            if ($enttmp) {
+                throw $this->createNotFoundException('FOCAL: La persona ya estan ingresada en la tabla personas: Número de Identidad repetida.');
+            }
             
             $entity->setIdEstructura($entity->getIdEstructura()->getIdEstructura());
             $entity->setIdComision($entity->getIdComision()->getIdTipoComision());
@@ -241,6 +252,8 @@ class DatosPersonasController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('VictoriaAppBundle:DatosPersonas')->find($id);
+        
+        $numidori = $entity->getNumeroIdentidad();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find DatosPersonas entity.');
@@ -251,6 +264,19 @@ class DatosPersonasController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            
+            $numidnuevo = $entity->getNumeroIdentidad();
+            
+            if($numidori != $numidnuevo) {
+                /* Valida que el el numero de identidad sea unico en la tabla de personas */
+                
+                $enttmp = $em->getRepository('VictoriaAppBundle:DatosPersonas')->findBy(array('numeroIdentidad' => $numidnuevo));
+            
+                if ($enttmp) {
+                    throw $this->createNotFoundException('FOCAL: Número de Identidad ingresada para este personas ya existe.');
+                }
+                
+            }
             
             $entity->setIdEstructura($entity->getIdEstructura()->getIdEstructura());
             $entity->setIdComision($entity->getIdComision()->getIdTipoComision());

@@ -1,3 +1,19 @@
+victoria_app_datosequipos:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datosequipos.yml"
+    prefix:   /datosequipos
+
+victoria_app_datosaportaciones:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datosaportaciones.yml"
+    prefix:   /datosaportaciones
+
+victoria_app_datosvotantes:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datosvotantes.yml"
+    prefix:   /datosvotantes
+
+victoria_app_datostareas:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datostareas.yml"
+    prefix:   /datostareas
+
 victoria_app_datoslistapublicidad:
     resource: "@VictoriaAppBundle/Resources/config/routing/datoslistapublicidad.yml"
     prefix:   /datoslistapublicidad
@@ -111,4 +127,8 @@ login_guardarPeriodo:
 
 datoscomisiones:
     path:     /
-    defaults: { _controller: "VictoriaAppBundle:DatosComisiones:index" }   
+    defaults: { _controller: "VictoriaAppBundle:DatosComisiones:index" }
+
+victoria_app_datosrespuestascuestionario:
+    resource: "@VictoriaAppBundle/Resources/config/routing/datosrespuestascuestionario.yml"
+    prefix:   /datosrespuestascuestionario       

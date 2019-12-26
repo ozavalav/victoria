@@ -49,6 +49,13 @@ class DatosVotantes
      * @ORM\Column(name="edad", type="integer", nullable=true)
      */
     private $edad = '0';
+    
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="sexo", type="integer", nullable=true)
+     */
+    private $sexo;
 
     /**
      * @var string
@@ -178,6 +185,29 @@ class DatosVotantes
         return $this->edad;
     }
 
+/**
+     * Set sexo
+     *
+     * @param integer $sexo
+     * @return DatosVotantes
+     */
+    public function setSexo($sexo)
+    {
+        $this->sexo = $sexo;
+
+        return $this;
+    }
+
+    /**
+     * Get edad
+     *
+     * @return integer 
+     */
+    public function getSexo()
+    {
+        return $this->sexo;
+    }
+    
     /**
      * Set telefonos
      *

@@ -89,7 +89,6 @@
     <table id="dynamic-table" class="display compact">
         <thead>
             <tr style="background-color: #E8BF6A"> 
-                <th>Id de tipo comision</th>
                 <th>Estructura</th>
                 <th>Descripción</th>
                 <th>Acciones</th>
@@ -98,7 +97,6 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('adtiposcomision_show', { 'id': entity.idTipoComision }) }}">{{ entity.idTipoComision }}</a></td>
                 <td>{% if (entity.idEstructura == 1) %}<b>A</b>{% elseif(entity.idEstructura == 2)  %}<b>B</b>{% else %}<b>C</b>{%endif%}</td>
                 <td>{{ entity.descripcion }}</td>
                <td>

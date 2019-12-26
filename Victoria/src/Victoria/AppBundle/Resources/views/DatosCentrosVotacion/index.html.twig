@@ -32,39 +32,43 @@
     </li>
     </ul>
     {% endif %}        
-    <table id="dynamic-table" class="display compact">
+    <table id="dynamic-table" class="display compact" style="width:100%">
         <thead>
             <tr style="background-color: #E8BF6A">
-                <th>Id Centro Votacion</th>
                 <th>Nombre</th>
-                <th>Tipo centro votacion</th>
-                <th>Direccion</th>
-                <th>Nombre edificio</th>
+                <th>Tipo</th>
+                <th>Nombre</th>
                 <th>Cargar electoral</th>
-                <th>Numero mesas</th>
+                <th>% Votantes</th>
+                <th>% Comisiones</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('datoscentrosvotacion_show', { 'id': entity.idCv }) }}">{{ entity.idCv }}</a></td>
                 <td>{{ entity.nombre }}</td>
-                <td>{{ entity.tipoCv }}</td>
-                <td>{{ entity.direccion }}</td>
-                <td>{{ entity.nombreEdificio }}</td>
-                <td>{{ entity.cargarElectoral }}</td>
-                <td>{{ entity.numeroMesas }}</td>
+                <td>{% if (entity.tipo_cv == 1) %}A{% elseif(entity.tipoCv == 2)%}B{%else%}C{%endif%}</td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.cargar_electoral }}</td>
+                <td>{% if (entity.cargar_electoral > 0)%}{{((entity.votantes/entity.cargar_electoral)*100)|round(2)}}%{%else%}0%{% endif %}</td>
+                <td>{% if (entity.total_cv > 0)%}{{((entity.total_asignadas/entity.total_cv)*100)|round(2)}}%{%else%}0%{% endif %}</td>
                 <td>
                 <ul>
                      <div class="action-buttons">
-                        <a class="blue" href="{{ path('datoscentrosvotacion_show', { 'id': entity.idCv }) }}" title="Ver">
+                        <a class="blue" href="{{ path('datoscentrosvotacion_show', { 'id': entity.id_cv }) }}" title="Ver">
                                 <i class="oz-icon-v fa fa-search-plus bigger-130"></i>
                         </a>
                         {% if is_granted('ROLE_ADMIN') %}
-                        <a class="green"  href="{{ path('datoscentrosvotacion_edit', { 'id': entity.idCv }) }}"title="Editar">
+                        <a class="green"  href="{{ path('datoscentrosvotacion_edit', { 'id': entity.id_cv }) }}"title="Editar">
                                 <i class="oz-icon-e fa fa-pencil bigger-130"></i>
                         </a>
+                        <a class="green" href="{{ path('datoscentrosvotacion_cantidad', { 'id': entity.id_cv }) }}"title="Asignar cantidades">
+                                <i class="oz-icon-b fa fa-plus-square bigger-130"></i>
+                        </a>
+                        <a class="green"  href="{{ path('datoscentrosvotacion_verasignaciones', { 'id': entity.id_cv, 'porcv' : 1 }) }}"title="Ver asignaciones">
+                                <i class="oz-icon-v fa fa-group bigger-130"></i>
+                        </a>        
                         {% endif %}        
                      </div>
                 </ul>                
@@ -91,6 +95,7 @@
           'ordering'    : true,
           'info'        : true,
           'autoWidth'   : true,
+          'scrollX'     : true,
           language:{
                     search: "Buscar",
                     lengthMenu: "Mostrar _MENU_ registros",

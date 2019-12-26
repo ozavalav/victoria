@@ -1,0 +1,38 @@
+{% extends '::basemenu.html.twig' %}
+{% form_theme edit_form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Editar cuestionario
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-user"></i> Cuestionario</a></li>
+        <li class="active">Editar Cuestionario</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+
+
+    {{ form(edit_form) }}
+
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+        <a class="btn btn-md btn-success" href="{{ path('datosrespuestascuestionario') }}">
+         <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %} 

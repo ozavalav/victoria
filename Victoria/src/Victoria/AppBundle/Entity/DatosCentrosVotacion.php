@@ -65,6 +65,20 @@ class DatosCentrosVotacion
     private $numeroMesas;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="personas_por_mesas", type="integer", nullable=true)
+     */
+    private $personasPorMesas;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tipo_votacion", type="integer", nullable=true)
+     */
+    private $tipoVotacion;
+
+    /**
      * @var \DatosCampanasPoliticas
      *
      * @ORM\ManyToOne(targetEntity="DatosCampanasPoliticas")
@@ -235,6 +249,52 @@ class DatosCentrosVotacion
     }
 
     /**
+     * Set personasPorMesas
+     *
+     * @param integer $personasPorMesas
+     * @return DatosCentrosVotacion
+     */
+    public function setPersonasPorMesas($personasPorMesas)
+    {
+        $this->personasPorMesas = $personasPorMesas;
+
+        return $this;
+    }
+
+    /**
+     * Get personasPorMesas
+     *
+     * @return integer 
+     */
+    public function getPersonasPorMesas()
+    {
+        return $this->personasPorMesas;
+    }
+
+    /**
+     * Set tipoVotacion
+     *
+     * @param integer $tipoVotacion
+     * @return DatosCentrosVotacion
+     */
+    public function setTipoVotacion($tipoVotacion)
+    {
+        $this->tipoVotacion = $tipoVotacion;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoVotacion
+     *
+     * @return integer 
+     */
+    public function getTipoVotacion()
+    {
+        return $this->tipoVotacion;
+    }
+
+    /**
      * Set idCampana
      *
      * @param \Victoria\AppBundle\Entity\DatosCampanasPoliticas $idCampana
@@ -280,8 +340,8 @@ class DatosCentrosVotacion
         return $this->idDistrito;
     }
     
-    function __toString()
+        function __toString()
     {
-        return $this->nombre;
-    }      
+        return $this->nombre . " " . $this->tipoCv;
+    }    
 }

@@ -28,11 +28,11 @@
             </tr>
             <tr>
                 <th>Tipoaportador</th>
-                <td>{{ entity.tipoAportador }}</td>
+                <td>{{ (entity.tipoAportador == 1 )?'Persona':'Institución'}}</td>
             </tr>
             <tr>
                 <th>Tipoaportacion</th>
-                <td>{{ entity.tipoAportacion }}</td>
+                <td>{{ (entity.tipoAportacion == 1)?'Economica':'Especie' }}</td>
             </tr>
             <tr>
                 <th>Descripcion</th>
@@ -56,7 +56,7 @@
             </tr>
             <tr>
                 <th>Aportadoractual</th>
-                <td>{{ entity.aportadorActual }}</td>
+                <td>{{ (entity.aportadorActual == 1)?'Actual':'Futuro'}}</td>
             </tr>
         </tbody>
     </table>

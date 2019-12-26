@@ -81,6 +81,8 @@ class DatosNotificacionesController extends Controller
         
         /* Obtiene las notificaciones que tiene el usuario */
         $entnot = $seg->obtenerNotificaciones($idusuario);
+        /* Obtiene las tareas que tiene el usuario */
+        $enttar = $seg->obtenerTareas($idusuario);
         
         $em = $this->getDoctrine()->getManager();
         
@@ -133,6 +135,7 @@ class DatosNotificacionesController extends Controller
             'entities' => $entities,
             'menu' => $menu,
             'datosnoti' => $entnot, 
+            'datostar' => $enttar, 
         ));
     }
     /**

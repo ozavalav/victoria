@@ -32,3 +32,32 @@ datosdistritos_delete:
     path:     /{id}/delete
     defaults: { _controller: "VictoriaAppBundle:DatosDistritos:delete" }
     requirements: { _method: post|delete }
+
+datosdistritos_cantidad:
+    path:     /{id}/cantidad
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:cantidad" }
+
+datosdistritos_createcant:
+    path:     /createcant
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:createcant" }
+    requirements: { _method: post }
+    
+datosdistritos_asignarpersona:
+    path:     /asignarpersona
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:asignarpersona" }
+    requirements: { _method: post|get }
+
+datosdistritos_verpersona:
+    path:     /{id}/verpersona
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:verpersona" }
+    requirements: { _method: post|get }
+    
+datosdistritos_verasignaciones:
+    path:     /{id}/verasignaciones
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:verasignaciones" }
+    requirements: { _method: post|get }    
+    
+datosdistritos_borrarpersona:
+    path:     /{id}/borrarpersona
+    defaults: { _controller: "VictoriaAppBundle:DatosDistritos:borrarpersona" }
+    requirements: { _method: get|post|delete }   

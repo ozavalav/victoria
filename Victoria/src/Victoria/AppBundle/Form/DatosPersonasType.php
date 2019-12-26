@@ -27,13 +27,13 @@ class DatosPersonasType extends AbstractType
         $cmpes = $options['attr']['estructura'];
         
         $builder
-            ->add('nombres')
-            ->add('apellidos')
-            ->add('numeroIdentidad')
-            ->add('telefono1')
-            ->add('telefono2')
-            ->add('telefono3')
-            ->add('email')
+            ->add('nombres',null,array('label' => 'Nombres', 'attr' => array('maxlength' => 256)))
+            ->add('apellidos',null,array('label' => 'Apellidos', 'attr' => array('maxlength' => 256)))
+            ->add('numeroIdentidad',null,array('label' => 'NumeroIdentidad', 'attr' => array('maxlength' => 13)))
+            ->add('telefono1',null,array('label' => 'Telefono1', 'attr' => array('maxlength' => 14)))
+            ->add('telefono2',null,array('label' => 'Telefono2', 'attr' => array('maxlength' => 14)))
+            ->add('telefono3',null,array('label' => 'Telefono3', 'attr' => array('maxlength' => 14)))
+            ->add('email',null,array('label' => 'Email', 'attr' => array('maxlength' => 256)))
             //->add('idEstructura')
             ->add('idEstructura', EntityType::class, array(
                 'required' => true,

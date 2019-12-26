@@ -28,3 +28,32 @@ datoscampanaspoliticas_delete:
     path:     /{id}/delete
     defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:delete" }
     requirements: { _method: post|delete }
+    
+datoscampanaspoliticas_cantidad:
+    path:     /{id}/cantidad
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:cantidad" }
+
+datoscampanaspoliticas_createcant:
+    path:     /createcant
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:createcant" }
+    requirements: { _method: post }
+    
+datoscampanaspoliticas_asignarpersona:
+    path:     /asignarpersona
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:asignarpersona" }
+    requirements: { _method: post|get }
+
+datoscampanaspoliticas_verpersona:
+    path:     /{id}/verpersona
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:verpersona" }
+    requirements: { _method: post|get }
+    
+datoscampanaspoliticas_verasignaciones:
+    path:     /{id}/verasignaciones
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:verasignaciones" }
+    requirements: { _method: post|get }    
+    
+datoscampanaspoliticas_borrarpersona:
+    path:     /{id}/borrarpersona
+    defaults: { _controller: "VictoriaAppBundle:DatosCampanasPoliticas:borrarpersona" }
+    requirements: { _method: get|post|delete }    

@@ -45,6 +45,8 @@ class DatosPublicidadController extends Controller
         
         /* Obtiene las notificaciones que tiene el usuario */
         $entnot = $seg->obtenerNotificaciones($idUsuario);
+        /* Obtiene las tareas que tiene el usuario */
+        $enttar = $seg->obtenerTareas($idUsuario);
         
         /* Se define que información va a filtar segun el nivel de campana y distrito que tiene asignado*/
         $strWhere = $seg->filtrarConsulta($idCampana,$idDistrito);
@@ -73,6 +75,7 @@ class DatosPublicidadController extends Controller
             'form' => $form->createView(),
             'menu' => $menu,
             'datosnoti' => $entnot, 
+            'datostar' => $enttar, 
         ));
     }
     /**

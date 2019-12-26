@@ -1,0 +1,104 @@
+{% extends '::basemenu.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/jquery.dataTables_themeroller.css')}}" />
+    <link rel="stylesheet" href="{{asset('bundles/victoriaapp/css/focal.css')}}" />
+    
+{% endblock %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Listado de inventario de equipos
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-user"></i> Equipos</a></li>
+        <li class="active">Agregar, modificar y eliminar información</li>
+      </ol>
+    </section>
+{% endblock %}
+
+{% block content -%}
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    {% if is_granted('ROLE_ADMIN') %} 
+    <li>
+        <a class="btn btn-md btn-success" href="{{ path('datosequipos_new') }}">
+            <i class="ace-icon fa fa-plus-square align-top bigger-120"></i> Nuevo 
+        </a>
+    </li>
+    {% endif %}
+    </ul>
+
+    <table id="dynamic-table" class="display compact" style="width:100%">
+        <thead>
+            <tr style="background-color: #E8BF6A">
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.nombre }}</td>s
+                <td>{{ entity.descripcion }}</td>
+                <td>{{ entity.cantidad }}</td>
+                <td>{{ (entity.estado == 1)?'Bueno':(entity.estado == 2)?'Regular':'Malo' }}</td>
+                <td>
+                    <div class="action-buttons">
+                     <a class="blue" href="{{ path('datosequipos_show', { 'id': entity.idEquipo }) }}"title="Ver">
+                             <i class="oz-icon-v fa fa-search-plus bigger-130"></i> 
+                     </a>
+                     {% if is_granted('ROLE_ADMIN') %} 
+                     <a class="green" href="{{ path('datosequipos_edit', { 'id': entity.idEquipo }) }}" title="Editar">
+                             <i class="oz-icon-e fa fa-pencil bigger-130"></i>  
+                     </a>
+                     {% endif %}        
+                     </div>
+                </td>                
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('bundles/victoriaapp/js/jquery.dataTables.bootstrap.min.js')}}"></script> 
+    
+    <script type="text/javascript">
+        $(function () {
+        
+        $('#dynamic-table').DataTable({
+          'paging'      : true,
+          'lengthChange': true,
+          'searching'   : true,
+          'ordering'    : true,
+          'info'        : true,
+          'autoWidth'   : true,
+          'scrollX'     : true,
+          language:{
+                    search: "Buscar",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    emptyTable: "No hay datos...",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    infoFiltered: "(Filtrando de un total de _MAX_ registros)",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Ultimo"
+                    }
+                }
+        });
+  });
+    </script>     
+{% endblock %}   

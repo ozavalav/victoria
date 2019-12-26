@@ -22,6 +22,7 @@ class DatosPublicidad
      */
     private $idPublicidad;
 
+
     /**
      * @var string
      *
@@ -182,6 +183,27 @@ class DatosPublicidad
      * @ORM\Column(name="me_asombra", type="integer", nullable=true)
      */
     private $meAsombra;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="twitAfavor", type="integer", nullable=true)
+     */
+    private $twitafavor;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="twitNoafavor", type="integer", nullable=true)
+     */
+    private $twitnoafavor;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="reTwit", type="integer", nullable=true)
+     */
+    private $retwit;
 
     /**
      * @var \DatosCampanasPoliticas
@@ -752,6 +774,75 @@ class DatosPublicidad
     public function getMeAsombra()
     {
         return $this->meAsombra;
+    }
+
+    /**
+     * Set twitafavor
+     *
+     * @param integer $twitafavor
+     * @return DatosPublicidad
+     */
+    public function setTwitafavor($twitafavor)
+    {
+        $this->twitafavor = $twitafavor;
+
+        return $this;
+    }
+
+    /**
+     * Get twitafavor
+     *
+     * @return integer 
+     */
+    public function getTwitafavor()
+    {
+        return $this->twitafavor;
+    }
+
+    /**
+     * Set twitnoafavor
+     *
+     * @param integer $twitnoafavor
+     * @return DatosPublicidad
+     */
+    public function setTwitnoafavor($twitnoafavor)
+    {
+        $this->twitnoafavor = $twitnoafavor;
+
+        return $this;
+    }
+
+    /**
+     * Get twitnoafavor
+     *
+     * @return integer 
+     */
+    public function getTwitnoafavor()
+    {
+        return $this->twitnoafavor;
+    }
+
+    /**
+     * Set retwit
+     *
+     * @param integer $retwit
+     * @return DatosPublicidad
+     */
+    public function setRetwit($retwit)
+    {
+        $this->retwit = $retwit;
+
+        return $this;
+    }
+
+    /**
+     * Get retwit
+     *
+     * @return integer 
+     */
+    public function getRetwit()
+    {
+        return $this->retwit;
     }
 
     /**

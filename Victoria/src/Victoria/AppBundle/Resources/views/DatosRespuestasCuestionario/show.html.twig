@@ -1,0 +1,116 @@
+{% extends '::basemenu.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Información del cuestionario
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-user"></i> Cuestionarios</a></li>
+        <li class="active">Ver información de cuestionario</li>
+      </ol>
+    </section>
+{% endblock %}
+{% block content -%}
+    <table class="table table-striped table-bordered table-responsive">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.idRespuestaCuestionario }}</td>
+            </tr>
+            <tr>
+                <th>Nombres</th>
+                <td>{{ entity.nombres }}</td>
+            </tr>
+            <tr>
+                <th>Edad</th>
+                <td>{{ entity.edad }}</td>
+            </tr>
+            <tr>
+                <th>Direccion</th>
+                <td>{{ entity.direccion }}</td>
+            </tr>
+            <tr>
+                <th>Por que partido es su afinidad</th>
+                <td>
+                    {%if entity.porquePartidoEsSuAfinidad == 1 %}
+                    Partido nacional
+                    {%elseif entity.porquePartidoEsSuAfinidad == 2 %}
+                    partido anti-corrupción    
+                    {%else %}
+                    partido liberal
+                    {%endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Por que partido votara</th>
+                <td>
+                    {%if entity.porquePartidoVotara == 1 %}
+                    Partido nacional
+                    {%elseif entity.porquePartidoVotara == 2 %}
+                    partido anti-corrupción    
+                    {%else %}
+                    partido liberal
+                    {%endif %}
+                </td>            
+            </tr>
+             <tr>
+                <th>Por quien votara para presidente</th>
+                <td>
+                    {%if entity.porQuienVotaraParaPresidente == 1 %}
+                    Juan Hernandez
+                    {%elseif entity.porQuienVotaraParaPresidente == 2 %}
+                    Salvador Nasralla   
+                    {%else %}
+                    Luiz Zelaya
+                    {%endif %}
+                </td>            
+            </tr>
+            <tr>
+                <th>Por quien votara como alcalde</th>
+                <td>
+                    {%if entity.porQuienVotaraComoAlcalde == 1 %}
+                    Nasry Asfura
+                    {%elseif entity.porQuienVotaraComoAlcalde == 2 %}
+                    Ricardo Álvarez 
+                    {%else %}
+                    Miguel Rodrigo
+                    {%endif %}
+                </td>            
+            </tr>
+            <tr>
+                <th>Que beneficio legustaria recibir del gobierno</th>
+                <td>
+                    {%if entity.queBeneficioLeGustariaRecibirDelGobierno == 1 %}
+                    Acofogon
+                    {%elseif entity.queBeneficioLeGustariaRecibirDelGobierno == 2 %}
+                    Agua   
+                    {%else %}
+                    Luz
+                    {%endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="box-footer">        
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    {% if is_granted('ROLE_ADMIN') %}     
+    <li style="float: left; padding: 5px;">
+        <a style="display: block; " class="btn btn-md btn-success" href="{{ path('datosrespuestascuestionario_edit', { 'id': entity.idRespuestaCuestionario }) }}">
+            <i class="ace-icon fa fa-edit align-top bigger-120"></i> Editar 
+        </a>
+    </li>
+    {% endif %}
+    <li style="float: left; padding: 5px;">
+        <a style="display: block;" class="btn btn-md btn-success" href="{{ path('datosrespuestascuestionario') }}">
+            <i class="ace-icon fa fa-fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+    </ul>
+    </div>        
+        
+{% endblock %}

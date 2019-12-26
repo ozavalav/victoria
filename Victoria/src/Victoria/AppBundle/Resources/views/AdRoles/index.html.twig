@@ -32,9 +32,8 @@
     </div>              
     <table id="dynamic-table" class="table table-striped table-bordered table-responsive">
         <thead>
-            <tr>
+            <tr style="background-color: #E8BF6A">
                 <th class="center"></th> 
-                <th>Id</th>
                 <th>Descripción</th>
                 <th>Estado</th>
                 <th>Acciones</th>
@@ -49,7 +48,6 @@
                         <span class="lbl"></span>
                     </label>
                 </td>
-                <td><a href="#">{{ entity.idRol }}</a></td>
                 <td>{{ entity.rol }}</td>
                 <td>{%  if entity.idEstado == 1 %} Activo {% else %} Inactivo {% endif %}</td>
                 <td>

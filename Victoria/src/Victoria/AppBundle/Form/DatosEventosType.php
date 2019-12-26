@@ -18,16 +18,17 @@ class DatosEventosType extends AbstractType
     {
         
         $builder
-            ->add('titulo')
-            ->add('descripcion')
+            ->add('titulo',null,array('label' => 'Titulo', 'attr' => array('maxlength' => 256)))
+            ->add('descripcion',null,array('label' => 'Descripcion', 'attr' => array('maxlength' => 256)))
             ->add('fechaInicio',TextType::class,array('label'=>'Fecha inicio'))                
             ->add('fechaFinal',TextType::class,array('label'=>'Fecha final'))
             ->add('usuarioCreacion')
             ->add('fechaCreacion')
             ->add('usuarioUltimaModificacion')
             ->add('fechaUltimaModificacion')
-            ->add('idCampana')
-            ->add('idDistrito')
+            ->add('idCampana',null,array('label' => 'Campaña:', 'attr'=>array('required' => true)))    
+            ->add('idDistrito',null,array('label' => 'Distrito:', 'attr'=>array('required' => true)))
+
         ;
     }
     

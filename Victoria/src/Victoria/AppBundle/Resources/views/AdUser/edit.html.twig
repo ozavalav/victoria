@@ -21,17 +21,17 @@
 {% endfor %}
 
     {{ form_start(edit_form) }}
-        {% if is_granted('ROLE_ADMIN') %}
-            {{ form_row(edit_form.codDepartamento) }}
-            <div class="form-group">
+        {#% if is_granted('ROLE_ADMIN') %#}
+            {#{ form_row(edit_form.codDepartamento) }#}
+            <!--div class="form-group">
                 <label class="col-sm-2 control-label">Municipio</label>
                 <div class="col-sm-10">
                     <select id="codmunicipio" class="form-control" name="codmunicipio" required="true">
                         <option value="0">-- Selecionar --</option>
                     </select>
                 </div>
-            </div>             
-        {% endif %}
+            </div -->             
+        {#% endif %#}
         {{ form_row(edit_form.idEstructura) }}
         {{ form_row(edit_form.idCampana) }}
         <div class="form-group">
@@ -39,6 +39,7 @@
                 <div class="col-sm-10">
                     <select id="iddistrito" class="form-control" name="iddistrito" required="true" >
                         <option value="">-- Selecionar --</option>
+                        <option value="0">-- Todos --</option>
                     </select>
                 </div>
         </div>
@@ -68,7 +69,7 @@
         
         $(document).ready(function() {
             $('#focal_appbundle_aduser_username').prop("disabled", true);
-            $('#focal_appbundle_aduser_codDepartamento').val('{% if codDep starts with '0' %}{{ codDep|slice(1,1)}}{% else %}{{codDep|default('')}}{% endif %}');
+            /*$('#focal_appbundle_aduser_codDepartamento').val('{#% if codDep starts with '0' %}{{ codDep|slice(1,1)}}{% else %}{{codDep|default('')}}{% endif %#}');*/
             $('#focal_appbundle_aduser_idEstructura').val({{ idEstructura }});
             $('#focal_appbundle_aduser_idCampana').val({{ idCampana }});
             $('#focal_appbundle_aduser_acceso').val({{ acceso }});
@@ -76,6 +77,8 @@
             
             var param =  valdepto;
             var param2 = {{ idCampana }}
+            
+            /*
             url="/Victoria/web/app_dev.php/aduser/buscarMunicipio/" + param;
             
             $.ajax({
@@ -94,10 +97,10 @@
                           ejercicio = ejercicio + "<option value='"+data[i].codMunicipio+"'>"+data[i].codMunicipio+ " - "+data[i].nombre+ "</option>";  
                        });
                        $('#codmunicipio').html(ejercicio);
-                       $('#codmunicipio').val('{{codMun}}');
+                       $('#codmunicipio').val('{#{codMun}#}');
                   }
                 }
-              }); 
+              });*/ 
               
               url2="/Victoria/web/app_dev.php/aduser/buscarDistrito/" + param2;
               
@@ -113,8 +116,10 @@
                       alert('false');
                   }else{
                        var ejercicio = "<option value=''> -- seleccionar -- </option>";
+                      ejercicio = ejercicio + "<option value='0'> -- todos -- </option>";
                        $.each(data, function(i) {
                           ejercicio = ejercicio + "<option value='"+data[i].idDistrito+"'>"+data[i].idDistrito+ " - "+data[i].nombre+ "</option>";  
+                          
                        });
                        $('#iddistrito').html(ejercicio);
                        $('#iddistrito').val('{{ idDistrito }}');

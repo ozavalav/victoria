@@ -19,7 +19,7 @@ class AdUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombreUsuario',null, array('attr' => array('maxlength' => 128, 'placeholder' => 'Nombre completo')))
+            ->add('nombreUsuario',null, array('label' => 'Nombre y Apellido', 'attr' => array('maxlength' => 128, 'placeholder' => 'Nombre completo')))
             ->add('username',null, array('label' => 'Usuario', 'attr' => array('maxlength' => 25, 'placeholder' => 'Nombre de la cuenta')) )
             ->add('password', RepeatedType::class, 
                     array('type' => PasswordType::class,
@@ -40,14 +40,14 @@ class AdUserType extends AbstractType
             //->add('usuarioCreacion')
             //->add('usuarioUltimaModificacion')
             //->add('fechaUltimaModificacion')
-            ->add('codDepartamento', EntityType::class, array(
+            /*->add('codDepartamento', EntityType::class, array(
                 'required' => false,
                 'label' => 'Departamento',
                 'empty_value' => '-- Seleccione departamento --',
                 'empty_data'  => null,               
                 'class' => 'VictoriaAppBundle:AdDepartamentos',
                 'choice_label' => 'nombre',
-            ))
+            ))*/
             ->add('idEstructura', EntityType::class, array(
                 'required' => true,
                 'label' => 'Estructura',

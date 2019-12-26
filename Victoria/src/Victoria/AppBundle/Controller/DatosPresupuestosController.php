@@ -14,6 +14,12 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Routing\Annotation\Route;
+
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
@@ -49,6 +55,8 @@ class DatosPresupuestosController extends Controller
         
          /* Obtiene las notificaciones que tiene el usuario */
         $entnot = $seg->obtenerNotificaciones($idUsuario);
+        /* Obtiene las tareas que tiene el usuario */
+        $enttar = $seg->obtenerTareas($idUsuario);
         
         /* Se define que información va a filtar segun el nivel de campana y distrito que tiene asignado*/
         $strWhere = $seg->filtrarConsulta($idCampana,$idDistrito);
@@ -91,6 +99,7 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
             'entities' => $entities,
             'menu' => $menu,
             'datosnoti' => $entnot,  
+            'datostar' => $enttar,  
         ));
     }
     /**
@@ -190,8 +199,13 @@ group by id_presupuesto) c on (c.id_presupuesto = p.id_presupuesto)
             }
             
             
+            
+            
+            
             $em->flush();
 
+            
+            
             return $this->redirect($this->generateUrl('datospresupuestos_show', array('id' => $entity->getIdPresupuesto())));
         }
 

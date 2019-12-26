@@ -251,6 +251,38 @@ class AdUserController extends Controller
         return $response;
     }
     
+    /* Busco los distritos segun la campaña politica selecciona */
+    public function buscarPersonasAction(Request $request)
+    {
+        $session = $request->getSession();
+        $idCampana = $session->get('_id_campana');
+        
+        $em = $this->getDoctrine()->getManager();
+        $response = new JsonResponse();
+        $response->headers->set('Content-Type', 'application/json');
+        
+        $strwhere = "";
+        if ($idCampana != 0 ) {
+            $strwhere = 'id_campana = ' . $idCampana . ' and ' ;
+        }
+    //IDENTITY
+        $query = "select id_persona, coalesce(nombres,'') || ' ' || coalesce(apellidos,'') nombre
+from datos_personas 
+where %s id_persona not in (select id_persona from datos_comisiones_asignadas)
+order by coalesce(nombres,'') || ' ' || coalesce(apellidos,'')";
+        $query = sprintf($query, $strwhere);
+        $stmt = $em->getConnection()->prepare($query);
+        //$stmt->bindValue('idcmp',$idCampana);
+        $stmt->execute();
+        $entities = $stmt->fetchAll();
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new GetSetMethodNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+        $jsonContent = $serializer->serialize($entities, 'json');
+        $response->setData($entities);
+        return $response;
+    }
+    
     private function setSecurePassword(&$entity) {
         $entity->setSalt(md5(time()));
         $encoder = new \Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder('sha512', true, 10);
@@ -276,8 +308,15 @@ class AdUserController extends Controller
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
             $entities = $em->getRepository('VictoriaAppBundle:AdUser')->findBy(array('idEstado' => AppConst::ESTADO_GENERAL_ACTIVO));            
-            } else {
-                $entities = $em->getRepository('VictoriaAppBundle:AdUser')->findBy(array('idEstado' => AppConst::ESTADO_GENERAL_ACTIVO, 'codMunicipio' => $codMuni));
+            } else { 
+                if($idCampana == 0 )
+                    { 
+                    $entities = $em->getRepository('VictoriaAppBundle:AdUser')->findBy(array('idEstado' => AppConst::ESTADO_GENERAL_ACTIVO, 'codMunicipio' => $codMuni, 'idCampana' => $idCampana));
+                    }
+                    else
+                    { 
+                    $entities = $em->getRepository('VictoriaAppBundle:AdUser')->findBy(array('idEstado' => AppConst::ESTADO_GENERAL_ACTIVO, 'codMunicipio' => $codMuni));
+                    }
             }
             
         $dsql ="select de.codDepartamento, de.nombre "
@@ -347,14 +386,14 @@ class AdUserController extends Controller
             
             /* verifica si el usuario tiene privilegios para cambiar el departamento y municipio*/
             if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
-                $entity->setCodDepartamento($entity->getCodDepartamento()->getCodDepartamento());
-                $entity->setCodMunicipio($request->get('codmunicipio'));
+                //$entity->setCodDepartamento($entity->getCodDepartamento()->getCodDepartamento());
+                //$entity->setCodMunicipio($request->get('codmunicipio'));
                 $entity->setIdCampana($entity->getIdCampana()->getIdCampana());
                 $entity->setIdEstructura($entity->getIdEstructura()->getIdEstructura());
                 $entity->setIdDistrito($request->get('iddistrito'));
             } else {
-                $entity->setcodMunicipio($codMuni);
-                $entity->setCodDepartamento($codDept);
+                //$entity->setcodMunicipio($codMuni);
+                //$entity->setCodDepartamento($codDept);
                 $entity->setIdEstructura($IdEstructura);
                 $entity->setIdCampana($IdCampana);
                 $entity->setIdDistrito($IdDistrito);
@@ -363,10 +402,23 @@ class AdUserController extends Controller
                 //$entity->setUserRoles(1);
             }
             
+            /* Guarda la información del usuario */
+            $em->persist($entity);
+            $em->flush();
+            
             /* ----------------------------------------------------------------------------
              * Al ingresa un usuario se crea una fila automaticamente a la tabla de personas 
              * ----------------------------------------------------------------------------
              */
+            
+            /* Valida que el el numero de identidad sea unico en la tabla de personas */
+            $numid = $request->get('focal_appbundle_aduser')['numeroidentidad'];
+            $enttmp = $em->getRepository('VictoriaAppBundle:DatosPersonas')->findBy(array('numeroIdentidad' => $numid));
+            
+            if ($enttmp) {
+                throw $this->createNotFoundException('FOCAL: La persona ya estan ingresada en la tabla personas, sin embargo el usuario si fue creado.');
+            }
+            
             $entper = new DatosPersonas();
             $entper->setNombres($entity->getNombreUsuario());
             $entper->setNumeroIdentidad($request->get('focal_appbundle_aduser')['numeroidentidad']);
@@ -386,8 +438,8 @@ class AdUserController extends Controller
             
             $entper->setEstado(1); //1 = Activo
             
+            /* Se guarda la informacion de la persona */
             $em->persist($entper);
-            $em->persist($entity);
             $em->flush();
 
             return $this->redirect($this->generateUrl('aduser'));
@@ -415,7 +467,7 @@ class AdUserController extends Controller
         ));
         
         $form
-            ->add('numeroidentidad',null, array('mapped' => false, 'label'=> 'Número Identidad', 'attr' => array('required' => true, 'maxlength' => 20, 'placeholder' => 'Número identidad')))
+            ->add('numeroidentidad',null, array('mapped' => false, 'label'=> 'Número Identidad', 'attr' => array('pattern' => '[0-9]{13}', 'title' => 'Ingrese la identidad sin separaciones y solo números: 0501200112345',  'required' => true, 'maxlength' => 13, 'placeholder' => 'Número identidad')))
             ->add('telefono1',null, array('mapped' => false, 'label'=> 'Número Teléfono', 'attr' => array('required' => true, 'maxlength' => 12, 'placeholder' => 'Número de teléfono 1')))
             ->add('telefono2',null, array('mapped' => false, 'label'=> 'Número Teléfono', 'attr' => array('maxlength' => 12, 'placeholder' => 'Número de teléfono 2')))
             ->add('telefono3',null, array('mapped' => false, 'label'=> 'Número Teléfono', 'attr' => array('maxlength' => 12, 'placeholder' => 'Número de teléfono 3')))
@@ -594,30 +646,39 @@ class AdUserController extends Controller
             
             $entity->setUsername($username_actual);
             
-            $accesoAct = $entity->getAcceso()->getIdRol();
-            $entity->setAcceso($accesoAnt);
+            $acceso = $entity->getAcceso()->getIdRol();
+            $idcampana = $entity->getIdCampana()->getIdCampana();
+            $idestructura = $entity->getIdEstructura()->getIdEstructura();
+            $iddistrito = $request->get('iddistrito');
+            
+            $entity->setIdCampana($idcampana);
+            $entity->setIdEstructura($idestructura);
+            $entity->setIdDistrito($iddistrito);
+            $entity->setAcceso($acceso);
             
             /* verifica si el usuario tiene privilegios para cambiar el departamento */
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+            /*if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
                 if(!$entity->getCodDepartamento()) {
                     $entity->setCodDepartamento($codDeptoAnt);
                     $entity->setCodMunicipio($codMuniAnt);
                 }else {
-                    $entity->setCodDepartamento($entity->getCodDepartamento()->getCodDepartamento());
+                    //$entity->setCodDepartamento($entity->getCodDepartamento()->getCodDepartamento());
                     $entity->setIdCampana($entity->getIdCampana()->getIdCampana());
                     $entity->setIdEstructura($entity->getIdEstructura()->getIdEstructura());
-                    $entity->setCodMunicipio($request->get('codmunicipio'));
+                    //$entity->setCodMunicipio($request->get('codmunicipio'));
                     $entity->setIdDistrito($request->get('iddistrito'));
                     $entity->setAcceso($accesoAct);
                 }
-            } else {
-                $entity->setCodDepartamento($codDeptoAnt);
-                $entity->setCodMunicipio($codMuniAnt);
-                $entity->setIdEstructura($idEstructuraAnt);
-                $entity->setIdCampana($idCampanaAnt);
-                $entity->setIdDistrito($idDistritoAnt);
-                $entity->setAcceso($accesoAnt);
-            }
+            } else {*/
+                //$entity->setCodDepartamento($codDeptoAnt);
+                //$entity->setCodMunicipio($codMuniAnt);
+                
+                
+                //$entity->setIdEstructura($idEstructuraAnt);
+                //$entity->setIdCampana($idCampanaAnt);
+                //$entity->setIdDistrito($idDistritoAnt);
+                //$entity->setAcceso($accesoAnt);
+            //}
             
             /* Guarda los valores por defecto */
             $usr= $this->get('security.context')->getToken()->getUser();

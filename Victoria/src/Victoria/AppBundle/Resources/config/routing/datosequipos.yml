@@ -1,0 +1,30 @@
+datosequipos:
+    path:     /
+    defaults: { _controller: "VictoriaAppBundle:DatosEquipos:index" }
+
+datosequipos_show:
+    path:     /{id}/show
+    defaults: { _controller: "VictoriaAppBundle:DatosEquipos:show" }
+
+datosequipos_new:
+    path:     /new
+    defaults: { _controller: "VictoriaAppBundle:DatosEquipos:new" }
+
+datosequipos_create:
+    path:     /create
+    defaults: { _controller: "VictoriaAppBundle:DatosEquipos:create" }
+    requirements: { _method: post }
+
+datosequipos_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VictoriaAppBundle:DatosEquipos:edit" }
+
+datosequipos_update:
+    path:     /{id}/update
+    defaults: { _controller: "VictoriaAppBundle:DatosEquipos:update" }
+    requirements: { _method: post|put }
+
+datosequipos_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VictoriaAppBundle:DatosEquipos:delete" }
+    requirements: { _method: post|delete }

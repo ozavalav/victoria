@@ -106,4 +106,26 @@ order by fecha_enviado desc";
         
         return $entnot;
     }
+    
+    public function obtenerTareas($idUsuario){
+        /* Lectura de las Tareas que recibe el usuario las prepara 
+         * para ser cargados en cada pagina se leen una cada vez al principio 
+         * cuando el usuario ingresa a una opcion Las Tareas se muestran  
+         * en la parte superior de la pantalla.
+         */
+        $em = $this->getDoctrine()->getManager();
+        
+        $query = "select row_number() over( order by fecha_creacion desc ) orden, id_tarea id, titulo, progreso, e.descripcion estado, fecha_creacion 
+from datos_tareas t join ad_tipos_estados_tareas e on (t.id_estado = e.id_tipo_estado_tareas)
+where id_responsable = :idusuario and id_estado = 1
+order by fecha_creacion desc";
+        //$query = sprintf($query, $codColg, $rngfechag);
+        $stmt = $em->getConnection()->prepare($query);
+        $stmt->bindValue('idusuario', $idUsuario);
+        //$stmt->bindValue('distrito',$idDistrito);
+        $stmt->execute();
+        $enttareas = $stmt->fetchAll();
+        
+        return $enttareas;
+    }
 }

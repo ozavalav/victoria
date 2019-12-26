@@ -32,17 +32,20 @@ class DatosEventosController extends Controller
         
         $session = $request->getSession();
         $menu = $session->get('_menu');
+
         $idCampana = $session->get('_id_campana');
         $idDistrito = $session->get('_id_distrito');
         $idUsuario = $session->get('_id_usuario');
         
+        
         /* Obtiene las notificaciones que tiene el usuario */
         $entnot = $seg->obtenerNotificaciones($idUsuario);
-        
+        $usr= $this->get('security.context')->getToken()->getUser();
+        $usuario = $usr->getUsername();
         
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('VictoriaAppBundle:DatosEventos')->findAll();
+        $entities = $em->getRepository('VictoriaAppBundle:DatosEventos')->findBy(array('usuarioCreacion' => $usuario));
         
         $entity = new DatosEventos();
         $form   = $this->createCreateForm($entity);
@@ -179,8 +182,8 @@ class DatosEventosController extends Controller
             throw $this->createNotFoundException('Unable to find DatosEventos entity.');
         }
         
-        $entity->setFechaInicio($entity->getFechaInicio()->format('m/d/Y'));
-        $entity->setFechaFinal($entity->getFechaFinal()->format('m/d/Y'));
+        $entity->setFechaInicio($entity->getFechaInicio()->format('m/d/Y H:i:s'));
+        $entity->setFechaFinal($entity->getFechaFinal()->format('m/d/Y H:i:s'));
         
         $editForm = $this->createEditForm($entity); 
                 
@@ -219,6 +222,8 @@ class DatosEventosController extends Controller
 
         $entity = $em->getRepository('VictoriaAppBundle:DatosEventos')->find($id);
 
+        $actualUsuarioCreacion = $entity->getUsuarioCreacion();
+        $actualFechaCreacion = $entity->getFechaCreacion();
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find DatosEventos entity.');
         }
@@ -227,13 +232,20 @@ class DatosEventosController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
+
+            
         if ($editForm->isValid()) {
+            
+
             
             $usr= $this->get('security.context')->getToken()->getUser();
             $usuario = $usr->getUsername();
             $fecha = new \DateTime("now");
             $entity->setUsuarioUltimaModificacion($usuario);
             $entity->setFechaUltimaModificacion($fecha);
+            $entity->setUsuarioCreacion($actualUsuarioCreacion);
+            $entity->setFechaCreacion($actualFechaCreacion);
+            
             
             $fechatmp = $entity->getFechaInicio();            
             $fecha = new \DateTime($fechatmp);
@@ -242,6 +254,9 @@ class DatosEventosController extends Controller
             $fechatmp = $entity->getFechaFinal();            
             $fecha = new \DateTime($fechatmp);
             $entity->setFechaFinal($fecha);
+            
+
+            
             
             $em->flush();
 

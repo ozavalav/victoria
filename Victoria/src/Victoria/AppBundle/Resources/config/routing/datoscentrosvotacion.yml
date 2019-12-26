@@ -32,3 +32,32 @@ datoscentrosvotacion_delete:
     path:     /{id}/delete
     defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:delete" }
     requirements: { _method: post|delete }
+
+datoscentrosvotacion_cantidad:
+    path:     /{id}/cantidad
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:cantidad" }
+
+datoscentrosvotacion_createcant:
+    path:     /createcant
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:createcant" }
+    requirements: { _method: post }
+    
+datoscentrosvotacion_asignarpersona:
+    path:     /asignarpersona
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:asignarpersona" }
+    requirements: { _method: post|get }
+
+datoscentrosvotacion_verpersona:
+    path:     /{id}/verpersona
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:verpersona" }
+    requirements: { _method: post|get }
+    
+datoscentrosvotacion_verasignaciones:
+    path:     /{id}/verasignaciones/{porcv}
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:verasignaciones", porcv: 0  }
+    requirements: { _method: post|get }    
+    
+datoscentrosvotacion_borrarpersona:
+    path:     /{id}/borrarpersona
+    defaults: { _controller: "VictoriaAppBundle:DatosCentrosVotacion:borrarpersona" }
+    requirements: { _method: get|post|delete }    

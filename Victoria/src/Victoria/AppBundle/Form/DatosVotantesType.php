@@ -5,6 +5,8 @@ namespace Victoria\AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class DatosVotantesType extends AbstractType
 {
@@ -17,11 +19,19 @@ class DatosVotantesType extends AbstractType
         $builder
             ->add('nombres')
             ->add('apellidos')
-            ->add('numeroIdentidad')
-            ->add('edad')
+            ->add('numeroIdentidad',null,array('label'=>'Número identidad','attr' => array('required'=>'true', 'pattern' => '[0-9]{13}')))
+            ->add('edad',null,array('attr' => array('required'=>true, 'pattern'=> '[0-9]{18,150}', 'title' => 'Ingrese un numero igual o mayor a 18')))
+            ->add('sexo',ChoiceType::class, array(
+                'choice_list' => new ChoiceList(
+                array(1, 2),
+                array('Masculino', 'Femenino')
+                ), 
+                'expanded' => true,
+                'label' => 'Sexo',
+            ))
             ->add('telefonos')
             ->add('email')
-            ->add('idCv')
+            ->add('idCv',null,array('label' => 'cv:', 'required'=>true))
         ;
     }
     

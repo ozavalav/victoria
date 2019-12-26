@@ -31,8 +31,8 @@ class DatosPresupuestosType extends AbstractType
                 array('Propios', 'Donación', 'Otro')
                 ), 'expanded' => true
             ))
-            ->add('descripcion',null,array('label' => 'Descripción'))
-            ->add('lugarEvento',null,array('label' => 'Lugar'))
+            ->add('descripcion',null,array('label' => 'Descripción', 'attr' => array('maxlength'=> 256)))
+            ->add('lugarEvento',null,array('label' => 'Lugar', 'attr' => array('maxlength'=> 256)))
             ->add('objetivoEvento', TextareaType::class, array( 'attr' => array('maxlength'=> 510, 'rows' => 2, 'cols' => '10')))
             //->add('fechaEvento')
             //->add('preparadoPor')
@@ -40,9 +40,10 @@ class DatosPresupuestosType extends AbstractType
             //->add('estado')
             //->add('totalPresupuestoEstimado')
             //->add('totalPresupuestoEjecutado')
-            ->add('idCampana',null,array('label'=>'Campaña'))
-            ->add('idDistrito',null,array('label' => 'Distrito'))
-            ->add('idCv',null,array('label' => 'Centro Votación'))    
+            ->add('idCampana',null,array('label'=>'Campaña', 'attr'=>array('required' => true)))
+            ->add('idDistrito',null,array('label' => 'Distrito', 'attr'=>array('required' => true)))
+            ->add('idCv',null,array('label' => 'Centro Votación', 'attr'=>array('required' => true)))  
+
         ;
     }
     

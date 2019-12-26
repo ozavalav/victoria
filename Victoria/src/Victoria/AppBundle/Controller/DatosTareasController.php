@@ -52,6 +52,7 @@ class DatosTareasController extends Controller
             $usr= $this->get('security.context')->getToken()->getUser();
             $usuario = $usr->getUsername();
         
+
         return $this->render('VictoriaAppBundle:DatosTareas:index.html.twig', array(
             'entities' => $entities,
             'entitiesEventos' => $entitiesEventos,
@@ -59,8 +60,7 @@ class DatosTareasController extends Controller
             'form2' => $form->createView(),
             'menu' => $menu,
             'Usuario' => $usuario,
-
-        ));
+            ));
     }
     
 

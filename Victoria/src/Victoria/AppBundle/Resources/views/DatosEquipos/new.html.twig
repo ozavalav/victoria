@@ -1,0 +1,32 @@
+{% extends '::basemenu.html.twig' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block menu %}
+    {{ menu|raw }}
+{% endblock %}
+{% block header %}
+<!-- Content Header (Page header) -->
+    <section style="padding-bottom: 20px;"class="content-header">
+      <h1>
+        Agregar equipo
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-user"></i> Equipos</a></li>
+        <li class="active">Agregar nuevo equipo </li>
+      </ol>
+    </section>
+{% endblock %}
+
+{% block content -%}
+
+
+    {{ form(form) }}
+
+    <ul style="list-style: none; margin-left: 0; text-align: right ">
+    <li>
+       <a class="btn btn-md btn-success" href="{{ path('datosequipos') }}">
+           <i class="ace-icon fa fa-arrow-left align-top bigger-120"></i> Regresar 
+        </a>
+    </li>
+</ul>
+{% endblock %}

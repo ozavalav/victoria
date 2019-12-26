@@ -1,5 +1,41 @@
 
+<style>
+    .inputDiv {
+  width: 250px;
+  margin: 100px auto;
+  position: relative;
+}
 
+
+.etiqueta {
+  width: 30px;
+  height: 26px;
+  position: absolute;
+  z-index: 9;
+  background-color: HotPink;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  padding-top: 7px;
+  top: -45px;
+}
+
+.etiqueta:after {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  z-index: 8;
+  background-color: HotPink;
+  position: relative;
+  left: 9px;
+}
+
+</style>
 {% block content -%}
 
 
@@ -15,8 +51,17 @@
               
               <div class="modal-body">
         {{ form_start(edit_form) }}
+    <div>
+        <label for="victoria_appbundle_datostareas_progreso" class="required">Progreso</label>
+        <div class="inputDiv">
+<div class="etiqueta"></div>
+<input type="range"  value="{{entity.progreso}}" min="0" max="100" autocomplete="off" id="victoria_appbundle_datostareas_progreso" name="victoria_appbundle_datostareas[progreso]">
+        
+                
 
-    {{ form_row(edit_form.progreso) }}
+</div>
+        
+    </div>
     {{ form_row(edit_form.submit) }}
     {{ form_widget(edit_form._token) }}
 
@@ -45,5 +90,31 @@
         
 {% endblock %}
 
+<script>
+var elInput3 = document.querySelector('#victoria_appbundle_datostareas_progreso');
+if (elInput3) {
+  var w = parseInt(window.getComputedStyle(elInput3, null).getPropertyValue('width'));
+
+  // LA ETIQUETA 
+  var etq = document.querySelector('.etiqueta');
+  if (etq) {
+    // el valor de la etiqueta (el tooltip) 
+    etq.innerHTML = elInput3.value;
+
+    // calcula la posición inicial de la etiqueta (el tooltip); 
+    var pxls = w / 100;
+
+    etq.style.left = ((elInput3.value * pxls) - 15) + 'px';
+
+    elInput3.addEventListener('input', function() {
+      // cambia el valor de la etiqueta (el tooltip) 
+      etq.innerHTML = elInput3.value;
+      // cambia la posición de la etiqueta (el tooltip) 
+      etq.style.left = ((elInput3.value * pxls) - 15) + 'px';
+
+    }, false);
+  }
+}
+</script>
 
 

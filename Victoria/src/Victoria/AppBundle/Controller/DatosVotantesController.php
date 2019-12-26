@@ -40,6 +40,8 @@ class DatosVotantesController extends Controller
         
         /* Obtiene las notificaciones que tiene el usuario */
         $entnot = $seg->obtenerNotificaciones($idUsuario);
+        /* Obtiene las tareas que tiene el usuario */
+        $enttar = $seg->obtenerTareas($idUsuario);
         
         $em = $this->getDoctrine()->getManager();
         
@@ -48,13 +50,17 @@ class DatosVotantesController extends Controller
         /* Muestra los registros de los votantes segun el CV seleccionado */
         if($cvot != 0 ) {
             $entities = $em->getRepository('VictoriaAppBundle:DatosVotantes')->findBy(array('idCv' => $cvot));
+        } else {
+            //$entities = $em->getRepository('VictoriaAppBundle:DatosVotantes')->findAll();
         }
         
-        /* Prepara el campo select - listado de Centros de Votacion */
+        /* Prepara el campo select - listado de Centros de Votacion para el dropdownlist*/
         if($idCampana == 0 && $idDistrito == 0 ) {
             $entcv = $em->getRepository('VictoriaAppBundle:DatosCentrosVotacion')->findAll();
+            
         } else {
             $entcv = $em->getRepository('VictoriaAppBundle:DatosCentrosVotacion')->findBy(array('idCampana' => $idCampana, 'idDistrito' => $idDistrito));
+            $entities = $em->getRepository('VictoriaAppBundle:DatosVotantes')->findBy(array('idCv' => $cvot));
         }
         
         /* Crea la forma para ingresar nuevos votantes */
@@ -66,6 +72,7 @@ class DatosVotantesController extends Controller
             'menu' => $menu,
             'form' => $form->createView(),
             'datosnoti' => $entnot,
+            'datostar' => $enttar,
             'entcv' => $entcv,
             'modal' => $modal,
             'centrov' => $cvot,

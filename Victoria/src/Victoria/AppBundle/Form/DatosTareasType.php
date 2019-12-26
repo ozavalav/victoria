@@ -15,15 +15,15 @@ class DatosTareasType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('titulo',null,array('label'=>'Titulo'))
-            ->add('descripcion',null,array('label'=>'Descripcion'))
+            ->add('titulo',null,array('label'=>'Titulo', 'attr'=>array('required' => true, 'maxlength'=> 50)))
+            ->add('descripcion',null,array('label'=>'Descripcion', 'attr'=>array('required' => true, 'maxlength'=> 256)))
             ->add('fechaCreacion')
             ->add('usuarioCreacion')
             ->add('usuarioUltimaModificacion')
             ->add('fechaUltimaModificacion')
-            ->add('idEstado',null,array('label'=>'Estado')) 
-            ->add('idEventos',null,array('label'=>'Evento'))
-            ->add('idResponsable',null,array('label'=>'Responsable'))
+            ->add('idEstado',null,array('label' => 'Estado:', 'attr'=>array('required' => true)))
+            ->add('idEventos',null,array('label' => 'Eventos:', 'attr'=>array('required' => true)))
+            ->add('idResponsable',null,array('label' => 'Responsable:', 'attr'=>array('required' => true)))
             ->add('progreso',null,array('label'=>'Progreso'))
 
 

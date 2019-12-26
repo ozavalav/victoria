@@ -19,7 +19,7 @@ class DatosAportacionesController extends Controller
 
     /**
      * Lists all DatosAportaciones entities.
-     * @Security("has_role('ROLE_ADMIN')")
+     *
      */
     public function indexAction(Request $request)
     {
@@ -39,6 +39,8 @@ class DatosAportacionesController extends Controller
         
         /* Obtiene las notificaciones que tiene el usuario */
         $entnot = $seg->obtenerNotificaciones($idUsuario);
+        /* Obtiene las tareas que tiene el usuario */
+        $enttar = $seg->obtenerTareas($idUsuario);
         
         $em = $this->getDoctrine()->getManager();
 
@@ -51,7 +53,8 @@ class DatosAportacionesController extends Controller
         return $this->render('VictoriaAppBundle:DatosAportaciones:index.html.twig', array(
             'entities' => $entities,
             'menu' => $menu,
-            'datosnoti' => $entnot, 
+            'datosnoti' => $entnot,
+            'datostar' => $enttar,
         ));
     }
     /**

@@ -11,61 +11,6 @@
 {% block menu %}
     {{ menu|raw }}
 {% endblock %}
-{% block notificaciones %} 
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <i class="fa fa-bell-o"></i>
-        <span class="label label-warning">{{ datosnoti|length }}</span>
-    </a>
-    <ul class="dropdown-menu">
-        <li class="header">Tiene {{ datosnoti|length }} notificaciones </li>
-        <li>
-          <!-- inner menu: contains the actual data -->
-          <ul class="menu">
-            {% for noti in datosnoti if noti.orden < 7 %}  
-            <li>
-              <a href="{{ path('datosnotificaciones') }}">
-                <i class="fa fa-users text-aqua"></i> {{ noti.mensaje }}
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
-        </li>
-        <li class="footer"><a href="{{ path('datosnotificaciones')}}">Ver todos</a></li>
-    </ul>
-{% endblock %}
-{% block tareas %}
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-flag-o"></i>
-              <span class="label label-danger">0</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">Tienes 0 tareas</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li><!-- Task item -->
-                    <a href="#">
-                      <h3>
-                        Avance del proyecto
-                        <small class="pull-right">70%</small>
-                      </h3>
-                      <div class="progress xs">
-                        <div class="progress-bar progress-bar-aqua" style="width: 70%" role="progressbar"
-                             aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
-                          <span class="sr-only">70% Complete</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <!-- end task item -->
-                </ul>
-              </li>
-              <li class="footer">
-                <a href="#">Ver todas las tares</a>
-              </li>
-            </ul>
-{% endblock %} 
-
 {% block header %}
 <!-- Content Header (Page header) -->
     <section style="padding-bottom: 20px;"class="content-header">
@@ -99,29 +44,21 @@
             </select>
         </li>    
     </ul>
-    <table style="overflow-x: auto; " id="dynamic-table" class="display compact table-responsive">
+    <table id="dynamic-table" class="display compact" style="width:100%">
         <thead>
             <tr style="background-color: #E8BF6A">
-                <th>Id</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
-                <th>Identidad</th>
-                <th>Edad</th>
                 <th>Teléfonos</th>
-                <th>Email</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('datosvotantes_show', { 'id': entity.idVotante }) }}">{{ entity.idVotante }}</a></td>
                 <td>{{ entity.nombres }}</td>
                 <td>{{ entity.apellidos }}</td>
-                <td>{{ entity.numeroIdentidad }}</td>
-                <td>{{ entity.edad }}</td>
                 <td>{{ entity.telefonos }}</td>
-                <td>{{ entity.email }}</td>
                 <td>
               
                        <div class="action-buttons">
@@ -157,13 +94,14 @@
                     {{ form_row(form.apellidos) }}
                     {{ form_row(form.numeroIdentidad) }}
                     {{ form_row(form.edad) }}
+                    {{ form_row(form.sexo) }}
                     {{ form_row(form.telefonos) }} 
                     {#{ form_row(form.idCv) }#} 
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="victoria_appbundle_datosvotantes_idCv">Id cv</label>
                         <div class="col-sm-10">
-                            <select id="victoria_appbundle_datosvotantes_idCv" name="victoria_appbundle_datosvotantes[idCv]" class="form-control">
-                                <option value=""> -- Seleccione una CV -- </option>
+                            <select required="required" id="victoria_appbundle_datosvotantes_idCv" name="victoria_appbundle_datosvotantes[idCv]" class="form-control">
+                                <option value=""></option>
                                 {% for cv in entcv %}
                                     <option value="{{ cv.idcv }}">{{ cv.nombre }}</option>
                                 {% endfor %}

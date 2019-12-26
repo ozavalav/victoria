@@ -63,3 +63,9 @@ aduser_buscarUsuariosPorEvento:
     pattern: /buscarUsuariosPorEvento/{param}/
     defaults: { _controller: "VictoriaAppBundle:AdUser:buscarUsuariosPorEvento" }
     requirements: { _method: post|get}
+    
+aduser_buscarpersonasparaasignar:
+    pattern: /buscarPersonas/
+    defaults: { _controller: "VictoriaAppBundle:AdUser:buscarPersonas" }
+    requirements: { _method: post|get}
+

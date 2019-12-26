@@ -18,18 +18,18 @@
 {% endblock %}
 
 {% block content -%}
-
-    
     
     {{ form_start(edit_form) }}
-    {% if idtipopublicidad == 1 %}
+    
+    {% if idtipopublicidad == 4 %}
     {{ form_row(edit_form.pautaPublicitaria) }}
     {{ form_row(edit_form.comprobantePago) }}
     {{ form_row(edit_form.personasAlcanzadas) }}
     {{ form_row(edit_form.target) }}
     {{ form_row(edit_form.comentariosPositivos) }}
     {{ form_row(edit_form.comentariosNegativos) }}
-    {{ form_row(edit_form.compartidos) }}
+    {{ form_row(edit_form.compartidos) }} 
+    
     <br>Listado Reacciones</br>
         <table>
         <tr>
@@ -49,11 +49,37 @@
         <td width="20%">{{ form_row(edit_form.meEnoja) }}</th>
         </tr>
     </table>
-    {% else %}
+    
+    {% elseif idtipopublicidad == 5 %}
     {{ form_row(edit_form.pautaPublicitaria) }}
     {{ form_row(edit_form.comprobantePago) }}
     {{ form_row(edit_form.personasAlcanzadas) }}
     {{ form_row(edit_form.target) }}
+    <table width="100%">
+        <td width="14%"><b><p style="text-align:right">Me Gusta</b></td>
+        <th> {{ form_row(edit_form.meGusta) }}</th>
+    </table>
+    {{ form_row(edit_form.meGusta) }}
+    {{ form_row(edit_form.comentariosPositivos) }}
+    {{ form_row(edit_form.comentariosNegativos) }} 
+
+    {% elseif  idtipopublicidad == 6 %}
+    {{ form_row(edit_form.pautaPublicitaria) }}
+    {{ form_row(edit_form.comprobantePago) }}
+    {{ form_row(edit_form.twitAfavor) }}
+    {{ form_row(edit_form.twitNoafavor) }}
+    {{ form_row(edit_form.reTwit) }}
+    {{ form_row(edit_form.personasAlcanzadas) }}
+    {{ form_row(edit_form.target) }}
+    
+    {% else %}
+    {{ form_row(edit_form.pautaPublicitaria) }}
+    {{ form_row(edit_form.comprobantePago) }}
+    {{ form_row(edit_form.nombreMedioPublicidad) }}
+    {{ form_row(edit_form.personasAlcanzadas) }}
+    {{ form_row(edit_form.target) }}
+    
+       
     {% endif %}
         {{ form_row(edit_form.submit) }}
         {{ form_widget(edit_form._token) }}

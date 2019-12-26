@@ -38,6 +38,8 @@ class AdTiposComisionController extends Controller
         
         /* Obtiene las notificaciones que tiene el usuario */
         $entnot = $seg->obtenerNotificaciones($idUsuario);
+        /* Obtiene las tareas que tiene el usuario */
+        $enttar = $seg->obtenerTareas($idUsuario);
         
         $em = $this->getDoctrine()->getManager();
 
@@ -46,7 +48,8 @@ class AdTiposComisionController extends Controller
         return $this->render('VictoriaAppBundle:AdTiposComision:index.html.twig', array(
         'entities' => $entities,
         'menu' => $menu,
-        'datosnoti' => $entnot,    
+        'datosnoti' => $entnot,   
+        'datostar' => $enttar,    
         ));
     }
     /**

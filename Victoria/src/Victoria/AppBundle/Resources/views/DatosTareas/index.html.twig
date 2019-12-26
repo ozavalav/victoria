@@ -9,8 +9,8 @@
 
 <style>
 .scroll {
-     width:318  px;
-     height:183px;
+     width:318px;
+     height:150px;
      overflow:auto;
 }
 
@@ -51,32 +51,40 @@
 
 
     
-    <ul style="list-style: none; margin-left: 0; text-align: right ">        
-        <li style="float: left; margin: 0px 0px 5px 10px;">
-
-   <h4> Eventos</h4>   
-
-    </li>
-           <li style="float: left; margin: 0px 0px 5px 10px;">
-    <select id="sdf" class="form-control"><option value=""></option>
-        <option value="all"  onclick="filterSelection('all')" selected="selected" >Todos</option>
-         {% for entity in entitiesEventos %}
-        <option  onclick="filterSelection('{{ entity.titulo }}')" >{{ entity.titulo }}</option>
-
-         {% endfor %}
-    </select>
-    </li>
-        
-        <li style="float: right; margin: 0px 0px 5px 10px;">
-        <a id="btnAgregar" data-toggle="modal" data-target="#modal-default" style="display: block;" class="btn btn-md btn-success" href="#">
-            <i class="ace-icon fa fa-plus-square align-top bigger-120"></i> Agregar 
-        </a>
-    </li>
-    </ul>
+    <div class="row">
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-3">
+        <div class="radio">
+            <label><input type="radio" value="MisTareas" name="radioTareas" onclick="filterSelection('MisTareas');" checked>Tareas que yo asigne</label>
+        </div>
+        <div class="radio">
+          <label><input type="radio" value="TareasAsignadas" name="radioTareas" onclick="filterSelection('TareasAsiganadss');">Tareas que me asignaron</label>
+        </div>
+    </div>  
+    <div class="col-md-7">
+        <ul style="list-style: none; margin-left: 0; text-align: right ">        
+            <li style="float: left; margin: 0px 0px 5px 10px;">
+                <h4> Eventos</h4> 
+            </li>
+            <li style="float: left; margin: 0px 0px 5px 10px;">
+                <select id="SelectCampañas" name="SelectCampañas" class="form-control"><option value=""></option>
+                    <option value="all"  onclick="filterSelection('all')" selected="selected" >Todos</option>
+                     {% for entity in entitiesEventos %}
+                        <option  onclick="filterSelection('{{ entity.titulo }}')" >{{ entity.titulo }}</option>
+                     {% endfor %}
+                </select>
+            </li>       
+            <li style="float: right; margin: 0px 0px 5px 10px;">
+            <a id="btnAgregar" data-toggle="modal" data-target="#modal-default" style="display: block;" class="btn btn-md btn-success" href="#">
+                <i class="ace-icon fa fa-plus-square align-top bigger-120"></i> Agregar 
+            </a>
+            </li>
+        </ul>
+    </div>
+</div>
     
 </br>
-</br>
-</br> 
 
 
 
@@ -85,179 +93,183 @@
 
 
 
-   <div class="row">
-       <div class="col-md-4">
- {% for entity in entities %}
-     {% if entity.idEstado == "Creado" or entity.idEstado == "Asignado" %}
-          
-          
-      
-        <div style="margin-bottom: 20px"  class="card filterDiv {{ entity.idEventos }}">
-          <div class="card-header text-center">
-            <h4 class="card-title">{{ entity.titulo }}</h4>
-            <span class="badge badge-pill badge-success">
-              {{ entity.idEstado }}
-            </span>
-          </div>
-          <div class="card-body scroll" >
-            <p style="margin-right: 20px;" class="card-text">{{ entity.descripcion }}</p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-md-7">
-                    <div class="progress-group">
-                    <span class="progress-text">{{ entity.idResponsable }}</span>
-                    <span class="progress-number"><b>{{ entity.progreso }}</b>%</span>
 
-                    <div class="progress sm">
-                      <div class="progress-bar progress-bar-aqua" style="width: {{ entity.progreso }}%"></div>
-                    </div>
+<div class="row"  style="margin-left: 10px; margin-right: 10px;">
+  
+    <div class="col-md-4" style="border-style:solid; padding: 5px 5px 5px 5px; height:600px ; overflow-x: hidden; overflow-y: scroll">
+        <center> <h4 style="position: inherit">Asignados</h4></center> 
+        {% for entity in entities %}
+          {% if (entity.idEstado == "Creado" or entity.idEstado == "Asignado") 
+            and (entity.idResponsable == Usuario or entity.UsuarioCreacion)%}          
+            {% if entity.idResponsable != Usuario %}  
+                {%   set TipoTareas = 'MisTareas'  %}
+            {%else%} 
+                {%   set TipoTareas = 'TareasAsignadas'  %}
+            {%endif%} 
+                <div   class="card filterDiv {{ entity.idEventos }} {{ TipoTareas }}">
+                  <div class="card-header text-center">
+                    <h4 class="card-title">{{ entity.titulo }}</h4>
+                    <span class="badge badge-pill badge-success">
+                      {{ entity.idEstado }}
+                    </span>
                   </div>
-                </div>
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-3">
-                    <div class="action-buttons">
-                  {% if entity.idResponsable !=  Usuario%}
-
-                        <a class="blue" href="{{ path('datostareas_show', { 'id': entity.idTarea }) }}">
-
-
-                            
-                  <button type="button" class="btn btn-info btn-sm"  name="button">Detalle</button>
-                           </a>                                                   
-                  {% else%}
-                  <a class="green" data-toggle="modal" data-target="#modal-default2" style="display: block;" class="btn btn-md btn-success" href="{{ path('datostareas_editmodal', { 'id': entity.idTarea }) }}"> 
-                    <button type="button" class="btn btn-info btn-sm"  name="button">Editar</button>
-                  </a>                                                   
-                    {% endif %}                                                
-
-                       
-                    
-                    </div>                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-                               {% endif %}
-        {% endfor %}
-
-</div>
-
-<div class="col-md-4">
- {% for entity in entities %}
-     {% if entity.idEstado == "Recibido" or entity.idEstado == "Sin Empezar" or entity.idEstado == "En Proceso" %}
-          
-            
-
-        <div style="margin-bottom: 20px" class="card filterDiv {{ entity.idEventos }} " >
-          <div class="card-header text-center">
-            <h4 class="card-title">{{ entity.titulo }}</h4>
-            <span class="badge badge-pill badge-success">
-              {{ entity.idEstado }}
-            </span>
-          </div>
-          <div class="card-body scroll" >
-            <p style="margin-right: 20px;" class="card-text">{{ entity.descripcion }}</p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-md-7">
-                    <div class="progress-group">
-                    <span class="progress-text">{{ entity.idResponsable }}</span>
-                    <span class="progress-number"><b>{{ entity.progreso }}</b>%</span>
-
-                    <div class="progress sm">
-                      <div class="progress-bar progress-bar-aqua" style="width: {{ entity.progreso }}%"></div>
-                    </div>
+                  <div class="card-body scroll">
+                    <p style="margin-right: 20px;" class="card-text">{{ entity.descripcion }}</p>
                   </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-md-7">
+                            <div class="progress-group">
+                            <span class="progress-text">{{ entity.idResponsable }}</span>
+                            <span class="progress-number"><b>{{ entity.progreso }}</b>%</span>
+
+                            <div class="progress sm">
+                              <div class="progress-bar progress-bar-aqua" style="width: {{ entity.progreso }}%"></div>
+                            </div>
+                          </div>
+                        </div>
+
+                            <div class="col-md-5" align="right">
+                            <div class="action-buttons">
+                          {% if entity.idResponsable !=  Usuario%}
+
+                                <a class="blue" href="{{ path('datostareas_show', { 'id': entity.idTarea }) }}">
+
+
+
+                          <button type="button" class="btn btn-info btn-sm"  name="button">Detalle</button>
+                                   </a>                                                   
+                          {% else%}
+                          <a class="green" data-toggle="modal" data-target="#modal-default2" style="display: block;" class="btn btn-md btn-success" href="{{ path('datostareas_editmodal', { 'id': entity.idTarea }) }}"> 
+                            <button type="button" class="btn btn-info btn-sm"  name="button">Editar</button>
+                          </a>                                                   
+                            {% endif %}                                                
+
+
+
+                            </div>                </div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-3">
-                    <div class="action-buttons">
-                  {% if entity.idResponsable !=  Usuario%}
-                        <a class="blue" href="{{ path('datostareas_show', { 'id': entity.idTarea }) }}">
-
-
-                            
-                  <button type="button" class="btn btn-info btn-sm"  name="button">Detalle</button>
-                           </a>                                               
-                  {% else%}
-                  <a class="green" data-toggle="modal" data-target="#modal-default2" style="display: block;" class="btn btn-md btn-success" href="{{ path('datostareas_editmodal', { 'id': entity.idTarea }) }}"> 
-                    <button type="button" class="btn btn-info btn-sm"  name="button">Editar</button>
-                  </a>                                                   
-                    {% endif %}                                                
-
-                       
-                    
-                    </div>                </div>
-              </div>
-            </li>
-          </ul>
-        </div>            {% endif %}
+            {% endif %}
         {% endfor %}
+    </div>
+    <div class="col-md-4" style="border-style:solid; padding: 5px 5px 5px 5px; height:600px ; overflow-x: hidden; overflow-y: scroll">
+        <center> <h4 style="position: inherit">En proceso</h4></center> 
+        {% for entity in entities %}
+          {% if (entity.idEstado == "Recibido" or entity.idEstado == "Sin Empezar" or entity.idEstado == "En Proceso") 
+            and (entity.idResponsable == Usuario or entity.UsuarioCreacion)%}  
+            {% if entity.idResponsable != Usuario %}  
+                {%   set TipoTareas = 'MisTareas'  %}
+            {%else%} 
+                {%   set TipoTareas = 'TareasAsignadas'  %}
+            {%endif%} 
+                <div   class="card filterDiv {{ entity.idEventos }} {{ TipoTareas }}">
+                <div class="card-header text-center">
+                    <h4 class="card-title">{{ entity.titulo }}</h4>
+                    <span class="badge badge-pill badge-success">
+                      {{ entity.idEstado }}
+                    </span>
+               </div>
+               <div class="card-body scroll" >
+                 <p style="margin-right: 20px;" class="card-text">{{ entity.descripcion }}</p>
+               </div>
+               <ul class="list-group list-group-flush">
+                 <li class="list-group-item">
+                   <div class="row">
+                     <div class="col-md-7">
+                         <div class="progress-group">
+                         <span class="progress-text">{{ entity.idResponsable }}</span>
+                         <span class="progress-number"><b>{{ entity.progreso }}</b>%</span>
 
-</div>
-            
-            
-            <div class="col-md-4">
- {% for entity in entities %}
-     {% if entity.idEstado == "Terminado" or entity.idEstado == "Cancelada" %}
-          
-            
+                         <div class="progress sm">
+                           <div class="progress-bar progress-bar-aqua" style="width: {{ entity.progreso }}%"></div>
+                         </div>
+                       </div>
+                     </div>
+                            <div class="col-md-5" align="right">
 
-        <div style="margin-bottom: 20px"    class="card filterDiv {{ entity.idEventos }}">
-          <div class="card-header text-center">
-            <h4 class="card-title">{{ entity.titulo }}</h4>
-            <span class="badge badge-pill badge-success">
-              {{ entity.idEstado }}
-            </span>
-          </div>
-          <div class="card-body scroll" >
-            <p style="margin-right: 20px;" class="card-text">{{ entity.descripcion }}</p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-md-7">
-                    <div class="progress-group">
-                    <span class="progress-text">{{ entity.idResponsable }}</span>
-                    <span class="progress-number"><b>{{ entity.progreso }}</b>%</span>
+                         <div class="action-buttons">
+                            {% if entity.idResponsable !=  Usuario%}
+                                <a class="blue" href="{{ path('datostareas_show', { 'id': entity.idTarea }) }}">
+                                    <button type="button" class="btn btn-info btn-sm"  name="button">Detalle</button>
+                                </a>                                               
+                            {% else%}
+                                <a class="green" data-toggle="modal" data-target="#modal-default2" style="display: block;" class="btn btn-md btn-success" href="{{ path('datostareas_editmodal', { 'id': entity.idTarea }) }}"> 
+                                  <button type="button" class="btn btn-info btn-sm"  name="button">Editar</button>
+                                </a>                                                   
+                            {% endif %}
+                        </div>                
+                     </div>
+                   </div>
+                 </li>
+               </ul>
+             </div>            {% endif %}
+             {% endfor %}
 
-                    <div class="progress sm">
-                      <div class="progress-bar progress-bar-aqua" style="width: {{ entity.progreso }}%"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-3">
-                    <div class="action-buttons">
-                  {% if entity.idResponsable !=  Usuario%}
-
-                        <a class="blue" href="{{ path('datostareas_show', { 'id': entity.idTarea }) }}">
+    </div>
 
 
-                            
-                  <button type="button" class="btn btn-info btn-sm"  name="button">Detalle</button>
-                           </a>                                                   
-                  {% else%}
-                  <a class="green" data-toggle="modal" data-target="#modal-default2" style="display: block;" class="btn btn-md btn-success" href="{{ path('datostareas_editmodal', { 'id': entity.idTarea }) }}"> 
-                    <button type="button" class="btn btn-info btn-sm"  name="button">Editar</button>
-                  </a>                                                   
-                    {% endif %}                                                
+    <div class="col-md-4" style="border-style:solid; padding: 5px 5px 5px 5px; height:600px ; overflow-x: hidden; overflow-y: scroll">
+        <center> <h4 style="position: inherit">Finalizados</h4></center> 
+{% for entity in entities %}
+  {% if (entity.idEstado == "Terminado" or entity.idEstado == "Cancelada") 
+      and (entity.idResponsable == Usuario or entity.UsuarioCreacion)%}
+            {% if entity.idResponsable != Usuario %}  
+                {%   set TipoTareas = 'MisTareas'  %}
+            {%else%} 
+                {%   set TipoTareas = 'TareasAsignadas'  %}
+            {%endif%} 
+                <div   class="card filterDiv {{ entity.idEventos }} {{ TipoTareas }}">
+       <div class="card-header text-center">
+         <h4 class="card-title">{{ entity.titulo }}</h4>
+         <span class="badge badge-pill badge-success">
+           {{ entity.idEstado }}
+         </span>
+       </div>
+       <div class="card-body scroll" >
+         <p style="margin-right: 20px;" class="card-text">{{ entity.descripcion }}</p>
+       </div>
+       <ul class="list-group list-group-flush">
+         <li class="list-group-item">
+           <div class="row">
+             <div class="col-md-7">
+                 <div class="progress-group">
+                 <span class="progress-text">{{ entity.idResponsable }}</span>
+                 <span class="progress-number"><b>{{ entity.progreso }}</b>%</span>
 
-                       
-                    
-                    </div>                </div>
-              </div>
-            </li>
-          </ul>
-        </div>              {% endif %}
-        {% endfor %}
+                 <div class="progress sm">
+                   <div class="progress-bar progress-bar-aqua" style="width: {{ entity.progreso }}%"></div>
+                 </div>
+               </div>
+             </div>
+                            <div class="col-md-5" align="right">
+
+                 <div class="action-buttons">
+               {% if entity.idResponsable !=  Usuario%}
+
+                     <a class="blue" href="{{ path('datostareas_show', { 'id': entity.idTarea }) }}">
+
+
+
+               <button type="button" class="btn btn-info btn-sm"  name="button">Detalle</button>
+                        </a>                                                   
+               {% else%}
+               <a class="green" data-toggle="modal" data-target="#modal-default2" style="display: block;" class="btn btn-md btn-success" href="{{ path('datostareas_editmodal', { 'id': entity.idTarea }) }}"> 
+                 <button type="button" class="btn btn-info btn-sm"  name="button">Editar</button>
+               </a>                                                   
+                 {% endif %}                                                
+
+
+
+                 </div>                </div>
+           </div>
+         </li>
+       </ul>
+     </div>              {% endif %}
+     {% endfor %}
 
 </div>
 
@@ -313,10 +325,6 @@
           </div>
           <!-- /.modal-dialog -->
     </div>
-
-
-             
-
 
 
             <!-- Modal de ingreso de datos -->    
@@ -420,12 +428,18 @@
 
   filterSelection("all")
 function filterSelection(c) {
+
+  var radioTareas = $("input[name='radioTareas']:checked").val(); 
+  var campaña = $("#SelectCampañas").val();
+  console.log(radioTareas);
+  console.log(campaña);
+
   var x, i;
   x = document.getElementsByClassName("filterDiv");
-  if (c == "all") c = "";
+  if (campaña == "all") campaña = "";
   for (i = 0; i < x.length; i++) {
     w3RemoveClass(x[i], "show");
-    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+    if (x[i].className.indexOf(campaña) > -1 && x[i].className.indexOf(radioTareas) > -1) w3AddClass(x[i], "show");
   }
 }
 

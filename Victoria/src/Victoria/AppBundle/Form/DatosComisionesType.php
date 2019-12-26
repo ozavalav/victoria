@@ -20,29 +20,30 @@ class DatosComisionesType extends AbstractType
             ->add('descripcion')
             ->add('idEstructura', EntityType::class, array(
                 'class' => 'VictoriaAppBundle:DatosEstructuras',
-                'label' => 'Estructura'
-            ))
+                'label' => 'Estructura', 'attr'=>array('required' => true)))
+                
             ->add('idPersona', EntityType::class, array(
                 'class' => 'VictoriaAppBundle:DatosPersonas',
-                'label' => 'Personas'
-            ))
+                'label' => 'Personas', 'attr'=>array('required' => true)))
+                
             ->add('idTipoComision', EntityType::class, array(
                 'class' => 'VictoriaAppBundle:AdTiposComision',
-                'label' => 'Tipo comision'
-            ))
+                'label' => 'Tipo comision', 'attr'=>array('required' => true)))
+                
             ->add('idCampana', EntityType::class, array(
                 'class' => 'VictoriaAppBundle:DatosCampanasPoliticas',
-                'label' => 'Campaña politica'
-            ))
+                'label' => 'Campaña politica', 'attr'=>array('required' => true)))
+                
             ->add('idDistrito', EntityType::class, array(
                 'class' => 'VictoriaAppBundle:DatosDistritos',
-                'label' => 'Distrito'
-            ))
+                'label' => 'Distrito', 'attr'=>array('required' => true)))
+                
             ->add('idCv', EntityType::class, array(
                 'class' => 'VictoriaAppBundle:DatosCentrosVotacion',
-                'label' => 'Centro de Votación'
-            ))    
+                'label' => 'Centro de Votación', 'attr'=>array('required' => true)))
+
         ;
+
     }
     
     /**

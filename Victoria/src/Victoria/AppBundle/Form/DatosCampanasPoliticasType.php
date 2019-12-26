@@ -17,12 +17,12 @@ class DatosCampanasPoliticasType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
-            ->add('candidato')
-            ->add('idPartidoPolitico', EntityType::class, array(
+            ->add('nombre',null,array('label' => 'Nombre', 'attr' => array('maxlength' => 512)))
+            ->add('candidato',null,array('label' => 'Candidato', 'attr' => array('maxlength' => 512)))
+            /*->add('idPartidoPolitico', EntityType::class, array(
                 'class' => 'VictoriaAppBundle:AdPartidosPoliticos',
                 'label' => 'Partido Politico'
-            ))
+            ))*/
         ;
     }
     

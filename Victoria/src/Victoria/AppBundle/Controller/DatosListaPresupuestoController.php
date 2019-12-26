@@ -41,6 +41,8 @@ class DatosListaPresupuestoController extends Controller
         
         /* Obtiene las notificaciones que tiene el usuario */
         $entnot = $seg->obtenerNotificaciones($idUsuario);
+        /* Obtiene las tareas que tiene el usuario */
+        $enttar = $seg->obtenerTareas($idUsuario);
 
         $entities = $em->getRepository('VictoriaAppBundle:DatosListaPresupuesto')->findBy(array('idPresupuesto' => $id ));
 
@@ -53,6 +55,7 @@ class DatosListaPresupuestoController extends Controller
             'form' => $form->createView(),
             'menu' => $menu,
             'datosnoti' => $entnot,
+            'datostar' => $enttar,
             'idpresupuesto' => $id,
         ));
     }

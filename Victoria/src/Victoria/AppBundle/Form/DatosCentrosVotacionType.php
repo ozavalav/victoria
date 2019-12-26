@@ -27,8 +27,8 @@ class DatosCentrosVotacionType extends AbstractType
         }
         
         $builder
-            ->add('nombre')
-            ->add('tipoCv')
+            ->add('nombre',null,array('label' => 'Nombre', 'attr' => array('maxlength' => 256)))
+            ->add('tipoCv',null,array('label' => 'Tipo centro votación'))
             ->add('tipoCv',ChoiceType::class, array(
                 'choice_list' => new ChoiceList(
                 array(1, 2, 3),
@@ -36,10 +36,19 @@ class DatosCentrosVotacionType extends AbstractType
                 ), 
                 'expanded' => true,
             ))    
-            ->add('direccion',null,array('label' => 'Dirección'))
-            ->add('nombreEdificio')
-            ->add('cargarElectoral')
-            ->add('numeroMesas')
+            ->add('direccion',null,array('label' => 'Dirección', 'attr' => array('maxlength' => 512)))
+            ->add('nombreEdificio',null,array('label' => 'Nombre edificio', 'attr' => array('maxlength' => 256)))
+            ->add('cargarElectoral',null,array('label' => 'Carga electoral'))
+            ->add('numeroMesas',null,array('label' => 'Número de mesas'))
+            ->add('tipoVotacion',ChoiceType::class, array(
+                'choice_list' => new ChoiceList(
+                array(1, 2),
+                array('Primarias', 'Generales')
+                ), 
+                'expanded' => true,
+                'label' => 'Tipo votación',
+            )) 
+            ->add('personasPorMesas',null,array('label' => 'Personas por mesas'))
             /*->add('idCampana', EntityType::class, array(
                 'class' => 'VictoriaAppBundle:DatosCampanasPoliticas',
                 'label' => 'Campaña'
